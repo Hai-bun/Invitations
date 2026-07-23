@@ -69,6 +69,9 @@ const Admin = () => {
     setIsSaving(false);
     if (success) {
       toast.success("Settings saved successfully!");
+      // Reload data from database to ensure persistence
+      const updated = await getWeddingData();
+      setData(updated);
     } else {
       toast.error("Failed to save settings. Please try again.");
     }
@@ -108,7 +111,7 @@ const Admin = () => {
     toast.success("Link copied to clipboard!");
   };
 
-  const MAX_IMAGE_BYTES = 5 * 1024 * 1024; // 5MB
+  const MAX_IMAGE_BYTES = Infinity; // no client-side size limit
   const ALLOWED_IMAGE_TYPES = [
     "image/jpeg",
     "image/png",

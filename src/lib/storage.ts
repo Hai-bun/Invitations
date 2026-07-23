@@ -1,6 +1,9 @@
 import { supabase } from "@/integrations/supabase/client";
 
-const BUCKET_NAME = "wedding-images";
+const BUCKET_NAME =
+  import.meta.env.VITE_SUPABASE_STORAGE_BUCKET ??
+  import.meta.env.vite_supabase_storage_bucket ??
+  "wedding-images";
 
 function generateUniquePath(folder: string, file: File): string {
   const ext = file.name.split(".").pop()?.toLowerCase() || "jpg";
@@ -12,7 +15,7 @@ function generateUniquePath(folder: string, file: File): string {
 
 export async function uploadWeddingImage(
   file: File,
-  folder: "photos" | "khqr"
+  folder: "photos" | "khqr",
 ): Promise<string | null> {
   const path = generateUniquePath(folder, file);
 
@@ -35,7 +38,9 @@ export async function uploadWeddingImage(
 export function isStorageUrl(url: string): boolean {
   try {
     const parsed = new URL(url);
-    return parsed.pathname.includes(`/storage/v1/object/public/${BUCKET_NAME}/`);
+    return parsed.pathname.includes(
+      `/storage/v1/object/public/${BUCKET_NAME}/`,
+    );
   } catch {
     return false;
   }
