@@ -1,0 +1,214 @@
+// Multi-language support for Wedding Invitation
+
+export type Language = 'en' | 'km';
+
+export interface Translations {
+  // Common
+  save: string;
+  share: string;
+  cancel: string;
+  submit: string;
+  loading: string;
+  
+  // Hero Section
+  welcomeGuest: string;
+  weInviteYou: string;
+  countingDown: string;
+  days: string;
+  hours: string;
+  minutes: string;
+  seconds: string;
+  
+  // Couple Section
+  theCouple: string;
+  groomFamily: string;
+  brideFamily: string;
+  sonOf: string;
+  daughterOf: string;
+  
+  // Location Section
+  eventLocation: string;
+  getDirections: string;
+  
+  // Gallery Section
+  ourStory: string;
+  photoGallery: string;
+  
+  // RSVP Section
+  rsvpTitle: string;
+  rsvpSubtitle: string;
+  yourName: string;
+  enterName: string;
+  willYouAttend: string;
+  yesAttending: string;
+  noNotAttending: string;
+  blessingMessage: string;
+  sendWishes: string;
+  submitRsvp: string;
+  rsvpSuccess: string;
+  rsvpSuccessMessage: string;
+  
+  // Gift Section
+  weddingGift: string;
+  giftMessage: string;
+  scanQR: string;
+  
+  // Footer
+  thankYou: string;
+  madeWithLove: string;
+  
+  // Welcome Popup
+  welcomeTitle: string;
+  openInvitation: string;
+  dearGuest: string;
+}
+
+const translations: Record<Language, Translations> = {
+  en: {
+    // Common
+    save: 'Save',
+    share: 'Share',
+    cancel: 'Cancel',
+    submit: 'Submit',
+    loading: 'Loading...',
+    
+    // Hero Section
+    welcomeGuest: 'Welcome',
+    weInviteYou: 'We joyfully invite you to celebrate',
+    countingDown: 'Counting down to our special day',
+    days: 'Days',
+    hours: 'Hours',
+    minutes: 'Minutes',
+    seconds: 'Seconds',
+    
+    // Couple Section
+    theCouple: 'The Couple',
+    groomFamily: 'Groom\'s Family',
+    brideFamily: 'Bride\'s Family',
+    sonOf: 'Son of',
+    daughterOf: 'Daughter of',
+    
+    // Location Section
+    eventLocation: 'Event Location',
+    getDirections: 'Get Directions',
+    
+    // Gallery Section
+    ourStory: 'Our Story',
+    photoGallery: 'Photo Gallery',
+    
+    // RSVP Section
+    rsvpTitle: 'RSVP',
+    rsvpSubtitle: 'Please let us know if you will be joining us',
+    yourName: 'Your Name',
+    enterName: 'Enter your name',
+    willYouAttend: 'Will you attend?',
+    yesAttending: 'Yes, I will attend',
+    noNotAttending: 'Sorry, I cannot attend',
+    blessingMessage: 'Blessing Message',
+    sendWishes: 'Send your wishes to the couple...',
+    submitRsvp: 'Submit RSVP',
+    rsvpSuccess: 'Thank You!',
+    rsvpSuccessMessage: 'Your response has been recorded. We look forward to celebrating with you!',
+    
+    // Gift Section
+    weddingGift: 'Wedding Gift',
+    giftMessage: 'Your presence is our greatest gift. However, if you wish to bless us with a gift, you may scan the KHQR code below.',
+    scanQR: 'Scan the QR code to send a gift',
+    
+    // Footer
+    thankYou: 'Thank you for being part of our special day',
+    madeWithLove: 'Made with love',
+    
+    // Welcome Popup
+    welcomeTitle: 'You are Invited',
+    openInvitation: 'Open Invitation',
+    dearGuest: 'Dear',
+  },
+  km: {
+    // Common
+    save: 'រក្សាទុក',
+    share: 'ចែករំលែក',
+    cancel: 'បោះបង់',
+    submit: 'ផ្ញើ',
+    loading: 'កំពុងផ្ទុក...',
+    
+    // Hero Section
+    welcomeGuest: 'សូមស្វាគមន៍',
+    weInviteYou: 'យើងខ្ញុំសូមអញ្ជើញលោកអ្នកចូលរួមអបអរសាទរ',
+    countingDown: 'រាប់ថយក្រោយដល់ថ្ងៃពិសេសរបស់យើង',
+    days: 'ថ្ងៃ',
+    hours: 'ម៉ោង',
+    minutes: 'នាទី',
+    seconds: 'វិនាទី',
+    
+    // Couple Section
+    theCouple: 'គូស្រករ',
+    groomFamily: 'គ្រួសារកូនកំឡោស',
+    brideFamily: 'គ្រួសារកូនក្រមុំ',
+    sonOf: 'កូនប្រុសរបស់',
+    daughterOf: 'កូនស្រីរបស់',
+    
+    // Location Section
+    eventLocation: 'ទីតាំងពិធី',
+    getDirections: 'បង្ហាញផ្លូវ',
+    
+    // Gallery Section
+    ourStory: 'រឿងរ៉ាវរបស់យើង',
+    photoGallery: 'វិចិត្រសាល',
+    
+    // RSVP Section
+    rsvpTitle: 'បញ្ជាក់ការចូលរួម',
+    rsvpSubtitle: 'សូមប្រាប់យើងខ្ញុំថាតើលោកអ្នកនឹងចូលរួមជាមួយយើងទេ',
+    yourName: 'ឈ្មោះរបស់អ្នក',
+    enterName: 'បញ្ចូលឈ្មោះរបស់អ្នក',
+    willYouAttend: 'តើអ្នកនឹងចូលរួមទេ?',
+    yesAttending: 'បាទ/ចាស ខ្ញុំនឹងចូលរួម',
+    noNotAttending: 'សូមអភ័យទោស ខ្ញុំមិនអាចចូលរួមបានទេ',
+    blessingMessage: 'សារពរជ័យ',
+    sendWishes: 'ផ្ញើពាក្យអបអរសាទរទៅគូស្រករ...',
+    submitRsvp: 'ផ្ញើការឆ្លើយតប',
+    rsvpSuccess: 'អរគុណ!',
+    rsvpSuccessMessage: 'ការឆ្លើយតបរបស់អ្នកត្រូវបានកត់ត្រា។ យើងទន្ទឹងរង់ចាំអបអរសាទរជាមួយអ្នក!',
+    
+    // Gift Section
+    weddingGift: 'អំណោយអាពាហ៍ពិពាហ៍',
+    giftMessage: 'វត្តមានរបស់អ្នកគឺជាអំណោយដ៏ធំបំផុតរបស់យើង។ ប៉ុន្តែប្រសិនបើអ្នកចង់ពរជ័យយើងជាមួយអំណោយ សូមស្កេន KHQR ខាងក្រោម។',
+    scanQR: 'ស្កេន QR ដើម្បីផ្ញើអំណោយ',
+    
+    // Footer
+    thankYou: 'អរគុណសម្រាប់ការចូលរួមក្នុងថ្ងៃពិសេសរបស់យើង',
+    madeWithLove: 'បង្កើតដោយក្តីស្រលាញ់',
+    
+    // Welcome Popup
+    welcomeTitle: 'អ្នកត្រូវបានអញ្ជើញ',
+    openInvitation: 'បើកការអញ្ជើញ',
+    dearGuest: 'ជូនចំពោះ',
+  },
+};
+
+// Get stored language or default to English
+export const getStoredLanguage = (): Language => {
+  if (typeof window === 'undefined') return 'en';
+  const stored = localStorage.getItem('wedding_language');
+  return (stored === 'km' ? 'km' : 'en') as Language;
+};
+
+// Save language preference
+export const setStoredLanguage = (lang: Language): void => {
+  localStorage.setItem('wedding_language', lang);
+};
+
+// Get translation for a key
+export const t = (key: keyof Translations, lang?: Language): string => {
+  const language = lang || getStoredLanguage();
+  return translations[language][key] || translations.en[key] || key;
+};
+
+// Get all translations for a language
+export const getTranslations = (lang?: Language): Translations => {
+  const language = lang || getStoredLanguage();
+  return translations[language];
+};
+
+// Export translations object for direct access
+export { translations };

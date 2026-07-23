@@ -1,0 +1,110 @@
+{
+  "version": 1,
+  "sdk_version": "0.20.0",
+  "path": "/functions/v1/mcp",
+  "auth": {
+    "type": "none"
+  },
+  "mcp": {
+    "server": {
+      "name": "wedding-invitation-mcp",
+      "version": "0.1.0",
+      "title": "Wedding Invitation MCP"
+    },
+    "tools": [
+      {
+        "name": "generate_invite_link",
+        "title": "Generate guest invitation link",
+        "description": "Generate a unique wedding invitation link for a guest. Returns a URL that opens the personalized invitation page for that guest.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": false,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {
+            "baseUrl": {
+              "type": "string",
+              "format": "uri",
+              "description": "Base URL of the published wedding site, e.g. https://mywedding.lovable.app"
+            },
+            "guestName": {
+              "type": "string",
+              "minLength": 1,
+              "description": "Full name of the guest as it should appear on the invitation."
+            }
+          },
+          "required": [
+            "baseUrl",
+            "guestName"
+          ]
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "send_telegram_notification",
+        "title": "Send Telegram notification",
+        "description": "Send a message to a Telegram chat via a bot. Useful for testing the wedding RSVP Telegram bot or sending custom notifications.",
+        "annotations": {
+          "readOnlyHint": false,
+          "destructiveHint": false,
+          "openWorldHint": true
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {
+            "botToken": {
+              "type": "string",
+              "minLength": 1,
+              "description": "Telegram bot token from @BotFather (e.g. 123456:ABC-DEF...)."
+            },
+            "chatId": {
+              "type": "string",
+              "minLength": 1,
+              "description": "Telegram chat ID that will receive the message."
+            },
+            "message": {
+              "type": "string",
+              "minLength": 1,
+              "description": "Message text to send. Markdown formatting is supported."
+            }
+          },
+          "required": [
+            "botToken",
+            "chatId",
+            "message"
+          ]
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "build_map_embed",
+        "title": "Build Google Maps embed URL",
+        "description": "Convert a shared Google Maps URL or address into an embeddable map URL suitable for the wedding location section.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {
+            "input": {
+              "type": "string",
+              "minLength": 1,
+              "description": "A Google Maps URL (share link, place URL, or embed URL) OR a venue address string."
+            }
+          },
+          "required": [
+            "input"
+          ]
+        },
+        "outputSchema": null
+      }
+    ]
+  }
+}

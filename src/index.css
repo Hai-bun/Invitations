@@ -1,0 +1,417 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&family=Lato:wght@300;400;700&family=Great+Vibes&display=swap');
+
+@layer base {
+  :root {
+    /* Luxury Wedding Color Palette */
+    --background: 30 25% 98%;
+    --foreground: 20 20% 15%;
+
+    --card: 30 30% 99%;
+    --card-foreground: 20 20% 15%;
+
+    --popover: 30 30% 99%;
+    --popover-foreground: 20 20% 15%;
+
+    /* Rose Gold Primary */
+    --primary: 15 45% 65%;
+    --primary-foreground: 30 25% 98%;
+
+    /* Champagne Secondary */
+    --secondary: 35 35% 90%;
+    --secondary-foreground: 20 20% 25%;
+
+    /* Soft Blush */
+    --muted: 20 25% 95%;
+    --muted-foreground: 20 15% 45%;
+
+    /* Gold Accent */
+    --accent: 38 70% 55%;
+    --accent-foreground: 30 25% 98%;
+
+    /* Deep Burgundy for emphasis */
+    --destructive: 350 65% 35%;
+    --destructive-foreground: 30 25% 98%;
+
+    --border: 30 20% 88%;
+    --input: 30 20% 88%;
+    --ring: 15 45% 65%;
+
+    --radius: 0.75rem;
+
+    /* Custom Wedding Colors */
+    --rose-gold: 15 45% 65%;
+    --champagne: 38 45% 85%;
+    --blush: 350 35% 92%;
+    --ivory: 40 30% 97%;
+    --burgundy: 350 65% 35%;
+    --gold: 38 70% 55%;
+    --sage: 140 20% 75%;
+
+    /* Gradients */
+    --gradient-romantic: linear-gradient(135deg, hsl(350 35% 92%) 0%, hsl(30 25% 98%) 50%, hsl(38 45% 85%) 100%);
+    --gradient-gold: linear-gradient(135deg, hsl(38 70% 55%) 0%, hsl(38 45% 70%) 100%);
+    --gradient-hero: linear-gradient(180deg, hsla(350, 35%, 92%, 0.8) 0%, hsla(30, 25%, 98%, 0.95) 100%);
+
+    /* Shadows */
+    --shadow-romantic: 0 4px 30px hsla(350, 35%, 50%, 0.1);
+    --shadow-card: 0 8px 40px hsla(20, 20%, 15%, 0.08);
+    --shadow-elevated: 0 20px 60px hsla(20, 20%, 15%, 0.12);
+
+    --sidebar-background: 30 25% 98%;
+    --sidebar-foreground: 20 20% 15%;
+    --sidebar-primary: 15 45% 65%;
+    --sidebar-primary-foreground: 30 25% 98%;
+    --sidebar-accent: 38 45% 85%;
+    --sidebar-accent-foreground: 20 20% 25%;
+    --sidebar-border: 30 20% 88%;
+    --sidebar-ring: 15 45% 65%;
+  }
+
+  .dark {
+    --background: 20 20% 8%;
+    --foreground: 30 25% 95%;
+
+    --card: 20 18% 12%;
+    --card-foreground: 30 25% 95%;
+
+    --popover: 20 18% 12%;
+    --popover-foreground: 30 25% 95%;
+
+    --primary: 15 45% 70%;
+    --primary-foreground: 20 20% 10%;
+
+    --secondary: 20 15% 20%;
+    --secondary-foreground: 30 25% 90%;
+
+    --muted: 20 15% 18%;
+    --muted-foreground: 20 15% 60%;
+
+    --accent: 38 60% 50%;
+    --accent-foreground: 20 20% 10%;
+
+    --destructive: 350 55% 45%;
+    --destructive-foreground: 30 25% 95%;
+
+    --border: 20 15% 20%;
+    --input: 20 15% 20%;
+    --ring: 15 45% 70%;
+
+    --sidebar-background: 20 20% 8%;
+    --sidebar-foreground: 30 25% 95%;
+    --sidebar-primary: 15 45% 70%;
+    --sidebar-primary-foreground: 20 20% 10%;
+    --sidebar-accent: 20 15% 18%;
+    --sidebar-accent-foreground: 30 25% 90%;
+    --sidebar-border: 20 15% 20%;
+    --sidebar-ring: 15 45% 70%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: 'Lato', sans-serif;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Cormorant Garamond', serif;
+  }
+}
+
+@layer components {
+  .font-script {
+    font-family: 'Great Vibes', cursive;
+  }
+
+  .font-serif {
+    font-family: 'Cormorant Garamond', serif;
+  }
+
+  .font-sans {
+    font-family: 'Lato', sans-serif;
+  }
+
+  .bg-romantic-gradient {
+    background: var(--gradient-romantic);
+  }
+
+  .bg-gold-gradient {
+    background: var(--gradient-gold);
+  }
+
+  .bg-hero-gradient {
+    background: var(--gradient-hero);
+  }
+
+  .shadow-romantic {
+    box-shadow: var(--shadow-romantic);
+  }
+
+  .shadow-card {
+    box-shadow: var(--shadow-card);
+  }
+
+  .shadow-elevated {
+    box-shadow: var(--shadow-elevated);
+  }
+
+  .text-gold {
+    color: hsl(var(--gold));
+  }
+
+  .text-rose-gold {
+    color: hsl(var(--rose-gold));
+  }
+
+  .border-gold {
+    border-color: hsl(var(--gold));
+  }
+
+  .bg-blush {
+    background-color: hsl(var(--blush));
+  }
+
+  .bg-ivory {
+    background-color: hsl(var(--ivory));
+  }
+
+  .bg-champagne {
+    background-color: hsl(var(--champagne));
+  }
+}
+
+@layer utilities {
+  /* Romantic Animations */
+  @keyframes fade-in-up {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes float {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+
+  @keyframes shimmer {
+    0% {
+      background-position: -200% 0;
+    }
+    100% {
+      background-position: 200% 0;
+    }
+  }
+
+  @keyframes heartbeat {
+    0%, 100% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.05);
+    }
+  }
+
+  @keyframes petal-fall {
+    0% {
+      transform: translateY(-10%) rotate(0deg);
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(100vh) rotate(360deg);
+      opacity: 0;
+    }
+  }
+
+  .animate-fade-in-up {
+    animation: fade-in-up calc(0.8s * var(--anim-speed, 1)) ease-out forwards;
+  }
+
+  .animate-fade-in {
+    animation: fade-in calc(0.6s * var(--anim-speed, 1)) ease-out forwards;
+  }
+
+  .animate-float {
+    animation: float calc(3s * var(--anim-speed, 1)) ease-in-out infinite;
+  }
+
+  .animate-shimmer {
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      hsla(38, 70%, 55%, 0.3) 50%,
+      transparent 100%
+    );
+    background-size: 200% 100%;
+    animation: shimmer calc(2s * var(--anim-speed, 1)) infinite;
+  }
+
+  .animate-heartbeat {
+    animation: heartbeat calc(2s * var(--anim-speed, 1)) ease-in-out infinite;
+  }
+
+  .animate-petal {
+    animation: petal-fall calc(10s * var(--anim-speed, 1)) linear infinite;
+  }
+
+  /* Master animation kill switch */
+  .animations-off *,
+  .animations-off *::before,
+  .animations-off *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  /* Photo hover zoom control (opt-out) */
+  .wedding-root.no-photo-zoom .photo-zoom {
+    transition: none !important;
+    transform: none !important;
+  }
+  .wedding-root.no-photo-zoom .photo-zoom:hover {
+    transform: none !important;
+  }
+
+
+  .delay-100 {
+    animation-delay: 100ms;
+  }
+
+  .delay-200 {
+    animation-delay: 200ms;
+  }
+
+  .delay-300 {
+    animation-delay: 300ms;
+  }
+
+  .delay-500 {
+    animation-delay: 500ms;
+  }
+
+  .delay-700 {
+    animation-delay: 700ms;
+  }
+
+  /* Glass Effect */
+  .glass {
+    background: hsla(30, 25%, 98%, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+
+  /* Decorative Elements */
+  .ornament-divider {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+  }
+
+  .ornament-divider::before,
+  .ornament-divider::after {
+    content: '';
+  }
+}
+
+/* Template Styles */
+@layer components {
+  /* Classic Template - Ornate and traditional */
+  .template-classic {
+    --hero-padding: 6rem;
+  }
+  
+  .template-classic section {
+    position: relative;
+  }
+  
+  .template-classic .font-script {
+    letter-spacing: 0.02em;
+  }
+  
+  /* Modern Template - Clean and minimal */
+  .template-modern {
+    --hero-padding: 4rem;
+  }
+  
+  .template-modern h1,
+  .template-modern h2,
+  .template-modern h3 {
+    font-family: 'Lato', sans-serif;
+    font-weight: 300;
+    letter-spacing: 0.1em;
+  }
+  
+  .template-modern .font-script {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+  }
+  
+  .template-modern section {
+    border-radius: 0;
+  }
+  
+  /* Elegant Template - Sophisticated split layout */
+  .template-elegant {
+    --hero-padding: 5rem;
+  }
+  
+  .template-elegant .font-script {
+    font-style: italic;
+    letter-spacing: 0.03em;
+  }
+  
+  .template-elegant section {
+    border-bottom: 1px solid hsl(var(--border) / 0.3);
+  }
+  
+  /* Romantic Template - Dreamy with soft transitions */
+  .template-romantic {
+    --hero-padding: 6rem;
+  }
+  
+  .template-romantic section {
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .template-romantic section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 100px;
+    background: linear-gradient(to bottom, hsl(var(--background) / 0.5), transparent);
+    pointer-events: none;
+  }
+  
+  .template-romantic .font-script {
+    text-shadow: 0 2px 10px hsl(var(--primary) / 0.1);
+  }
+}
