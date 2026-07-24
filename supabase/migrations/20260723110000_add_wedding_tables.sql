@@ -1,17 +1,37 @@
 -- Add wedding management tables and enums for the invitation app.
 -- This migration is designed for a single default wedding profile backed by Supabase.
 
-CREATE TYPE IF NOT EXISTS public.invitation_status AS ENUM (
-  'sent',
-  'opened',
-  'not_opened'
-);
+DO $$
+BEGIN
+  IF NOT EXISTS (
+    SELECT 1
+    FROM pg_type t
+    JOIN pg_namespace n ON t.typnamespace = n.oid
+    WHERE n.nspname = 'public' AND t.typname = 'invitation_status'
+  ) THEN
+    CREATE TYPE public.invitation_status AS ENUM (
+      'sent',
+      'opened',
+      'not_opened'
+    );
+  END IF;
+END$$;
 
-CREATE TYPE IF NOT EXISTS public.rsvp_status AS ENUM (
-  'pending',
-  'attending',
-  'not_attending'
-);
+DO $$
+BEGIN
+  IF NOT EXISTS (
+    SELECT 1
+    FROM pg_type t
+    JOIN pg_namespace n ON t.typnamespace = n.oid
+    WHERE n.nspname = 'public' AND t.typname = 'rsvp_status'
+  ) THEN
+    CREATE TYPE public.rsvp_status AS ENUM (
+      'pending',
+      'attending',
+      'not_attending'
+    );
+  END IF;
+END$$;
 
 CREATE TABLE IF NOT EXISTS public.profiles (
   id text PRIMARY KEY,
