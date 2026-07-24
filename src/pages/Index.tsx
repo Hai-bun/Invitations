@@ -10,18 +10,8 @@ import heroBackground from "@/assets/wedding-hero-bg.jpg";
 
 const Index = () => {
   const navigate = useNavigate();
-  const [modalOpen, setModalOpen] = useState(false);
-  const [nextPath, setNextPath] = useState<string | null>(null);
-
-  const requireAuthNavigate = async (path: string) => {
-    const { data } = await supabase.auth.getSession();
-    if (data?.session) {
-      navigate(path);
-      return;
-    }
-    setNextPath(path);
-    setModalOpen(true);
-  };
+  const [showSignIn, setShowSignIn] = useState(false);
+  const [pendingRedirect, setPendingRedirect] = useState<string | null>(null);
 
   return (
     <div className="min-h-screen bg-romantic-gradient relative overflow-hidden">
@@ -70,7 +60,14 @@ const Index = () => {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 animate-fade-in-up delay-500">
             <Button
               size="lg"
-              onClick={() => requireAuthNavigate("/admin")}
+              onClick={async () => {
+                const { data } = await supabase.auth.getSession();
+                if (data?.session) navigate("/admin");
+                else {
+                  setPendingRedirect("/admin");
+                  setShowSignIn(true);
+                }
+              }}
               className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-6 text-lg shadow-elevated">
               <Settings className="w-5 h-5 mr-2" />
               Admin Dashboard
@@ -78,7 +75,14 @@ const Index = () => {
             <Button
               size="lg"
               variant="outline"
-              onClick={() => requireAuthNavigate("/wedding")}
+              onClick={async () => {
+                const { data } = await supabase.auth.getSession();
+                if (data?.session) navigate("/wedding");
+                else {
+                  setPendingRedirect("/wedding");
+                  setShowSignIn(true);
+                }
+              }}
               className="border-primary text-primary hover:bg-primary hover:text-primary-foreground px-8 py-6 text-lg">
               <Eye className="w-5 h-5 mr-2" />
               Preview Invitation
@@ -88,11 +92,16 @@ const Index = () => {
       </section>
 
       <SignInModal
-        open={modalOpen}
-        onClose={() => setModalOpen(false)}
+        open={showSignIn}
+        onOpenChange={(open) => {
+          setShowSignIn(open);
+          if (!open) setPendingRedirect(null);
+        }}
         onSuccess={() => {
-          if (nextPath) navigate(nextPath);
-          setNextPath(null);
+          if (pendingRedirect) {
+            navigate(pendingRedirect);
+            setPendingRedirect(null);
+          }
         }}
       />
 
