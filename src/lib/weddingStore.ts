@@ -175,6 +175,36 @@ const getCurrentUserId = async (): Promise<string | null> => {
   return data?.session?.user?.id ?? null;
 };
 
+const ensureUserProfileExists = async (userId: string | null) => {
+  if (!userId) return true;
+
+  const { data, error } = await supabase
+    .from("profiles")
+    .select("id")
+    .eq("id", userId)
+    .single();
+
+  if (data) return true;
+
+  if (error && error.code !== "PGRST116") {
+    console.error("Failed to check user profile existence:", error);
+    return false;
+  }
+
+  const { error: insertError } = await supabase.from("profiles").insert({
+    id: userId,
+    email: null,
+    full_name: null,
+  });
+
+  if (insertError) {
+    console.error("Failed to create missing user profile:", insertError);
+    return false;
+  }
+
+  return true;
+};
+
 const buildWeddingProfileRow = (
   weddingData: WeddingData,
   userId: string | null = null,
@@ -352,6 +382,13 @@ export const saveWeddingData = async (
   const current = await getWeddingData();
   const updated = { ...current, ...data };
   const userId = await getCurrentUserId();
+
+  if (userId) {
+    const profileExists = await ensureUserProfileExists(userId);
+    if (!profileExists) {
+      return false;
+    }
+  }
 
   const { error: profileError } = await supabase
     .from("wedding_profiles")
