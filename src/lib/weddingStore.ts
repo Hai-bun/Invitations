@@ -170,10 +170,17 @@ const mapGuestRowToResponse = (
   submittedAt: row.updated_at ?? row.created_at ?? new Date().toISOString(),
 });
 
+const getCurrentUserId = async (): Promise<string | null> => {
+  const { data } = await supabase.auth.getSession();
+  return data?.session?.user?.id ?? null;
+};
+
 const buildWeddingProfileRow = (
   weddingData: WeddingData,
+  userId: string | null = null,
 ): Database["public"]["Tables"]["wedding_profiles"]["Insert"] => ({
   id: DEFAULT_WEDDING_ID,
+  user_id: userId,
   bride_name: weddingData.brideName,
   groom_name: weddingData.groomName,
   bride_parent_names: weddingData.brideParents,
@@ -275,9 +282,10 @@ const ensureWeddingProfile = async () => {
     return data;
   }
 
+  const userId = await getCurrentUserId();
   const { data: inserted, error: insertError } = await supabase
     .from("wedding_profiles")
-    .insert(buildWeddingProfileRow(DEFAULT_WEDDING_DATA))
+    .insert(buildWeddingProfileRow(DEFAULT_WEDDING_DATA, userId))
     .select()
     .single();
 
@@ -343,10 +351,11 @@ export const saveWeddingData = async (
 ): Promise<boolean> => {
   const current = await getWeddingData();
   const updated = { ...current, ...data };
+  const userId = await getCurrentUserId();
 
   const { error: profileError } = await supabase
     .from("wedding_profiles")
-    .upsert(buildWeddingProfileRow(updated));
+    .upsert(buildWeddingProfileRow(updated, userId));
   if (profileError) {
     console.error("Failed to save wedding profile:", profileError);
     return false;
