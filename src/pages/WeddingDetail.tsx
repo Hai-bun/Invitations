@@ -94,12 +94,44 @@ const WeddingDetail = () => {
   const formatDate = (dateStr: string) => {
     const date = new Date(dateStr);
     if (language === "km") {
-      return date.toLocaleDateString("km-KH", {
-        weekday: "long",
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-      });
+      try {
+        return new Intl.DateTimeFormat("km-KH", {
+          weekday: "long",
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+        }).format(date);
+      } catch (e) {
+        // Fallback: manual Khmer month/weekday names
+        const weekdays = [
+          "អាទិត្យ",
+          "ច័ន្ទ",
+          "អង្គារ",
+          "ពុធ",
+          "ព្រហស្បតិ៍",
+          "សុក្រ",
+          "សៅរ៍",
+        ];
+        const months = [
+          "មករា",
+          "កុម្ភៈ",
+          "មីនា",
+          "មេសា",
+          "ឧសភា",
+          "មិថុនា",
+          "កក្កដា",
+          "សីហា",
+          "កញ្ញា",
+          "តុលា",
+          "វិច្ឆិកា",
+          "ធ្នូ",
+        ];
+        const w = weekdays[date.getDay()];
+        const d = date.getDate();
+        const m = months[date.getMonth()];
+        const y = date.getFullYear();
+        return `${w} ${d} ${m} ${y}`;
+      }
     }
     return date.toLocaleDateString("en-US", {
       weekday: "long",
