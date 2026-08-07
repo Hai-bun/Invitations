@@ -23,7 +23,9 @@ export interface WeddingData {
   brideName: string;
   brideNameKh?: string;
   groomParents: string;
+  groomParentsKh?: string;
   brideParents: string;
+  brideParentsKh?: string;
 
   // Wedding Date & Time
   weddingDate: string;
@@ -104,7 +106,9 @@ const DEFAULT_WEDDING_DATA: WeddingData = {
   brideName: "Channary Meas",
   brideNameKh: "",
   groomParents: "Mr. & Mrs. Virak Family",
+  groomParentsKh: "",
   brideParents: "Mr. & Mrs. Meas Family",
+  brideParentsKh: "",
   weddingDate: "2026-02-14",
   weddingTime: "10:00",
   showCountdown: true,
@@ -221,6 +225,8 @@ const buildWeddingProfileRow = (
   groom_name_kh: weddingData.groomNameKh,
   bride_parent_names: weddingData.brideParents,
   groom_parent_names: weddingData.groomParents,
+  bride_parent_names_kh: weddingData.brideParentsKh,
+  groom_parent_names_kh: weddingData.groomParentsKh,
   wedding_date_time: new Date(
     `${weddingData.weddingDate}T${weddingData.weddingTime}`,
   ).toISOString(),
@@ -265,8 +271,12 @@ const mapProfileToWeddingData = (
     brideNameKh: profile.bride_name_kh ?? DEFAULT_WEDDING_DATA.brideNameKh,
     groomParents:
       profile.groom_parent_names ?? DEFAULT_WEDDING_DATA.groomParents,
+    groomParentsKh:
+      profile.groom_parent_names_kh ?? DEFAULT_WEDDING_DATA.groomParentsKh,
     brideParents:
       profile.bride_parent_names ?? DEFAULT_WEDDING_DATA.brideParents,
+    brideParentsKh:
+      profile.bride_parent_names_kh ?? DEFAULT_WEDDING_DATA.brideParentsKh,
     weddingDate: weddingDateTime.toISOString().slice(0, 10),
     weddingTime: weddingDateTime.toISOString().slice(11, 16),
     showCountdown: profile.show_countdown ?? DEFAULT_WEDDING_DATA.showCountdown,

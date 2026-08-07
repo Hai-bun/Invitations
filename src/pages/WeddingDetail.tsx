@@ -162,35 +162,50 @@ const WeddingDetail = () => {
 
           {/* Couple Names */}
           <div className="mb-8">
-            <h1
-              className={cn(
-                "font-script text-5xl sm:text-7xl text-foreground mb-4",
-                fadeCls("animate-fade-in-up delay-200"),
-              )}>
-              {weddingData.groomName}
-            </h1>
-            <div
-              className={cn(
-                "flex items-center justify-center gap-4",
-                fadeCls("animate-fade-in-up delay-300"),
-              )}>
-              <div className="h-px w-16 bg-gradient-to-r from-transparent to-gold" />
-              <Heart
-                className={cn(
-                  "w-6 h-6 text-primary",
-                  animOn && anim.heartbeat && "animate-heartbeat",
-                )}
-                fill="currentColor"
-              />
-              <div className="h-px w-16 bg-gradient-to-l from-transparent to-gold" />
-            </div>
-            <h1
-              className={cn(
-                "font-script text-5xl sm:text-7xl text-foreground mt-4",
-                fadeCls("animate-fade-in-up delay-300"),
-              )}>
-              {weddingData.brideName}
-            </h1>
+            {/** choose names per language */}
+            {(() => {
+              const displayGroom =
+                language === "km" && weddingData.groomNameKh
+                  ? weddingData.groomNameKh
+                  : weddingData.groomName;
+              const displayBride =
+                language === "km" && weddingData.brideNameKh
+                  ? weddingData.brideNameKh
+                  : weddingData.brideName;
+              return (
+                <>
+                  <h1
+                    className={cn(
+                      "font-script text-5xl sm:text-7xl text-foreground mb-4",
+                      fadeCls("animate-fade-in-up delay-200"),
+                    )}>
+                    {displayGroom}
+                  </h1>
+                  <div
+                    className={cn(
+                      "flex items-center justify-center gap-4",
+                      fadeCls("animate-fade-in-up delay-300"),
+                    )}>
+                    <div className="h-px w-16 bg-gradient-to-r from-transparent to-gold" />
+                    <Heart
+                      className={cn(
+                        "w-6 h-6 text-primary",
+                        animOn && anim.heartbeat && "animate-heartbeat",
+                      )}
+                      fill="currentColor"
+                    />
+                    <div className="h-px w-16 bg-gradient-to-l from-transparent to-gold" />
+                  </div>
+                  <h1
+                    className={cn(
+                      "font-script text-5xl sm:text-7xl text-foreground mt-4",
+                      fadeCls("animate-fade-in-up delay-300"),
+                    )}>
+                    {displayBride}
+                  </h1>
+                </>
+              );
+            })()}
           </div>
 
           {showDecorations && (
@@ -244,6 +259,10 @@ const WeddingDetail = () => {
         brideName={weddingData.brideName}
         groomParents={weddingData.groomParents}
         brideParents={weddingData.brideParents}
+        groomNameKh={weddingData.groomNameKh}
+        brideNameKh={weddingData.brideNameKh}
+        groomParentsKh={weddingData.groomParentsKh}
+        brideParentsKh={weddingData.brideParentsKh}
         language={language}
       />
 
