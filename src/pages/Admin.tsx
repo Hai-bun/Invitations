@@ -716,6 +716,17 @@ const Admin = () => {
                       }
                       placeholder="Enter groom's name"
                     />
+                    <Label htmlFor="groomNameKh" className="mt-2">
+                      Groom's Full Name (Khmer)
+                    </Label>
+                    <Input
+                      id="groomNameKh"
+                      value={data.groomNameKh ?? ""}
+                      onChange={(e) =>
+                        setData({ ...data, groomNameKh: e.target.value })
+                      }
+                      placeholder="បញ្ចូលឈ្មោះកូនប្រុស"
+                    />
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="brideName">Bride's Full Name</Label>
@@ -726,6 +737,17 @@ const Admin = () => {
                         setData({ ...data, brideName: e.target.value })
                       }
                       placeholder="Enter bride's name"
+                    />
+                    <Label htmlFor="brideNameKh" className="mt-2">
+                      Bride's Full Name (Khmer)
+                    </Label>
+                    <Input
+                      id="brideNameKh"
+                      value={data.brideNameKh ?? ""}
+                      onChange={(e) =>
+                        setData({ ...data, brideNameKh: e.target.value })
+                      }
+                      placeholder="បញ្ចូលឈ្មោះកូនស្រី"
                     />
                   </div>
                   <div className="space-y-2">

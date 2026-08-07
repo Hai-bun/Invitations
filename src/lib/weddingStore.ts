@@ -19,7 +19,9 @@ export interface TelegramConfig {
 export interface WeddingData {
   // Couple Information
   groomName: string;
+  groomNameKh?: string;
   brideName: string;
+  brideNameKh?: string;
   groomParents: string;
   brideParents: string;
 
@@ -98,7 +100,9 @@ export interface RSVPResponse {
 const DEFAULT_WEDDING_ID = "default-wedding";
 const DEFAULT_WEDDING_DATA: WeddingData = {
   groomName: "Sokha Virak",
+  groomNameKh: "",
   brideName: "Channary Meas",
+  brideNameKh: "",
   groomParents: "Mr. & Mrs. Virak Family",
   brideParents: "Mr. & Mrs. Meas Family",
   weddingDate: "2026-02-14",
@@ -212,7 +216,9 @@ const buildWeddingProfileRow = (
   id: DEFAULT_WEDDING_ID,
   user_id: userId,
   bride_name: weddingData.brideName,
+  bride_name_kh: weddingData.brideNameKh,
   groom_name: weddingData.groomName,
+  groom_name_kh: weddingData.groomNameKh,
   bride_parent_names: weddingData.brideParents,
   groom_parent_names: weddingData.groomParents,
   wedding_date_time: new Date(
@@ -254,7 +260,9 @@ const mapProfileToWeddingData = (
 
   return {
     groomName: profile.groom_name ?? DEFAULT_WEDDING_DATA.groomName,
+    groomNameKh: profile.groom_name_kh ?? DEFAULT_WEDDING_DATA.groomNameKh,
     brideName: profile.bride_name ?? DEFAULT_WEDDING_DATA.brideName,
+    brideNameKh: profile.bride_name_kh ?? DEFAULT_WEDDING_DATA.brideNameKh,
     groomParents:
       profile.groom_parent_names ?? DEFAULT_WEDDING_DATA.groomParents,
     brideParents:

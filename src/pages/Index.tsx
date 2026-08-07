@@ -4,6 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import SignInModal from "@/components/SignInModal";
 import { Button } from "@/components/ui/button";
 import { FloatingPetals } from "@/components/ui/FloatingPetals";
+import { t } from "@/lib/i18n";
 import { OrnamentDivider } from "@/components/ui/OrnamentDivider";
 import { Heart, Sparkles, Settings, Eye, Users, Palette } from "lucide-react";
 import heroBackground from "@/assets/wedding-hero-bg.jpg";
@@ -42,10 +43,10 @@ const Index = () => {
 
           {/* Title */}
           <h1 className="font-script text-5xl sm:text-7xl text-foreground mb-4 animate-fade-in-up delay-100">
-            Wedding Invitation
+            {t("welcomeTitle")}
           </h1>
           <h2 className="font-serif text-xl sm:text-2xl text-muted-foreground mb-8 animate-fade-in-up delay-200">
-            Create Beautiful Digital Invitations
+            {t("weInviteYou")}
           </h2>
 
           <OrnamentDivider className="animate-fade-in-up delay-300" />
@@ -171,9 +172,7 @@ const Index = () => {
           className="w-6 h-6 text-primary mx-auto mb-2"
           fill="currentColor"
         />
-        <p className="text-sm text-muted-foreground">
-          Made with love for your special day
-        </p>
+        <p className="text-sm text-muted-foreground">{t("madeWithLove")}</p>
       </footer>
     </div>
   );
