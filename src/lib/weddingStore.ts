@@ -277,8 +277,12 @@ const mapProfileToWeddingData = (
       profile.bride_parent_names ?? DEFAULT_WEDDING_DATA.brideParents,
     brideParentsKh:
       profile.bride_parent_names_kh ?? DEFAULT_WEDDING_DATA.brideParentsKh,
-    weddingDate: weddingDateTime.toISOString().slice(0, 10),
-    weddingTime: weddingDateTime.toISOString().slice(11, 16),
+    weddingDate: `${weddingDateTime.getFullYear()}-${String(
+      weddingDateTime.getMonth() + 1,
+    ).padStart(2, "0")}-${String(weddingDateTime.getDate()).padStart(2, "0")}`,
+    weddingTime: `${String(weddingDateTime.getHours()).padStart(2, "0")}:${String(
+      weddingDateTime.getMinutes(),
+    ).padStart(2, "0")}`,
     showCountdown: profile.show_countdown ?? DEFAULT_WEDDING_DATA.showCountdown,
     eventTitle: profile.event_title ?? DEFAULT_WEDDING_DATA.eventTitle,
     eventAddress: profile.event_address ?? DEFAULT_WEDDING_DATA.eventAddress,
