@@ -33,7 +33,10 @@ const WeddingDetail = () => {
     const loadWeddingData = async () => {
       const data = await getWeddingData();
       setWeddingData(data);
-      applyTheme(data.theme as ThemeType);
+      applyTheme(data.theme as ThemeType, {
+        headingFont: data.headingFont,
+        bodyFont: data.bodyFont,
+      });
 
       if (guestId) {
         const foundGuest = await getGuestById(guestId);
@@ -149,6 +152,9 @@ const WeddingDetail = () => {
     return `${hour12}:${minutes} ${ampm}`;
   };
 
+  const heroMediaUrl = weddingData.backgroundImage || "";
+  const isVideoBackground = /\.(mp4|webm|ogg)(\?|$)/i.test(heroMediaUrl);
+
   return (
     <div
       className={cn(
@@ -170,14 +176,53 @@ const WeddingDetail = () => {
       <section
         className={cn(
           "relative min-h-screen flex items-center justify-center overflow-hidden bg-[var(--hero-gradient)]",
+          template.id === "video" && "wedding-hero-video-shell",
           template.heroLayout === "minimal" && "min-h-[80vh]",
         )}>
-        <div className="relative z-10 text-center px-4 py-12">
+        {template.id === "video" && (
+          <div className="absolute inset-0 overflow-hidden">
+            {isVideoBackground ? (
+              <video
+                className="w-full h-full object-cover scale-[1.15] wedding-video-bg"
+                src={heroMediaUrl}
+                autoPlay
+                loop
+                muted
+                playsInline
+                preload="auto"
+              />
+            ) : (
+              <div
+                className="w-full h-full wedding-video-bg"
+                style={
+                  heroMediaUrl
+                    ? {
+                        backgroundImage: `url(${heroMediaUrl})`,
+                        backgroundSize: "cover",
+                        backgroundPosition: "center",
+                      }
+                    : {
+                        background:
+                          "radial-gradient(circle at center, rgba(205,166,122,0.22), rgba(15,16,18,0.88) 48%, rgba(5,5,7,0.96))",
+                      }
+                }
+              />
+            )}
+            <div className="absolute inset-0 bg-gradient-to-b from-black/55 via-black/35 to-black/80" />
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(255,255,255,0.18),_transparent_35%)]" />
+          </div>
+        )}
+        <div
+          className={cn(
+            "relative z-10 text-center px-4 py-12",
+            template.id === "video" && "wedding-hero-content max-w-5xl mx-auto",
+          )}>
           {/* Welcome Text */}
           {guest && (
             <p
               className={cn(
                 "text-sm uppercase tracking-[0.3em] text-muted-foreground mb-4",
+                template.id === "video" && "intro-tag",
                 fadeCls("animate-fade-in-up"),
               )}>
               {t.welcomeGuest}, {guest.name}

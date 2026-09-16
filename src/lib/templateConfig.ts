@@ -1,13 +1,13 @@
 // Wedding invitation template configurations
 
-import { TemplateType } from './weddingStore';
+import { TemplateType } from "./weddingStore";
 
 export interface TemplateConfig {
   id: TemplateType;
   name: string;
   description: string;
   preview: string;
-  heroLayout: 'centered' | 'split' | 'minimal' | 'overlay';
+  heroLayout: "centered" | "split" | "minimal" | "overlay";
   sectionOrder: string[];
   features: {
     showOrnaments: boolean;
@@ -19,12 +19,21 @@ export interface TemplateConfig {
 
 export const TEMPLATES: Record<TemplateType, TemplateConfig> = {
   classic: {
-    id: 'classic',
-    name: 'Classic Elegance',
-    description: 'Timeless design with ornate decorations and traditional layout',
-    preview: '🏛️',
-    heroLayout: 'centered',
-    sectionOrder: ['hero', 'couple', 'location', 'gallery', 'rsvp', 'gift', 'footer'],
+    id: "classic",
+    name: "Classic Elegance",
+    description:
+      "Timeless design with ornate decorations and traditional layout",
+    preview: "🏛️",
+    heroLayout: "centered",
+    sectionOrder: [
+      "hero",
+      "couple",
+      "location",
+      "gallery",
+      "rsvp",
+      "gift",
+      "footer",
+    ],
     features: {
       showOrnaments: true,
       showPetals: true,
@@ -33,12 +42,20 @@ export const TEMPLATES: Record<TemplateType, TemplateConfig> = {
     },
   },
   modern: {
-    id: 'modern',
-    name: 'Modern Minimal',
-    description: 'Clean lines with bold typography and minimal ornamentation',
-    preview: '◻️',
-    heroLayout: 'minimal',
-    sectionOrder: ['hero', 'couple', 'location', 'gallery', 'rsvp', 'gift', 'footer'],
+    id: "modern",
+    name: "Modern Minimal",
+    description: "Clean lines with bold typography and minimal ornamentation",
+    preview: "◻️",
+    heroLayout: "minimal",
+    sectionOrder: [
+      "hero",
+      "couple",
+      "location",
+      "gallery",
+      "rsvp",
+      "gift",
+      "footer",
+    ],
     features: {
       showOrnaments: false,
       showPetals: false,
@@ -47,12 +64,20 @@ export const TEMPLATES: Record<TemplateType, TemplateConfig> = {
     },
   },
   elegant: {
-    id: 'elegant',
-    name: 'Elegant Split',
-    description: 'Sophisticated split-screen layout with photo emphasis',
-    preview: '✨',
-    heroLayout: 'split',
-    sectionOrder: ['hero', 'couple', 'gallery', 'location', 'rsvp', 'gift', 'footer'],
+    id: "elegant",
+    name: "Elegant Split",
+    description: "Sophisticated split-screen layout with photo emphasis",
+    preview: "✨",
+    heroLayout: "split",
+    sectionOrder: [
+      "hero",
+      "couple",
+      "gallery",
+      "location",
+      "rsvp",
+      "gift",
+      "footer",
+    ],
     features: {
       showOrnaments: true,
       showPetals: false,
@@ -61,15 +86,45 @@ export const TEMPLATES: Record<TemplateType, TemplateConfig> = {
     },
   },
   romantic: {
-    id: 'romantic',
-    name: 'Romantic Dream',
-    description: 'Dreamy design with floating elements and soft transitions',
-    preview: '💕',
-    heroLayout: 'overlay',
-    sectionOrder: ['hero', 'couple', 'location', 'gallery', 'rsvp', 'gift', 'footer'],
+    id: "romantic",
+    name: "Romantic Dream",
+    description: "Dreamy design with floating elements and soft transitions",
+    preview: "💕",
+    heroLayout: "overlay",
+    sectionOrder: [
+      "hero",
+      "couple",
+      "location",
+      "gallery",
+      "rsvp",
+      "gift",
+      "footer",
+    ],
     features: {
       showOrnaments: true,
       showPetals: true,
+      parallaxHero: true,
+      animatedEntrance: true,
+    },
+  },
+  video: {
+    id: "video",
+    name: "Video Cinematic",
+    description: "Cinematic hero style with a dramatic, motion-inspired layout",
+    preview: "🎬",
+    heroLayout: "overlay",
+    sectionOrder: [
+      "hero",
+      "couple",
+      "gallery",
+      "location",
+      "rsvp",
+      "gift",
+      "footer",
+    ],
+    features: {
+      showOrnaments: true,
+      showPetals: false,
       parallaxHero: true,
       animatedEntrance: true,
     },

@@ -15,7 +15,7 @@ function generateUniquePath(folder: string, file: File): string {
 
 export async function uploadWeddingImage(
   file: File,
-  folder: "photos" | "khqr",
+  folder: "photos" | "khqr" | "background",
 ): Promise<string | null> {
   const path = generateUniquePath(folder, file);
 

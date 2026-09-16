@@ -57,10 +57,22 @@ const Admin = () => {
     const loadWeddingData = async () => {
       const weddingData = await getWeddingData();
       setData(weddingData);
+      applyTheme(weddingData.theme as ThemeType, {
+        headingFont: weddingData.headingFont,
+        bodyFont: weddingData.bodyFont,
+      });
     };
 
     loadWeddingData();
   }, []);
+
+  useEffect(() => {
+    if (!data) return;
+    applyTheme(data.theme as ThemeType, {
+      headingFont: data.headingFont,
+      bodyFont: data.bodyFont,
+    });
+  }, [data?.theme, data?.headingFont, data?.bodyFont]);
 
   const handleSave = async () => {
     if (!data) return;
@@ -201,6 +213,54 @@ const Admin = () => {
     }
     setData((prev) => ({ ...prev, khqrImage: publicUrl }));
     e.target.value = "";
+  };
+
+  const handleBackgroundMediaUpload = async (
+    e: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const ALLOWED_BACKGROUND_TYPES = [
+      "image/jpeg",
+      "image/png",
+      "image/webp",
+      "image/gif",
+      "video/mp4",
+      "video/webm",
+      "video/ogg",
+    ];
+
+    if (!ALLOWED_BACKGROUND_TYPES.includes(file.type)) {
+      toast.error(
+        `${file.name}: only JPG, PNG, WebP, GIF, MP4, WebM, or OGG files are allowed`,
+      );
+      e.target.value = "";
+      return;
+    }
+
+    if (!file.type.startsWith("video/")) {
+      if (!(await verifyImageMagicBytes(file))) {
+        toast.error(`${file.name}: file content is not a valid image`);
+        e.target.value = "";
+        return;
+      }
+    }
+
+    const publicUrl = await uploadWeddingImage(file, "background");
+    if (!publicUrl) {
+      toast.error(`${file.name}: upload failed`);
+      e.target.value = "";
+      return;
+    }
+
+    if (data?.backgroundImage) {
+      await deleteWeddingImage(data.backgroundImage);
+    }
+
+    setData((prev) => ({ ...prev, backgroundImage: publicUrl }));
+    e.target.value = "";
+    toast.success("Background media uploaded successfully");
   };
 
   const removePhoto = async (index: number) => {
@@ -524,6 +584,98 @@ const Admin = () => {
                     toast.success(`Theme changed to ${theme}`);
                   }}
                 />
+
+                <div className="space-y-4 border-t pt-6">
+                  <div>
+                    <h3 className="text-base font-medium text-foreground">
+                      Background media
+                    </h3>
+                    <p className="text-sm text-muted-foreground mt-1">
+                      Upload a hero image or a short video for the cinematic
+                      video template.
+                    </p>
+                  </div>
+
+                  <div className="border-2 border-dashed border-border rounded-lg p-4">
+                    <Input
+                      type="file"
+                      accept="image/*,video/mp4,video/webm,video/ogg"
+                      onChange={handleBackgroundMediaUpload}
+                      className="max-w-md mx-auto"
+                    />
+                  </div>
+
+                  {data.backgroundImage && (
+                    <div className="flex justify-center">
+                      {data.backgroundImage.match(/\.(mp4|webm|ogg)(\?|$)/i) ? (
+                        <video
+                          src={data.backgroundImage}
+                          controls
+                          className="w-full max-w-xl h-56 object-cover rounded-lg border border-border"
+                        />
+                      ) : (
+                        <img
+                          src={data.backgroundImage}
+                          alt="Background preview"
+                          className="w-full max-w-xl h-56 object-cover rounded-lg border border-border"
+                        />
+                      )}
+                    </div>
+                  )}
+
+                  {data.backgroundImage && (
+                    <Button
+                      variant="outline"
+                      className="border-destructive text-destructive hover:bg-destructive hover:text-destructive-foreground"
+                      onClick={async () => {
+                        if (data.backgroundImage) {
+                          await deleteWeddingImage(data.backgroundImage);
+                        }
+                        setData({ ...data, backgroundImage: "" });
+                        toast.success("Background media removed");
+                      }}>
+                      Remove background media
+                    </Button>
+                  )}
+                </div>
+
+                <div className="space-y-4 border-t pt-6">
+                  <div>
+                    <h3 className="text-base font-medium text-foreground">
+                      Custom Fonts
+                    </h3>
+                    <p className="text-sm text-muted-foreground mt-1">
+                      Use Google font names such as Cormorant Garamond, Playfair
+                      Display, Libre Baskerville, Montserrat, or Lato.
+                    </p>
+                  </div>
+
+                  <div className="grid gap-4 sm:grid-cols-2">
+                    <div className="space-y-2">
+                      <Label htmlFor="headingFont">Heading font</Label>
+                      <Input
+                        id="headingFont"
+                        value={data.headingFont || "Cormorant Garamond"}
+                        onChange={(e) =>
+                          setData({ ...data, headingFont: e.target.value })
+                        }
+                        placeholder="Cormorant Garamond"
+                      />
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label htmlFor="bodyFont">Body font</Label>
+                      <Input
+                        id="bodyFont"
+                        value={data.bodyFont || "Lato"}
+                        onChange={(e) =>
+                          setData({ ...data, bodyFont: e.target.value })
+                        }
+                        placeholder="Lato"
+                      />
+                    </div>
+                  </div>
+                </div>
 
                 <div className="p-4 bg-muted/50 rounded-lg">
                   <p className="text-sm text-muted-foreground">

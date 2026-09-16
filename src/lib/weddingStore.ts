@@ -1,7 +1,12 @@
 import { supabase } from "@/integrations/supabase/client";
 import type { Database } from "@/integrations/supabase/types";
 
-export type TemplateType = "classic" | "modern" | "elegant" | "romantic";
+export type TemplateType =
+  | "classic"
+  | "modern"
+  | "elegant"
+  | "romantic"
+  | "video";
 
 export interface SocialLinks {
   telegram: string;
@@ -264,6 +269,19 @@ const mapProfileToWeddingData = (
         `${DEFAULT_WEDDING_DATA.weddingDate}T${DEFAULT_WEDDING_DATA.weddingTime}`,
       );
 
+  const getSavedDate = () =>
+    `${weddingDateTime.getUTCFullYear()}-${String(
+      weddingDateTime.getUTCMonth() + 1,
+    ).padStart(
+      2,
+      "0",
+    )}-${String(weddingDateTime.getUTCDate()).padStart(2, "0")}`;
+
+  const getSavedTime = () =>
+    `${String(weddingDateTime.getUTCHours()).padStart(2, "0")}:${String(
+      weddingDateTime.getUTCMinutes(),
+    ).padStart(2, "0")}`;
+
   return {
     groomName: profile.groom_name ?? DEFAULT_WEDDING_DATA.groomName,
     groomNameKh: profile.groom_name_kh ?? DEFAULT_WEDDING_DATA.groomNameKh,
@@ -277,12 +295,8 @@ const mapProfileToWeddingData = (
       profile.bride_parent_names ?? DEFAULT_WEDDING_DATA.brideParents,
     brideParentsKh:
       profile.bride_parent_names_kh ?? DEFAULT_WEDDING_DATA.brideParentsKh,
-    weddingDate: `${weddingDateTime.getFullYear()}-${String(
-      weddingDateTime.getMonth() + 1,
-    ).padStart(2, "0")}-${String(weddingDateTime.getDate()).padStart(2, "0")}`,
-    weddingTime: `${String(weddingDateTime.getHours()).padStart(2, "0")}:${String(
-      weddingDateTime.getMinutes(),
-    ).padStart(2, "0")}`,
+    weddingDate: getSavedDate(),
+    weddingTime: getSavedTime(),
     showCountdown: profile.show_countdown ?? DEFAULT_WEDDING_DATA.showCountdown,
     eventTitle: profile.event_title ?? DEFAULT_WEDDING_DATA.eventTitle,
     eventAddress: profile.event_address ?? DEFAULT_WEDDING_DATA.eventAddress,

@@ -2,10 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&family=Lato:wght@300;400;700&family=Great+Vibes&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&family=Lato:wght@300;400;700&family=Great+Vibes&family=Playfair+Display:wght@400;500;600;700&family=Libre+Baskerville:wght@400;700&family=Montserrat:wght@400;500;600;700&family=EB+Garamond:wght@400;500;600;700&display=swap");
 
 @layer base {
   :root {
+    --font-serif: "Cormorant Garamond", serif;
+    --font-sans: "Lato", sans-serif;
+    --font-script: "Great Vibes", cursive;
     /* Luxury Wedding Color Palette */
     --background: 30 25% 98%;
     --foreground: 20 20% 15%;
@@ -52,9 +55,22 @@
     --sage: 140 20% 75%;
 
     /* Gradients */
-    --gradient-romantic: linear-gradient(135deg, hsl(350 35% 92%) 0%, hsl(30 25% 98%) 50%, hsl(38 45% 85%) 100%);
-    --gradient-gold: linear-gradient(135deg, hsl(38 70% 55%) 0%, hsl(38 45% 70%) 100%);
-    --gradient-hero: linear-gradient(180deg, hsla(350, 35%, 92%, 0.8) 0%, hsla(30, 25%, 98%, 0.95) 100%);
+    --gradient-romantic: linear-gradient(
+      135deg,
+      hsl(350 35% 92%) 0%,
+      hsl(30 25% 98%) 50%,
+      hsl(38 45% 85%) 100%
+    );
+    --gradient-gold: linear-gradient(
+      135deg,
+      hsl(38 70% 55%) 0%,
+      hsl(38 45% 70%) 100%
+    );
+    --gradient-hero: linear-gradient(
+      180deg,
+      hsla(350, 35%, 92%, 0.8) 0%,
+      hsla(30, 25%, 98%, 0.95) 100%
+    );
 
     /* Shadows */
     --shadow-romantic: 0 4px 30px hsla(350, 35%, 50%, 0.1);
@@ -118,25 +134,30 @@
 
   body {
     @apply bg-background text-foreground antialiased;
-    font-family: 'Lato', sans-serif;
+    font-family: var(--font-sans);
   }
 
-  h1, h2, h3, h4, h5, h6 {
-    font-family: 'Cormorant Garamond', serif;
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-serif);
   }
 }
 
 @layer components {
   .font-script {
-    font-family: 'Great Vibes', cursive;
+    font-family: var(--font-script);
   }
 
   .font-serif {
-    font-family: 'Cormorant Garamond', serif;
+    font-family: var(--font-serif);
   }
 
   .font-sans {
-    font-family: 'Lato', sans-serif;
+    font-family: var(--font-sans);
   }
 
   .bg-romantic-gradient {
@@ -211,7 +232,8 @@
   }
 
   @keyframes float {
-    0%, 100% {
+    0%,
+    100% {
       transform: translateY(0);
     }
     50% {
@@ -229,7 +251,8 @@
   }
 
   @keyframes heartbeat {
-    0%, 100% {
+    0%,
+    100% {
       transform: scale(1);
     }
     50% {
@@ -296,7 +319,6 @@
     transform: none !important;
   }
 
-
   .delay-100 {
     animation-delay: 100ms;
   }
@@ -335,7 +357,7 @@
 
   .ornament-divider::before,
   .ornament-divider::after {
-    content: '';
+    content: "";
   }
 }
 
@@ -345,73 +367,182 @@
   .template-classic {
     --hero-padding: 6rem;
   }
-  
+
   .template-classic section {
     position: relative;
   }
-  
+
   .template-classic .font-script {
     letter-spacing: 0.02em;
   }
-  
+
   /* Modern Template - Clean and minimal */
   .template-modern {
     --hero-padding: 4rem;
   }
-  
+
   .template-modern h1,
   .template-modern h2,
   .template-modern h3 {
-    font-family: 'Lato', sans-serif;
+    font-family: "Lato", sans-serif;
     font-weight: 300;
     letter-spacing: 0.1em;
   }
-  
+
   .template-modern .font-script {
-    font-family: 'Cormorant Garamond', serif;
+    font-family: "Cormorant Garamond", serif;
     font-weight: 300;
   }
-  
+
   .template-modern section {
     border-radius: 0;
   }
-  
+
   /* Elegant Template - Sophisticated split layout */
   .template-elegant {
     --hero-padding: 5rem;
   }
-  
+
   .template-elegant .font-script {
     font-style: italic;
     letter-spacing: 0.03em;
   }
-  
+
   .template-elegant section {
     border-bottom: 1px solid hsl(var(--border) / 0.3);
   }
-  
+
   /* Romantic Template - Dreamy with soft transitions */
   .template-romantic {
     --hero-padding: 6rem;
   }
-  
+
   .template-romantic section {
     position: relative;
     overflow: hidden;
   }
-  
+
   .template-romantic section::before {
-    content: '';
+    content: "";
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
     height: 100px;
-    background: linear-gradient(to bottom, hsl(var(--background) / 0.5), transparent);
+    background: linear-gradient(
+      to bottom,
+      hsl(var(--background) / 0.5),
+      transparent
+    );
     pointer-events: none;
   }
-  
+
   .template-romantic .font-script {
     text-shadow: 0 2px 10px hsl(var(--primary) / 0.1);
+  }
+
+  /* Video Template - cinematic, poster-inspired hero */
+  .template-video {
+    --hero-padding: 7rem;
+    background:
+      radial-gradient(
+        circle at top,
+        hsl(var(--primary) / 0.18),
+        transparent 35%
+      ),
+      linear-gradient(180deg, hsl(220 20% 10%) 0%, hsl(20 25% 12%) 100%);
+    color: hsl(var(--foreground));
+  }
+
+  .template-video .wedding-hero-video-shell {
+    min-height: 100vh;
+    background: #040507;
+    isolation: isolate;
+  }
+
+  .template-video .wedding-video-bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform: scale(1.12);
+    animation: movie-pan 18s ease-in-out infinite alternate;
+    filter: saturate(1.1) contrast(1.15) brightness(0.8);
+  }
+
+  .template-video .wedding-hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 920px;
+    padding-top: 6rem;
+    padding-bottom: 5rem;
+  }
+
+  .template-video .intro-tag {
+    display: inline-block;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    backdrop-filter: blur(10px);
+    border-radius: 9999px;
+    padding: 0.4rem 1rem;
+    letter-spacing: 0.32em;
+    color: rgba(255, 255, 255, 0.85);
+  }
+
+  .template-video .font-script {
+    color: hsl(var(--primary));
+    text-shadow:
+      0 0 24px hsl(var(--primary) / 0.3),
+      0 8px 30px rgba(0, 0, 0, 0.45);
+    letter-spacing: 0.04em;
+  }
+
+  .template-video .text-muted-foreground,
+  .template-video p,
+  .template-video li,
+  .template-video span {
+    color: rgba(255, 255, 255, 0.84);
+  }
+
+  .template-video section {
+    position: relative;
+    overflow: hidden;
+    background: rgba(10, 13, 18, 0.65);
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+  }
+
+  .template-video section::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      120deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.1) 45%,
+      transparent 100%
+    );
+    transform: translateX(-120%);
+    animation: cinematic-sweep 9s ease-in-out infinite;
+    pointer-events: none;
+  }
+
+  @keyframes cinematic-sweep {
+    0% {
+      transform: translateX(-120%);
+    }
+    50%,
+    100% {
+      transform: translateX(130%);
+    }
+  }
+
+  @keyframes movie-pan {
+    0% {
+      transform: scale(1.12) translate3d(0, 0, 0);
+    }
+    100% {
+      transform: scale(1.2) translate3d(-2%, 2%, 0);
+    }
   }
 }

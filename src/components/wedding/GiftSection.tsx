@@ -9,25 +9,43 @@ interface GiftSectionProps {
   language?: Language;
 }
 
-export const GiftSection = ({ khqrImage, enabled, language }: GiftSectionProps) => {
+export const GiftSection = ({
+  khqrImage,
+  enabled,
+  language,
+}: GiftSectionProps) => {
   const lang = language || getStoredLanguage();
   const t = getTranslations(lang);
 
   if (!enabled) return null;
 
-  const handleDownload = () => {
+  const handleDownload = async () => {
     if (!khqrImage) {
       toast.error("No KHQR image available");
       return;
     }
-    
-    const link = document.createElement('a');
-    link.href = khqrImage;
-    link.download = 'wedding-gift-khqr.png';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    toast.success("KHQR image downloaded!");
+
+    try {
+      const response = await fetch(khqrImage);
+      const blob = await response.blob();
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = "wedding-gift-khqr.png";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+      toast.success("KHQR image downloaded!");
+    } catch {
+      const link = document.createElement("a");
+      link.href = khqrImage;
+      link.download = "wedding-gift-khqr.png";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      toast.success("KHQR image downloaded!");
+    }
   };
 
   const handleShare = async () => {
@@ -56,14 +74,12 @@ export const GiftSection = ({ khqrImage, enabled, language }: GiftSectionProps) 
     <section className="py-16 px-4 bg-romantic-gradient">
       <div className="max-w-md mx-auto text-center">
         <Gift className="w-10 h-10 text-primary mx-auto mb-4" />
-        
+
         <h2 className="font-serif text-3xl sm:text-4xl font-semibold text-foreground mb-2">
           {t.weddingGift}
         </h2>
-        
-        <p className="text-muted-foreground mb-8">
-          {t.giftMessage}
-        </p>
+
+        <p className="text-muted-foreground mb-8">{t.giftMessage}</p>
 
         {khqrImage ? (
           <div className="bg-card p-4 rounded-xl shadow-card mb-6 inline-block">
@@ -72,7 +88,7 @@ export const GiftSection = ({ khqrImage, enabled, language }: GiftSectionProps) 
                 src={khqrImage}
                 alt="KHQR Code"
                 className="w-56 h-auto mx-auto object-contain rounded"
-                style={{ maxHeight: '280px' }}
+                style={{ maxHeight: "280px" }}
               />
             </div>
           </div>
@@ -88,16 +104,14 @@ export const GiftSection = ({ khqrImage, enabled, language }: GiftSectionProps) 
           <Button
             variant="outline"
             onClick={handleDownload}
-            className="border-primary text-primary hover:bg-primary hover:text-primary-foreground"
-          >
+            className="border-primary text-primary hover:bg-primary hover:text-primary-foreground">
             <Download className="w-4 h-4 mr-2" />
             {t.save}
           </Button>
           <Button
             variant="outline"
             onClick={handleShare}
-            className="border-primary text-primary hover:bg-primary hover:text-primary-foreground"
-          >
+            className="border-primary text-primary hover:bg-primary hover:text-primary-foreground">
             <Share2 className="w-4 h-4 mr-2" />
             {t.share}
           </Button>

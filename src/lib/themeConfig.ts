@@ -143,7 +143,10 @@ export const getTheme = (themeId: ThemeType): ThemeConfig => {
   return THEMES[themeId] || THEMES.luxury;
 };
 
-export const applyTheme = (themeId: ThemeType): void => {
+export const applyTheme = (
+  themeId: ThemeType,
+  customFonts?: { headingFont?: string; bodyFont?: string },
+): void => {
   const theme = getTheme(themeId);
   const root = document.documentElement;
 
@@ -162,6 +165,13 @@ export const applyTheme = (themeId: ThemeType): void => {
   // Apply ring color (for focus states)
   root.style.setProperty("--ring", theme.colors.primary);
   root.style.setProperty("--hero-gradient", theme.style.gradientStyle);
+
+  const headingFont = customFonts?.headingFont?.trim() || theme.fonts.heading;
+  const bodyFont = customFonts?.bodyFont?.trim() || theme.fonts.body;
+
+  root.style.setProperty("--font-serif", headingFont);
+  root.style.setProperty("--font-sans", bodyFont);
+  root.style.setProperty("--font-script", theme.fonts.script);
 
   // Store theme-specific classes
   root.setAttribute("data-theme", themeId);

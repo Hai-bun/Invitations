@@ -24,8 +24,12 @@ const templatePreviews: Record<TemplateType, React.ReactNode> = {
   ),
   modern: (
     <div className="h-full bg-gradient-to-b from-slate-50 to-white flex flex-col items-center justify-center p-2">
-      <div className="text-xs font-bold text-slate-900 tracking-widest">A + B</div>
-      <div className="text-[8px] text-slate-500 mt-1 tracking-wider">02.14.2026</div>
+      <div className="text-xs font-bold text-slate-900 tracking-widest">
+        A + B
+      </div>
+      <div className="text-[8px] text-slate-500 mt-1 tracking-wider">
+        02.14.2026
+      </div>
       <div className="mt-2 w-8 h-px bg-slate-300" />
     </div>
   ),
@@ -47,9 +51,25 @@ const templatePreviews: Record<TemplateType, React.ReactNode> = {
       <div className="text-[6px] text-pink-400 mt-0.5">Forever</div>
     </div>
   ),
+  video: (
+    <div className="h-full bg-gradient-to-br from-slate-950 via-slate-800 to-rose-900 flex flex-col items-center justify-center p-2 relative overflow-hidden">
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(255,255,255,0.25),_transparent_55%)]" />
+      <div className="absolute top-2 left-2 w-6 h-6 rounded-full border border-white/20 flex items-center justify-center text-[8px] text-white">
+        ▶
+      </div>
+      <div className="text-[10px] uppercase tracking-[0.3em] text-white/80">
+        Film
+      </div>
+      <div className="text-xs font-serif text-white mt-1">A & B</div>
+      <div className="mt-2 w-10 h-0.5 bg-white/70" />
+    </div>
+  ),
 };
 
-export const TemplateSelector = ({ selectedTemplate, onTemplateChange }: TemplateSelectorProps) => {
+export const TemplateSelector = ({
+  selectedTemplate,
+  onTemplateChange,
+}: TemplateSelectorProps) => {
   return (
     <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
       {Object.values(TEMPLATES).map((template: TemplateConfig) => (
@@ -59,10 +79,9 @@ export const TemplateSelector = ({ selectedTemplate, onTemplateChange }: Templat
             "cursor-pointer transition-all duration-300 overflow-hidden hover:shadow-lg",
             selectedTemplate === template.id
               ? "ring-2 ring-primary shadow-md"
-              : "hover:ring-1 hover:ring-primary/50"
+              : "hover:ring-1 hover:ring-primary/50",
           )}
-          onClick={() => onTemplateChange(template.id)}
-        >
+          onClick={() => onTemplateChange(template.id)}>
           <CardContent className="p-0">
             {/* Preview */}
             <div className="h-24 relative">
@@ -73,31 +92,39 @@ export const TemplateSelector = ({ selectedTemplate, onTemplateChange }: Templat
                 </div>
               )}
             </div>
-            
+
             {/* Info */}
             <div className="p-3 border-t border-border">
               <div className="flex items-center gap-2 mb-1">
                 <span className="text-lg">{template.preview}</span>
-                <h3 className="font-medium text-sm text-foreground">{template.name}</h3>
+                <h3 className="font-medium text-sm text-foreground">
+                  {template.name}
+                </h3>
               </div>
               <p className="text-xs text-muted-foreground line-clamp-2">
                 {template.description}
               </p>
-              
+
               {/* Feature badges */}
               <div className="flex flex-wrap gap-1 mt-2">
                 {template.features.showPetals && (
-                  <Badge variant="secondary" className="text-[10px] px-1.5 py-0">
+                  <Badge
+                    variant="secondary"
+                    className="text-[10px] px-1.5 py-0">
                     Petals
                   </Badge>
                 )}
                 {template.features.parallaxHero && (
-                  <Badge variant="secondary" className="text-[10px] px-1.5 py-0">
+                  <Badge
+                    variant="secondary"
+                    className="text-[10px] px-1.5 py-0">
                     Parallax
                   </Badge>
                 )}
                 {template.features.showOrnaments && (
-                  <Badge variant="secondary" className="text-[10px] px-1.5 py-0">
+                  <Badge
+                    variant="secondary"
+                    className="text-[10px] px-1.5 py-0">
                     Ornate
                   </Badge>
                 )}
