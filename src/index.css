@@ -568,3 +568,388 @@
     }
   }
 }
+
+/* Film Reel Template - scroll-snapped cinema chapters */
+@layer components {
+  .template-reel {
+    --hero-padding: 8rem;
+    --reel-bar: 1.75rem;
+    --reel-gold: 233, 196, 141;
+    background: #07070a;
+    color: #f4ece1;
+  }
+
+  /* The page itself is the scroll container, so snapping has to live on <html>. */
+  html:has(.template-reel) {
+    scroll-snap-type: y proximity;
+    scroll-behavior: smooth;
+    background: #07070a;
+  }
+
+  /* Letterbox bars */
+  .template-reel .reel-letterbox {
+    position: fixed;
+    left: 0;
+    right: 0;
+    height: var(--reel-bar);
+    background: #000;
+    z-index: 55;
+    pointer-events: none;
+  }
+
+  .template-reel .reel-letterbox-top {
+    top: 0;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.55);
+  }
+
+  .template-reel .reel-letterbox-bottom {
+    bottom: 0;
+    box-shadow: 0 -6px 18px rgba(0, 0, 0, 0.55);
+  }
+
+  /* Sprocket holes punched along both bars */
+  .template-reel .reel-letterbox::after {
+    content: "";
+    position: absolute;
+    inset: 35% 0;
+    background-image: radial-gradient(
+      circle,
+      rgba(255, 255, 255, 0.22) 0 38%,
+      transparent 40%
+    );
+    background-size: 2.25rem 100%;
+    background-repeat: repeat-x;
+    opacity: 0.5;
+  }
+
+  /* Film grain */
+  .template-reel .reel-grain {
+    position: fixed;
+    inset: 0;
+    z-index: 54;
+    pointer-events: none;
+    opacity: 0.14;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='g'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23g)'/></svg>");
+    animation: reel-grain-shift calc(0.7s * var(--anim-speed, 1)) steps(3)
+      infinite;
+  }
+
+  /* Chapter rail */
+  .template-reel .reel-rail {
+    position: fixed;
+    left: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 50;
+    display: none;
+    flex-direction: column;
+    gap: 0.9rem;
+  }
+
+  .template-reel .reel-rail-dot {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    background: none;
+    border: 0;
+    padding: 0;
+    cursor: pointer;
+  }
+
+  .template-reel .reel-rail-tick {
+    display: block;
+    width: 1.4rem;
+    height: 2px;
+    background: rgba(var(--reel-gold), 0.3);
+    transition:
+      width 0.35s ease,
+      background 0.35s ease;
+  }
+
+  .template-reel .reel-rail-dot-active .reel-rail-tick {
+    width: 2.6rem;
+    background: rgba(var(--reel-gold), 0.95);
+  }
+
+  .template-reel .reel-rail-title {
+    font-size: 0.6rem;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: rgba(244, 236, 225, 0.35);
+    opacity: 0;
+    transform: translateX(-0.4rem);
+    transition:
+      opacity 0.35s ease,
+      transform 0.35s ease,
+      color 0.35s ease;
+    white-space: nowrap;
+  }
+
+  .template-reel .reel-rail-dot-active .reel-rail-title,
+  .template-reel .reel-rail-dot:hover .reel-rail-title {
+    opacity: 1;
+    transform: translateX(0);
+    color: rgba(var(--reel-gold), 0.9);
+  }
+
+  @media (min-width: 1024px) {
+    .template-reel {
+      --reel-bar: 2.75rem;
+    }
+
+    .template-reel .reel-rail {
+      display: flex;
+    }
+  }
+
+  /* Chapters */
+  .template-reel .reel-chapter {
+    position: relative;
+    min-height: 100vh;
+    scroll-snap-align: start;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: calc(var(--reel-bar) + 3.5rem) 0 calc(var(--reel-bar) + 2.5rem);
+    background: transparent;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    overflow: hidden;
+  }
+
+  .template-reel .reel-chapter::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(
+      ellipse at 50% 40%,
+      rgba(var(--reel-gold), 0.07),
+      transparent 62%
+    );
+    pointer-events: none;
+  }
+
+  .template-reel .reel-chapter-body {
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Chapters host the app's existing <section> components; strip their chrome. */
+  .template-reel .reel-chapter section {
+    background: transparent;
+    border: 0;
+    box-shadow: none;
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+  }
+
+  /* Slug line */
+  .template-reel .reel-slug {
+    position: absolute;
+    top: calc(var(--reel-bar) + 1.5rem);
+    left: 1.5rem;
+    right: 1.5rem;
+    z-index: 2;
+    display: flex;
+    align-items: baseline;
+    gap: 0.75rem;
+    font-size: 0.6rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: rgba(var(--reel-gold), 0.75);
+  }
+
+  .template-reel .reel-slug-word {
+    opacity: 0.55;
+  }
+
+  .template-reel .reel-slug-number {
+    font-variant-numeric: tabular-nums;
+    color: rgba(var(--reel-gold), 0.95);
+  }
+
+  .template-reel .reel-slug-total {
+    opacity: 0.45;
+  }
+
+  .template-reel .reel-slug-title {
+    flex: 1;
+    text-align: right;
+    color: rgba(244, 236, 225, 0.45);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  @media (min-width: 1024px) {
+    .template-reel .reel-slug {
+      left: 5rem;
+      right: 3rem;
+    }
+  }
+
+  /* Hero */
+  .template-reel .reel-hero-shell {
+    min-height: 100vh;
+    scroll-snap-align: start;
+    background: #030305;
+    isolation: isolate;
+    overflow: hidden;
+  }
+
+  .template-reel .reel-hero-shell::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    background:
+      radial-gradient(
+        ellipse at center,
+        transparent 38%,
+        rgba(0, 0, 0, 0.5) 74%,
+        rgba(0, 0, 0, 0.9) 100%
+      ),
+      linear-gradient(
+        180deg,
+        rgba(3, 3, 5, 0.55) 0%,
+        rgba(3, 3, 5, 0.15) 34%,
+        rgba(3, 3, 5, 0.92) 100%
+      );
+  }
+
+  .template-reel .cinematic-media {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 0;
+    filter: saturate(0.92) contrast(1.12) brightness(0.68);
+    animation: reel-slow-zoom calc(26s * var(--anim-speed, 1)) ease-in-out
+      infinite alternate;
+  }
+
+  .template-reel .reel-hero-content {
+    position: relative;
+    z-index: 2;
+    padding-top: calc(var(--reel-bar) + 4rem);
+    padding-bottom: calc(var(--reel-bar) + 4rem);
+  }
+
+  /* Title-card typography */
+  .template-reel .reel-tag {
+    display: inline-block;
+    padding: 0.4rem 1.1rem;
+    border: 1px solid rgba(var(--reel-gold), 0.4);
+    border-radius: 0;
+    letter-spacing: 0.34em;
+    text-transform: uppercase;
+    font-size: 0.65rem;
+    color: rgba(var(--reel-gold), 0.9);
+    background: rgba(0, 0, 0, 0.35);
+    backdrop-filter: blur(6px);
+  }
+
+  .template-reel .font-script {
+    color: #f6e3c4;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-size: clamp(2.1rem, 7vw, 4.4rem);
+    text-shadow: 0 10px 40px rgba(0, 0, 0, 0.75);
+  }
+
+  .template-reel h2,
+  .template-reel h3 {
+    letter-spacing: 0.14em;
+    color: #f2e6d5;
+  }
+
+  .template-reel .text-muted-foreground,
+  .template-reel p,
+  .template-reel li,
+  .template-reel span {
+    color: rgba(244, 236, 225, 0.72);
+  }
+
+  /* Sound / play toggle */
+  .cinematic-sound-toggle {
+    position: fixed;
+    right: 1rem;
+    bottom: calc(var(--reel-bar, 0px) + 1rem);
+    z-index: 56;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.6rem 0.9rem;
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    background: rgba(8, 8, 10, 0.72);
+    backdrop-filter: blur(10px);
+    color: rgba(255, 247, 234, 0.92);
+    font-size: 0.62rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition:
+      border-color 0.3s ease,
+      background 0.3s ease;
+  }
+
+  .cinematic-sound-toggle:hover,
+  .cinematic-sound-toggle:focus-visible {
+    border-color: rgba(233, 196, 141, 0.75);
+    background: rgba(8, 8, 10, 0.9);
+  }
+
+  .cinematic-sound-label {
+    display: none;
+  }
+
+  @media (min-width: 768px) {
+    .cinematic-sound-label {
+      display: inline;
+    }
+  }
+
+  @keyframes reel-grain-shift {
+    0% {
+      transform: translate3d(0, 0, 0);
+    }
+    33% {
+      transform: translate3d(-3%, 2%, 0);
+    }
+    66% {
+      transform: translate3d(2%, -3%, 0);
+    }
+    100% {
+      transform: translate3d(0, 0, 0);
+    }
+  }
+
+  @keyframes reel-slow-zoom {
+    0% {
+      transform: scale(1.06) translate3d(0, 0, 0);
+    }
+    100% {
+      transform: scale(1.18) translate3d(-1.5%, -1.5%, 0);
+    }
+  }
+
+  /* Honour the OS-level motion preference regardless of the wedding's toggle. */
+  @media (prefers-reduced-motion: reduce) {
+    html:has(.template-reel) {
+      scroll-snap-type: none;
+      scroll-behavior: auto;
+    }
+
+    .template-reel .reel-grain,
+    .template-reel .cinematic-media {
+      animation: none;
+    }
+  }
+
+  /* Respect the admin's master animation switch. */
+  .animations-off .reel-grain {
+    opacity: 0.08;
+  }
+}

@@ -61,6 +61,12 @@ export interface Translations {
   welcomeTitle: string;
   openInvitation: string;
   dearGuest: string;
+
+  // Film Reel Template
+  chapter: string;
+  soundOn: string;
+  soundOff: string;
+  playFilm: string;
 }
 
 const translations: Record<Language, Translations> = {
@@ -123,6 +129,12 @@ const translations: Record<Language, Translations> = {
     welcomeTitle: 'You are Invited',
     openInvitation: 'Open Invitation',
     dearGuest: 'Dear',
+
+    // Film Reel Template
+    chapter: 'Chapter',
+    soundOn: 'Turn on sound',
+    soundOff: 'Mute',
+    playFilm: 'Play film',
   },
   km: {
     // Common
@@ -183,6 +195,12 @@ const translations: Record<Language, Translations> = {
     welcomeTitle: 'អ្នកត្រូវបានអញ្ជើញ',
     openInvitation: 'បើកការអញ្ជើញ',
     dearGuest: 'ជូនចំពោះ',
+
+    // Film Reel Template
+    chapter: 'ជំពូក',
+    soundOn: 'បើកសំឡេង',
+    soundOff: 'បិទសំឡេង',
+    playFilm: 'ចាក់វីដេអូ',
   },
 };
 

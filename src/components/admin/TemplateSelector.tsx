@@ -64,6 +64,25 @@ const templatePreviews: Record<TemplateType, React.ReactNode> = {
       <div className="mt-2 w-10 h-0.5 bg-white/70" />
     </div>
   ),
+  reel: (
+    <div className="h-full bg-[#0a0a0c] flex flex-col items-center justify-center p-2 relative overflow-hidden">
+      <div className="absolute top-0 left-0 right-0 h-2 bg-black" />
+      <div className="absolute bottom-0 left-0 right-0 h-2 bg-black" />
+      <div className="absolute top-0 bottom-0 left-0 w-1.5 flex flex-col justify-around items-center">
+        {[0, 1, 2, 3].map((i) => (
+          <div key={i} className="w-1 h-1 rounded-[1px] bg-white/35" />
+        ))}
+      </div>
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(233,196,141,0.22),_transparent_60%)]" />
+      <div className="text-[6px] uppercase tracking-[0.35em] text-amber-200/70">
+        Ch. 01
+      </div>
+      <div className="text-[11px] font-serif tracking-[0.18em] text-amber-50 mt-0.5">
+        A &amp; B
+      </div>
+      <div className="mt-1 w-8 h-px bg-amber-200/60" />
+    </div>
+  ),
 };
 
 export const TemplateSelector = ({

@@ -129,6 +129,29 @@ export const TEMPLATES: Record<TemplateType, TemplateConfig> = {
       animatedEntrance: true,
     },
   },
+  reel: {
+    id: "reel",
+    name: "Film Reel Story",
+    description:
+      "Scroll-snapping film chapters with letterbox framing, grain and sound",
+    preview: "🎞️",
+    heroLayout: "overlay",
+    sectionOrder: [
+      "hero",
+      "couple",
+      "gallery",
+      "location",
+      "rsvp",
+      "gift",
+      "footer",
+    ],
+    features: {
+      showOrnaments: false,
+      showPetals: false,
+      parallaxHero: true,
+      animatedEntrance: true,
+    },
+  },
 };
 
 export const getTemplate = (templateId: TemplateType): TemplateConfig => {

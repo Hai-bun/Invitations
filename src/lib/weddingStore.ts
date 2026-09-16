@@ -6,7 +6,8 @@ export type TemplateType =
   | "modern"
   | "elegant"
   | "romantic"
-  | "video";
+  | "video"
+  | "reel";
 
 export interface SocialLinks {
   telegram: string;

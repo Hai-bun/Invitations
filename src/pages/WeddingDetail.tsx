@@ -15,6 +15,7 @@ import { PhotoGallery } from "@/components/wedding/PhotoGallery";
 import { RSVPSection } from "@/components/wedding/RSVPSection";
 import { GiftSection } from "@/components/wedding/GiftSection";
 import { Footer } from "@/components/wedding/Footer";
+import { ReelInvitation } from "@/components/wedding/ReelInvitation";
 
 import { LanguageSwitcher } from "@/components/ui/LanguageSwitcher";
 import { Heart, Calendar } from "lucide-react";
@@ -22,6 +23,10 @@ import { applyTheme, getTheme, ThemeType } from "@/lib/themeConfig";
 import { getTemplate } from "@/lib/templateConfig";
 import { cn } from "@/lib/utils";
 import { Language, getStoredLanguage, getTranslations } from "@/lib/i18n";
+import {
+  formatWeddingDate,
+  formatWeddingTime,
+} from "@/lib/weddingFormat";
 
 const WeddingDetail = () => {
   const { guestId } = useParams<{ guestId: string }>();
@@ -94,76 +99,37 @@ const WeddingDetail = () => {
     setLanguage(newLang);
   };
 
-  const formatDate = (dateStr: string) => {
-    const date = new Date(dateStr);
-    if (language === "km") {
-      try {
-        return new Intl.DateTimeFormat("km-KH", {
-          weekday: "long",
-          year: "numeric",
-          month: "long",
-          day: "numeric",
-        }).format(date);
-      } catch (e) {
-        // Fallback: manual Khmer month/weekday names
-        const weekdays = [
-          "អាទិត្យ",
-          "ច័ន្ទ",
-          "អង្គារ",
-          "ពុធ",
-          "ព្រហស្បតិ៍",
-          "សុក្រ",
-          "សៅរ៍",
-        ];
-        const months = [
-          "មករា",
-          "កុម្ភៈ",
-          "មីនា",
-          "មេសា",
-          "ឧសភា",
-          "មិថុនា",
-          "កក្កដា",
-          "សីហា",
-          "កញ្ញា",
-          "តុលា",
-          "វិច្ឆិកា",
-          "ធ្នូ",
-        ];
-        const w = weekdays[date.getDay()];
-        const d = date.getDate();
-        const m = months[date.getMonth()];
-        const y = date.getFullYear();
-        return `${w} ${d} ${m} ${y}`;
-      }
-    }
-    return date.toLocaleDateString("en-US", {
-      weekday: "long",
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    });
-  };
-
-  const formatTime = (timeStr: string) => {
-    const [hours, minutes] = timeStr.split(":");
-    const hour = parseInt(hours);
-    const ampm = hour >= 12 ? "PM" : "AM";
-    const hour12 = hour % 12 || 12;
-    return `${hour12}:${minutes} ${ampm}`;
-  };
-
   const heroMediaUrl = weddingData.backgroundImage || "";
   const isVideoBackground = /\.(mp4|webm|ogg)(\?|$)/i.test(heroMediaUrl);
 
+  const rootClassName = cn(
+    "min-h-screen bg-background wedding-root",
+    `theme-${weddingData.theme}`,
+    `template-${weddingData.template}`,
+    !animOn && "animations-off",
+    (!animOn || !anim.photoHoverZoom) && "no-photo-zoom",
+  );
+
+  // The film-reel template owns its whole layout (letterbox frame + chapters),
+  // so it replaces the shared section stack below rather than extending it.
+  if (template.id === "reel") {
+    return (
+      <div className={rootClassName}>
+        <LanguageSwitcher
+          onLanguageChange={handleLanguageChange}
+          currentLanguage={language}
+        />
+        <ReelInvitation
+          weddingData={weddingData}
+          guest={guest}
+          language={language}
+        />
+      </div>
+    );
+  }
+
   return (
-    <div
-      className={cn(
-        "min-h-screen bg-background wedding-root",
-        `theme-${weddingData.theme}`,
-        `template-${weddingData.template}`,
-        !animOn && "animations-off",
-        (!animOn || !anim.photoHoverZoom) && "no-photo-zoom",
-      )}>
+    <div className={rootClassName}>
       {/* Language Switcher */}
       <LanguageSwitcher
         onLanguageChange={handleLanguageChange}
@@ -299,8 +265,8 @@ const WeddingDetail = () => {
             )}>
             <Calendar className="w-5 h-5" />
             <p className="font-serif text-lg">
-              {formatDate(weddingData.weddingDate)} at{" "}
-              {formatTime(weddingData.weddingTime)}
+              {formatWeddingDate(weddingData.weddingDate, language)} at{" "}
+              {formatWeddingTime(weddingData.weddingTime)}
             </p>
           </div>
 
