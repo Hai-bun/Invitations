@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { ChevronLeft, ChevronRight, X, Camera } from "lucide-react";
 import { getTranslations, Language, getStoredLanguage } from "@/lib/i18n";
+import { FadeInImage } from "@/components/ui/FadeInImage";
 
 interface PhotoGalleryProps {
   photos: string[];
@@ -58,10 +59,10 @@ export const PhotoGallery = ({ photos, language }: PhotoGalleryProps) => {
               className="aspect-square overflow-hidden rounded-lg cursor-pointer group shadow-card hover:shadow-elevated transition-all duration-300"
               onClick={() => setSelectedIndex(index)}
             >
-              <img
+              <FadeInImage
                 src={photo}
                 alt={`Wedding photo ${index + 1}`}
-                className="photo-zoom w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                className="photo-zoom w-full h-full object-cover group-hover:scale-105 transition-all duration-500"
               />
             </div>
           ))}

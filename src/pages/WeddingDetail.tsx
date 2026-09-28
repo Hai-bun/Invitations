@@ -1,11 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import {
-  getWeddingData,
-  getGuestById,
-  WeddingData,
-  Guest,
-} from "@/lib/weddingStore";
+import { useWeddingData, useGuest } from "@/hooks/use-wedding-data";
 import { FloatingPetals } from "@/components/ui/FloatingPetals";
 import { OrnamentDivider } from "@/components/ui/OrnamentDivider";
 import { CountdownTimer } from "@/components/wedding/CountdownTimer";
@@ -16,6 +11,10 @@ import { RSVPSection } from "@/components/wedding/RSVPSection";
 import { GiftSection } from "@/components/wedding/GiftSection";
 import { Footer } from "@/components/wedding/Footer";
 import { ReelInvitation } from "@/components/wedding/ReelInvitation";
+import { RoyalInvitation } from "@/components/wedding/templates/RoyalInvitation";
+import { EditorialInvitation } from "@/components/wedding/templates/EditorialInvitation";
+import { BotanicalInvitation } from "@/components/wedding/templates/BotanicalInvitation";
+import { SplitInvitation } from "@/components/wedding/templates/SplitInvitation";
 
 import { LanguageSwitcher } from "@/components/ui/LanguageSwitcher";
 import { Heart, Calendar } from "lucide-react";
@@ -30,27 +29,17 @@ import {
 
 const WeddingDetail = () => {
   const { guestId } = useParams<{ guestId: string }>();
-  const [weddingData, setWeddingData] = useState<WeddingData | null>(null);
-  const [guest, setGuest] = useState<Guest | null>(null);
+  const { data: weddingData } = useWeddingData();
+  const { data: guest } = useGuest(guestId);
   const [language, setLanguage] = useState<Language>(getStoredLanguage());
 
   useEffect(() => {
-    const loadWeddingData = async () => {
-      const data = await getWeddingData();
-      setWeddingData(data);
-      applyTheme(data.theme as ThemeType, {
-        headingFont: data.headingFont,
-        bodyFont: data.bodyFont,
-      });
-
-      if (guestId) {
-        const foundGuest = await getGuestById(guestId);
-        setGuest(foundGuest);
-      }
-    };
-
-    loadWeddingData();
-  }, [guestId]);
+    if (!weddingData) return;
+    applyTheme(weddingData.theme as ThemeType, {
+      headingFont: weddingData.headingFont,
+      bodyFont: weddingData.bodyFont,
+    });
+  }, [weddingData]);
 
   // Set animation speed CSS variable whenever speedMultiplier changes
   const speedMultiplier =
@@ -103,25 +92,33 @@ const WeddingDetail = () => {
   const isVideoBackground = /\.(mp4|webm|ogg)(\?|$)/i.test(heroMediaUrl);
 
   const rootClassName = cn(
-    "min-h-screen bg-background wedding-root",
+    "min-h-screen bg-background wedding-root animate-fade-in",
     `theme-${weddingData.theme}`,
     `template-${weddingData.template}`,
     !animOn && "animations-off",
     (!animOn || !anim.photoHoverZoom) && "no-photo-zoom",
   );
 
-  // The film-reel template owns its whole layout (letterbox frame + chapters),
-  // so it replaces the shared section stack below rather than extending it.
-  if (template.id === "reel") {
+  // These templates own their whole layout (custom hero + section chrome), so
+  // they replace the shared section stack below rather than extending it.
+  const SelfContainedTemplate = {
+    reel: ReelInvitation,
+    royal: RoyalInvitation,
+    editorial: EditorialInvitation,
+    botanical: BotanicalInvitation,
+    split: SplitInvitation,
+  }[template.id as string];
+
+  if (SelfContainedTemplate) {
     return (
       <div className={rootClassName}>
         <LanguageSwitcher
           onLanguageChange={handleLanguageChange}
           currentLanguage={language}
         />
-        <ReelInvitation
+        <SelfContainedTemplate
           weddingData={weddingData}
-          guest={guest}
+          guest={guest ?? null}
           language={language}
         />
       </div>

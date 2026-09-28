@@ -2,6 +2,7 @@ import { Gift, Download, Share2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { getTranslations, Language, getStoredLanguage } from "@/lib/i18n";
+import { FadeInImage } from "@/components/ui/FadeInImage";
 
 interface GiftSectionProps {
   khqrImage: string;
@@ -84,7 +85,7 @@ export const GiftSection = ({
         {khqrImage ? (
           <div className="bg-card p-4 rounded-xl shadow-card mb-6 inline-block">
             <div className="bg-background rounded-lg p-2 overflow-hidden">
-              <img
+              <FadeInImage
                 src={khqrImage}
                 alt="KHQR Code"
                 className="w-56 h-auto mx-auto object-contain rounded"

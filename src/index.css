@@ -952,4 +952,442 @@
   .animations-off .reel-grain {
     opacity: 0.08;
   }
+
+  /* ============================================================
+     Royal Khmer — ornate gold framing on deep royal tones
+     ============================================================ */
+  .template-royal {
+    --royal-gold: #c8a24c;
+    --royal-gold-soft: #e7ce90;
+    --royal-deep: #3a0d12;
+    background: #fbf6ea;
+  }
+
+  .template-royal .royal-hero {
+    background:
+      radial-gradient(
+        circle at 50% 18%,
+        rgba(200, 162, 76, 0.22),
+        transparent 55%
+      ),
+      linear-gradient(160deg, #4a1118 0%, #2c0a10 55%, #1a0508 100%);
+    color: #f6ecd6;
+  }
+
+  .template-royal .royal-frame {
+    border: 2px solid rgba(200, 162, 76, 0.55);
+    border-radius: 2px;
+    background: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.04),
+      rgba(0, 0, 0, 0.18)
+    );
+    box-shadow:
+      inset 0 0 0 1px rgba(200, 162, 76, 0.22),
+      0 30px 90px rgba(0, 0, 0, 0.55);
+  }
+
+  .template-royal .royal-frame::before {
+    content: "";
+    position: absolute;
+    inset: 12px;
+    border: 1px solid rgba(200, 162, 76, 0.3);
+    border-radius: 2px;
+    pointer-events: none;
+  }
+
+  .template-royal .royal-corner {
+    position: absolute;
+    width: 46px;
+    height: 46px;
+    color: var(--royal-gold-soft);
+  }
+  .template-royal .royal-corner-tl {
+    top: 8px;
+    left: 8px;
+  }
+  .template-royal .royal-corner-tr {
+    top: 8px;
+    right: 8px;
+    transform: scaleX(-1);
+  }
+  .template-royal .royal-corner-bl {
+    bottom: 8px;
+    left: 8px;
+    transform: scaleY(-1);
+  }
+  .template-royal .royal-corner-br {
+    bottom: 8px;
+    right: 8px;
+    transform: scale(-1, -1);
+  }
+
+  .template-royal .royal-tag {
+    font-family: var(--font-sans);
+    text-transform: uppercase;
+    letter-spacing: 0.3em;
+    font-size: 0.68rem;
+    color: var(--royal-gold-soft);
+  }
+  .template-royal .royal-kicker {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 1.1rem;
+    color: rgba(246, 236, 214, 0.85);
+  }
+  .template-royal .royal-name {
+    font-size: clamp(2.6rem, 8vw, 4.4rem);
+    line-height: 1.05;
+    color: #f7e6bf;
+    text-shadow: 0 3px 22px rgba(200, 162, 76, 0.35);
+  }
+  .template-royal .royal-amp {
+    font-family: var(--font-serif);
+    font-size: 1.7rem;
+    color: var(--royal-gold);
+  }
+  .template-royal .royal-date {
+    font-family: var(--font-serif);
+    letter-spacing: 0.08em;
+    border: 1px solid rgba(200, 162, 76, 0.5);
+    border-radius: 9999px;
+    padding: 0.5rem 1.4rem;
+    font-size: 0.95rem;
+  }
+  .template-royal .royal-countdown-label {
+    text-transform: uppercase;
+    letter-spacing: 0.28em;
+    font-size: 0.62rem;
+    color: var(--royal-gold-soft);
+  }
+
+  /* Royal section chrome — alternating warm cream bands + gold headings */
+  .template-royal section {
+    background: #fbf6ea;
+  }
+  .template-royal section:nth-of-type(even) {
+    background: #f3e8cf;
+  }
+  .template-royal h2,
+  .template-royal h3 {
+    color: var(--royal-deep);
+  }
+  .template-royal section > * {
+    position: relative;
+  }
+  .template-royal .text-primary {
+    color: var(--royal-gold) !important;
+  }
+
+  /* ============================================================
+     Editorial Magazine — oversized serif, high contrast, rules
+     ============================================================ */
+  .template-editorial {
+    background: #fcfbf9;
+    color: #16130f;
+  }
+
+  .template-editorial .editorial-hero {
+    background: #fcfbf9;
+  }
+  .template-editorial .editorial-masthead {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 1rem;
+    font-family: var(--font-sans);
+    text-transform: uppercase;
+    letter-spacing: 0.28em;
+    font-size: 0.66rem;
+    color: #16130f;
+  }
+  .template-editorial .editorial-issue {
+    text-align: right;
+    opacity: 0.7;
+  }
+  .template-editorial .editorial-rule {
+    height: 2px;
+    background: #16130f;
+    margin-top: 0.75rem;
+  }
+  .template-editorial .editorial-guest {
+    font-family: var(--font-sans);
+    text-transform: uppercase;
+    letter-spacing: 0.22em;
+    font-size: 0.7rem;
+    opacity: 0.65;
+  }
+  .template-editorial .editorial-label {
+    font-family: var(--font-sans);
+    text-transform: uppercase;
+    letter-spacing: 0.32em;
+    font-size: 0.62rem;
+    opacity: 0.6;
+  }
+  .template-editorial .editorial-name {
+    font-family: var(--font-serif);
+    font-weight: 500;
+    font-size: clamp(3rem, 11vw, 6.5rem);
+    line-height: 0.92;
+    letter-spacing: -0.01em;
+  }
+  .template-editorial .editorial-amp {
+    display: block;
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: clamp(1.6rem, 5vw, 2.6rem);
+    margin: 0.15em 0;
+    opacity: 0.55;
+  }
+  .template-editorial .editorial-time {
+    font-family: var(--font-sans);
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    font-size: 0.74rem;
+  }
+  .template-editorial .editorial-photo {
+    aspect-ratio: 3 / 4;
+    overflow: hidden;
+  }
+  .template-editorial .editorial-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: grayscale(0.12) contrast(1.03);
+  }
+  .template-editorial .editorial-countdown {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    border-top: 1px solid rgba(0, 0, 0, 0.15);
+    padding-top: 1.5rem;
+  }
+
+  /* Editorial section chrome — big left-rule headings, generous whitespace */
+  .template-editorial section {
+    background: #fcfbf9;
+    border-top: 1px solid rgba(0, 0, 0, 0.12);
+  }
+  .template-editorial h2 {
+    font-family: var(--font-serif);
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    color: #16130f;
+  }
+  .template-editorial section svg.lucide {
+    color: #16130f;
+  }
+  .template-editorial .rounded-lg,
+  .template-editorial .rounded-xl {
+    border-radius: 0;
+  }
+
+  /* ============================================================
+     Botanical Garden — soft watercolor tones, leafy frames
+     ============================================================ */
+  .template-botanical {
+    --botanical-leaf: #7d9b6a;
+    --botanical-blush: #d98c9c;
+    background: linear-gradient(180deg, #f3f6ee 0%, #fbf1f1 100%);
+  }
+
+  .template-botanical .botanical-hero {
+    background:
+      radial-gradient(
+        circle at 50% 30%,
+        rgba(217, 140, 156, 0.14),
+        transparent 60%
+      ),
+      linear-gradient(180deg, #f2f6ec 0%, #f8eef0 100%);
+  }
+  .template-botanical .botanical-sprig {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: clamp(46px, 12vw, 80px);
+    height: auto;
+    color: var(--botanical-leaf);
+    opacity: 0.8;
+  }
+  .template-botanical .botanical-sprig-left {
+    left: -1.5rem;
+    transform: translateY(-50%) scaleX(-1);
+  }
+  .template-botanical .botanical-sprig-right {
+    right: -1.5rem;
+  }
+  .template-botanical .botanical-tag {
+    font-family: var(--font-sans);
+    text-transform: uppercase;
+    letter-spacing: 0.26em;
+    font-size: 0.68rem;
+    color: var(--botanical-leaf);
+  }
+  .template-botanical .botanical-kicker {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 1.1rem;
+    color: #5c6b52;
+  }
+  .template-botanical .botanical-name {
+    font-size: clamp(2.6rem, 8vw, 4.2rem);
+    line-height: 1.05;
+    color: #3f4a38;
+  }
+  .template-botanical .botanical-amp {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 1.5rem;
+    color: var(--botanical-blush);
+  }
+  .template-botanical .botanical-date {
+    font-family: var(--font-serif);
+    color: #5c6b52;
+    border: 1px solid rgba(125, 155, 106, 0.4);
+    border-radius: 9999px;
+    padding: 0.45rem 1.3rem;
+    font-size: 0.92rem;
+  }
+  .template-botanical .botanical-countdown-label {
+    text-transform: uppercase;
+    letter-spacing: 0.24em;
+    font-size: 0.62rem;
+    color: var(--botanical-leaf);
+  }
+
+  /* Botanical section chrome — soft alternating garden tones */
+  .template-botanical section {
+    background: #f6f8f1;
+  }
+  .template-botanical section:nth-of-type(even) {
+    background: #fbf1f2;
+  }
+  .template-botanical h2,
+  .template-botanical h3 {
+    color: #3f4a38;
+  }
+  .template-botanical .text-primary {
+    color: var(--botanical-blush) !important;
+  }
+  .template-botanical .rounded-lg,
+  .template-botanical .rounded-xl {
+    border-radius: 1.25rem;
+  }
+
+  /* ============================================================
+     Split-Screen Elegant — full-height photo beside the details
+     ============================================================ */
+  .template-split {
+    background: #f7f5f2;
+    color: #201c18;
+  }
+  .template-split .split-media {
+    min-height: 42vh;
+    overflow: hidden;
+  }
+  @media (min-width: 1024px) {
+    .template-split .split-media {
+      min-height: 100vh;
+      position: sticky;
+      top: 0;
+    }
+  }
+  .template-split .split-media-el {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .template-split .split-media-fallback {
+    width: 100%;
+    height: 100%;
+    background:
+      radial-gradient(circle at 40% 30%, rgba(205, 166, 122, 0.35), transparent 60%),
+      linear-gradient(160deg, #d9cbbb, #b8a48d);
+  }
+  .template-split .split-media-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      180deg,
+      rgba(0, 0, 0, 0.05),
+      rgba(0, 0, 0, 0.18)
+    );
+    pointer-events: none;
+  }
+  .template-split .split-panel {
+    background: #f7f5f2;
+  }
+  .template-split .split-guest {
+    font-family: var(--font-sans);
+    text-transform: uppercase;
+    letter-spacing: 0.24em;
+    font-size: 0.68rem;
+    opacity: 0.6;
+  }
+  .template-split .split-kicker {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 1.05rem;
+    opacity: 0.75;
+  }
+  .template-split .split-name {
+    font-size: clamp(2.4rem, 7vw, 3.8rem);
+    line-height: 1.05;
+    color: #201c18;
+  }
+  .template-split .split-rule {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin: 0.6rem 0;
+    color: #b8865a;
+  }
+  .template-split .split-rule::before,
+  .template-split .split-rule::after {
+    content: "";
+    height: 1px;
+    width: 42px;
+    background: currentColor;
+    opacity: 0.5;
+  }
+  .template-split .split-rule span {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 1.2rem;
+  }
+  .template-split .split-date {
+    font-family: var(--font-sans);
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    font-size: 0.76rem;
+  }
+  .template-split .split-countdown-label {
+    text-transform: uppercase;
+    letter-spacing: 0.24em;
+    font-size: 0.62rem;
+    opacity: 0.6;
+  }
+  .template-split section {
+    background: #f7f5f2;
+  }
+  .template-split section:nth-of-type(even) {
+    background: #efe9e2;
+  }
+  .template-split h2,
+  .template-split h3 {
+    color: #201c18;
+  }
+
+  /* Honour OS motion preference for the new templates' entrance fades. */
+  @media (prefers-reduced-motion: reduce) {
+    .template-royal .animate-fade-in-up,
+    .template-editorial .animate-fade-in-up,
+    .template-botanical .animate-fade-in-up,
+    .template-split .animate-fade-in-up {
+      animation: none;
+      opacity: 1;
+    }
+  }
 }

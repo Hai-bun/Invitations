@@ -1,39 +1,29 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import {
-  getWeddingData,
-  getGuestById,
-  Guest,
-  WeddingData,
-} from "@/lib/weddingStore";
 import { FloatingPetals } from "@/components/ui/FloatingPetals";
 import { Button } from "@/components/ui/button";
 import { Heart } from "lucide-react";
 import { getTemplate } from "@/lib/templateConfig";
 import { WelcomePopup } from "@/components/wedding/WelcomePopup";
+import { useWeddingData, useGuest } from "@/hooks/use-wedding-data";
+import { preloadImages } from "@/lib/preloadImage";
 
 const GuestInvite = () => {
   const { guestId } = useParams<{ guestId: string }>();
   const navigate = useNavigate();
-  const [guest, setGuest] = useState<Guest | null>(null);
-  const [weddingData, setWeddingData] = useState<WeddingData | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const { data: weddingData, isLoading } = useWeddingData();
+  const { data: guest } = useGuest(guestId);
 
+  // Warm the cache for the heavy media on the full invitation while the guest
+  // is still looking at the envelope, so it's ready the moment they open it.
   useEffect(() => {
-    const loadWeddingData = async () => {
-      const data = await getWeddingData();
-      setWeddingData(data);
-
-      if (guestId) {
-        const foundGuest = await getGuestById(guestId);
-        setGuest(foundGuest);
-      }
-
-      setIsLoading(false);
-    };
-
-    loadWeddingData();
-  }, [guestId]);
+    if (!weddingData) return;
+    preloadImages([
+      weddingData.backgroundImage,
+      weddingData.khqrImage,
+      ...weddingData.photos.slice(0, 6),
+    ]);
+  }, [weddingData]);
 
   if (isLoading || !weddingData) {
     return (

@@ -83,6 +83,72 @@ const templatePreviews: Record<TemplateType, React.ReactNode> = {
       <div className="mt-1 w-8 h-px bg-amber-200/60" />
     </div>
   ),
+  royal: (
+    <div className="h-full bg-gradient-to-br from-[#4a1118] via-[#2c0a10] to-[#1a0508] flex flex-col items-center justify-center p-2 relative overflow-hidden">
+      <div className="absolute inset-1.5 border border-[#c8a24c]/60 rounded-[2px]" />
+      <div className="absolute inset-[7px] border border-[#c8a24c]/25 rounded-[2px]" />
+      <div className="text-[6px] uppercase tracking-[0.3em] text-[#e7ce90]">
+        Royal
+      </div>
+      <div className="text-[11px] font-script text-[#f7e6bf] mt-0.5">
+        A &amp; B
+      </div>
+      <div className="mt-1 text-[8px] text-[#c8a24c]">✦</div>
+    </div>
+  ),
+  editorial: (
+    <div className="h-full bg-[#fcfbf9] flex flex-col justify-center p-2 relative overflow-hidden">
+      <div className="text-[5px] uppercase tracking-[0.25em] text-neutral-800 flex justify-between">
+        <span>Invited</span>
+        <span>02·14</span>
+      </div>
+      <div className="h-0.5 bg-neutral-900 my-1" />
+      <div className="text-[15px] leading-none font-serif font-medium text-neutral-900">
+        Anna
+      </div>
+      <div className="text-[7px] italic font-serif text-neutral-400 leading-none">
+        &amp;
+      </div>
+      <div className="text-[15px] leading-none font-serif font-medium text-neutral-900">
+        Ben
+      </div>
+    </div>
+  ),
+  botanical: (
+    <div className="h-full bg-gradient-to-b from-[#f2f6ec] to-[#f8eef0] flex flex-col items-center justify-center p-2 relative overflow-hidden">
+      <div className="absolute left-1 top-1/2 -translate-y-1/2 text-[10px] text-[#7d9b6a]">
+        🌿
+      </div>
+      <div className="absolute right-1 top-1/2 -translate-y-1/2 text-[10px] text-[#7d9b6a] scale-x-[-1]">
+        🌿
+      </div>
+      <div className="text-[5px] uppercase tracking-[0.25em] text-[#7d9b6a]">
+        Invited
+      </div>
+      <div className="text-[12px] font-script text-[#3f4a38] mt-0.5">
+        A &amp; B
+      </div>
+      <div className="text-[7px] italic font-serif text-[#d98c9c]">forever</div>
+    </div>
+  ),
+  split: (
+    <div className="h-full flex overflow-hidden">
+      <div className="w-1/2 bg-gradient-to-br from-[#d9cbbb] to-[#b8a48d]" />
+      <div className="w-1/2 bg-[#f7f5f2] flex flex-col items-center justify-center p-1">
+        <div className="text-[9px] font-script text-neutral-800 leading-tight">
+          Anna
+        </div>
+        <div className="flex items-center gap-0.5 my-0.5 text-[#b8865a]">
+          <span className="w-2 h-px bg-current" />
+          <span className="text-[6px] italic font-serif">&amp;</span>
+          <span className="w-2 h-px bg-current" />
+        </div>
+        <div className="text-[9px] font-script text-neutral-800 leading-tight">
+          Ben
+        </div>
+      </div>
+    </div>
+  ),
 };
 
 export const TemplateSelector = ({
