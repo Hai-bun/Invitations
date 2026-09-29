@@ -635,6 +635,14 @@ const Admin = () => {
                   }}
                 />
 
+                <div className="p-3 rounded-lg border border-primary/20 bg-primary/5 text-sm text-muted-foreground">
+                  <strong className="text-foreground">Note:</strong> The Royal,
+                  Editorial, Botanical and Split templates come with their own
+                  built-in colors — for those, the theme mainly changes the
+                  fonts. The theme colors fully apply to the Classic, Modern,
+                  Elegant, Romantic and Video templates.
+                </div>
+
                 <div className="space-y-4 border-t pt-6">
                   <div>
                     <h3 className="text-base font-medium text-foreground">
