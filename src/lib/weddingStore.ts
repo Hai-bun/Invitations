@@ -80,8 +80,33 @@ export interface WeddingData {
   welcomePopupEnabled: boolean;
   welcomePopupMessage: string;
 
+  // Our Story
+  story: StoryConfig;
+
+  // Wedding Day Schedule
+  schedule: ScheduleConfig;
+
   // Animations
   animations: AnimationSettings;
+}
+
+export interface StoryConfig {
+  enabled: boolean;
+  title: string;
+  text: string;
+}
+
+export interface ScheduleItem {
+  id: string;
+  time: string;
+  title: string;
+  description: string;
+}
+
+export interface ScheduleConfig {
+  enabled: boolean;
+  title: string;
+  items: ScheduleItem[];
 }
 
 export interface AnimationSettings {
@@ -153,6 +178,35 @@ const DEFAULT_WEDDING_DATA: WeddingData = {
   welcomePopupEnabled: true,
   welcomePopupMessage:
     "We are delighted to share this special moment with you. Please scroll down to view our wedding invitation.",
+  story: {
+    enabled: false,
+    title: "Our Love Story",
+    text: "From the moment our paths first crossed, we knew our hearts were meant to walk together. Through laughter, small adventures, and quiet moments, our love grew stronger each day. Now, surrounded by the people we cherish most, we can't wait to begin this new chapter as one.",
+  },
+  schedule: {
+    enabled: false,
+    title: "Wedding Day Schedule",
+    items: [
+      {
+        id: "s1",
+        time: "07:00",
+        title: "Morning Ceremony",
+        description: "Traditional Khmer ceremony at the family home",
+      },
+      {
+        id: "s2",
+        time: "10:00",
+        title: "Blessing & Photos",
+        description: "Blessings from elders followed by family photos",
+      },
+      {
+        id: "s3",
+        time: "17:00",
+        title: "Reception Dinner",
+        description: "Join us for dinner, music and celebration",
+      },
+    ],
+  },
   animations: {
     enabled: true,
     floatingPetals: true,
@@ -237,9 +291,10 @@ const buildWeddingProfileRow = (
   groom_parent_names: weddingData.groomParents,
   bride_parent_names_kh: weddingData.brideParentsKh,
   groom_parent_names_kh: weddingData.groomParentsKh,
-  wedding_date_time: new Date(
-    `${weddingData.weddingDate}T${weddingData.weddingTime}`,
-  ).toISOString(),
+  // Store the chosen wall-clock date & time as UTC so it round-trips exactly
+  // (the read side uses getUTC*) and shows the same for every guest regardless
+  // of their device timezone.
+  wedding_date_time: `${weddingData.weddingDate}T${weddingData.weddingTime}:00Z`,
   theme: weddingData.theme,
   template: weddingData.template,
   background_image_url: weddingData.backgroundImage,
@@ -334,6 +389,12 @@ const mapProfileToWeddingData = (
     welcomePopupMessage:
       profile.welcome_popup?.message ??
       DEFAULT_WEDDING_DATA.welcomePopupMessage,
+    story:
+      (profile as { love_story?: StoryConfig }).love_story ??
+      DEFAULT_WEDDING_DATA.story,
+    schedule:
+      (profile as { wedding_schedule?: ScheduleConfig }).wedding_schedule ??
+      DEFAULT_WEDDING_DATA.schedule,
     animations: profile.animations ?? DEFAULT_WEDDING_DATA.animations,
   };
 };
@@ -437,6 +498,23 @@ export const saveWeddingData = async (
   if (profileError) {
     console.error("Failed to save wedding profile:", profileError);
     return false;
+  }
+
+  // Story & Schedule live in columns added by a later migration. Save them
+  // separately and best-effort so a wedding without that migration applied
+  // still saves everything else successfully.
+  const { error: contentError } = await supabase
+    .from("wedding_profiles")
+    .update({
+      love_story: updated.story,
+      wedding_schedule: updated.schedule,
+    } as never)
+    .eq("id", DEFAULT_WEDDING_ID);
+  if (contentError) {
+    console.warn(
+      "Story/Schedule not saved — apply the add_content_sections migration to enable these sections.",
+      contentError,
+    );
   }
 
   const giftRow: Database["public"]["Tables"]["wedding_gifts"]["Insert"] = {

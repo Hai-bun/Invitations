@@ -24,7 +24,7 @@ export const EditorialInvitation = ({
   const heroPhoto = weddingData.photos[0] || weddingData.backgroundImage;
   const order = getTemplate("editorial").sectionOrder.filter(
     (k) => k !== "hero",
-  ) as ("couple" | "location" | "gallery" | "gift" | "rsvp" | "footer")[];
+  ) as ("couple" | "story" | "schedule" | "location" | "gallery" | "gift" | "rsvp" | "footer")[];
 
   return (
     <>

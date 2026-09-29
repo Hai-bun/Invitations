@@ -59,7 +59,7 @@ export const BotanicalInvitation = ({
   const fade = (c: string) => (animOn ? c : "");
   const order = getTemplate("botanical").sectionOrder.filter(
     (k) => k !== "hero",
-  ) as ("couple" | "location" | "gallery" | "gift" | "rsvp" | "footer")[];
+  ) as ("couple" | "story" | "schedule" | "location" | "gallery" | "gift" | "rsvp" | "footer")[];
 
   return (
     <>

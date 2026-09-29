@@ -30,7 +30,9 @@ export const formatWeddingDate = (
   dateStr: string,
   language: Language,
 ): string => {
-  const date = new Date(dateStr);
+  // Parse as local midnight so the displayed day never drifts to the previous
+  // day for guests in negative-UTC timezones (plain "YYYY-MM-DD" parses as UTC).
+  const date = new Date(`${dateStr}T00:00:00`);
 
   if (language === "km") {
     try {

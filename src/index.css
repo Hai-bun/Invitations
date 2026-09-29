@@ -2,13 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&family=Lato:wght@300;400;700&family=Great+Vibes&family=Playfair+Display:wght@400;500;600;700&family=Libre+Baskerville:wght@400;700&family=Montserrat:wght@400;500;600;700&family=EB+Garamond:wght@400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&family=Lato:wght@300;400;700&family=Great+Vibes&family=Playfair+Display:wght@400;500;600;700&family=Libre+Baskerville:wght@400;700&family=Montserrat:wght@400;500;600;700&family=EB+Garamond:wght@400;500;600;700&family=Noto+Serif+Khmer:wght@400;500;600;700&family=Noto+Sans+Khmer:wght@300;400;500;700&family=Moul&display=swap");
 
 @layer base {
   :root {
-    --font-serif: "Cormorant Garamond", serif;
-    --font-sans: "Lato", sans-serif;
-    --font-script: "Great Vibes", cursive;
+    /* Latin font first, Khmer font as fallback so Khmer glyphs always render
+       in a proper Khmer typeface (per-character fallback). */
+    --font-serif: "Cormorant Garamond", "Noto Serif Khmer", serif;
+    --font-sans: "Lato", "Noto Sans Khmer", sans-serif;
+    --font-script: "Great Vibes", "Moul", cursive;
     /* Luxury Wedding Color Palette */
     --background: 30 25% 98%;
     --foreground: 20 20% 15%;
@@ -384,13 +386,13 @@
   .template-modern h1,
   .template-modern h2,
   .template-modern h3 {
-    font-family: "Lato", sans-serif;
+    font-family: var(--font-sans);
     font-weight: 300;
     letter-spacing: 0.1em;
   }
 
   .template-modern .font-script {
-    font-family: "Cormorant Garamond", serif;
+    font-family: var(--font-serif);
     font-weight: 300;
   }
 
@@ -1378,6 +1380,99 @@
   .template-split h2,
   .template-split h3 {
     color: #201c18;
+  }
+
+  /* ============================================================
+     Per-template SECTION identity — so the whole page (not just the
+     hero) reflects the template. Overriding --primary in each scope
+     recolours every button, icon, heart and focus ring at once, which
+     removes the theme-pink clash and unifies each design.
+     ============================================================ */
+
+  /* Royal — deep burgundy accent, gold heading flourish */
+  .template-royal {
+    --primary: 348 58% 32%;
+    --primary-foreground: 40 55% 92%;
+    --ring: 348 58% 32%;
+  }
+  .template-royal section h2 {
+    position: relative;
+    padding-bottom: 0.75rem;
+  }
+  .template-royal section h2::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    width: 66px;
+    height: 2px;
+    transform: translateX(-50%);
+    background: linear-gradient(90deg, transparent, #c8a24c, transparent);
+  }
+  .template-royal .shadow-card {
+    border: 1px solid rgba(200, 162, 76, 0.35);
+  }
+
+  /* Editorial — ink-black accent, left-aligned, squared, no header icons */
+  .template-editorial {
+    --primary: 20 10% 12%;
+    --primary-foreground: 40 30% 96%;
+    --ring: 20 10% 12%;
+  }
+  .template-editorial section {
+    text-align: left;
+  }
+  .template-editorial section .lucide.mx-auto {
+    display: none;
+  }
+  .template-editorial .ornament-divider {
+    display: none;
+  }
+  .template-editorial section h2 {
+    font-size: clamp(1.9rem, 5vw, 3rem);
+    line-height: 1.03;
+  }
+  .template-editorial .rounded-lg,
+  .template-editorial .rounded-xl {
+    border-radius: 0 !important;
+  }
+
+  /* Botanical — soft rose accent, leafy dividers, extra-rounded cards */
+  .template-botanical {
+    --primary: 343 44% 60%;
+    --primary-foreground: 350 40% 98%;
+    --ring: 343 44% 60%;
+  }
+  .template-botanical .text-gold {
+    color: #7d9b6a !important;
+  }
+  .template-botanical .shadow-card,
+  .template-botanical .rounded-lg {
+    border-radius: 1.25rem !important;
+  }
+
+  /* Split — warm bronze accent, thin rule under headings */
+  .template-split {
+    --primary: 28 36% 42%;
+    --primary-foreground: 36 33% 96%;
+    --ring: 28 36% 42%;
+  }
+  .template-split .text-gold {
+    color: #b8865a !important;
+  }
+  .template-split section h2 {
+    position: relative;
+    padding-bottom: 0.7rem;
+  }
+  .template-split section h2::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    width: 42px;
+    height: 1px;
+    transform: translateX(-50%);
+    background: #b8865a;
   }
 
   /* Honour OS motion preference for the new templates' entrance fades. */

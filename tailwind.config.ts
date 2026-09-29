@@ -3,6 +3,10 @@ import type { Config } from "tailwindcss";
 export default {
   darkMode: ["class"],
   content: ["./pages/**/*.{ts,tsx}", "./components/**/*.{ts,tsx}", "./app/**/*.{ts,tsx}", "./src/**/*.{ts,tsx}"],
+  // Template/theme classes are applied dynamically (e.g. `template-${id}`), so
+  // Tailwind never sees them literally and would purge their `@layer components`
+  // rules. Safelist the prefixes to keep every template/theme style.
+  safelist: [{ pattern: /^template-/ }, { pattern: /^theme-/ }],
   prefix: "",
   theme: {
     container: {

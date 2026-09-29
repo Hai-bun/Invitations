@@ -169,9 +169,20 @@ export const applyTheme = (
   const headingFont = customFonts?.headingFont?.trim() || theme.fonts.heading;
   const bodyFont = customFonts?.bodyFont?.trim() || theme.fonts.body;
 
-  root.style.setProperty("--font-serif", headingFont);
-  root.style.setProperty("--font-sans", bodyFont);
-  root.style.setProperty("--font-script", theme.fonts.script);
+  // Keep a Khmer fallback after the chosen Latin font so Khmer text renders in
+  // a proper Khmer typeface no matter which custom font is selected.
+  root.style.setProperty(
+    "--font-serif",
+    `"${headingFont}", "Noto Serif Khmer", serif`,
+  );
+  root.style.setProperty(
+    "--font-sans",
+    `"${bodyFont}", "Noto Sans Khmer", sans-serif`,
+  );
+  root.style.setProperty(
+    "--font-script",
+    `"${theme.fonts.script}", "Moul", cursive`,
+  );
 
   // Store theme-specific classes
   root.setAttribute("data-theme", themeId);

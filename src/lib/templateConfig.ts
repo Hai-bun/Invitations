@@ -162,7 +162,9 @@ export const TEMPLATES: Record<TemplateType, TemplateConfig> = {
     sectionOrder: [
       "hero",
       "couple",
+      "story",
       "location",
+      "schedule",
       "gallery",
       "gift",
       "rsvp",
@@ -185,8 +187,10 @@ export const TEMPLATES: Record<TemplateType, TemplateConfig> = {
     sectionOrder: [
       "hero",
       "couple",
+      "story",
       "gallery",
       "location",
+      "schedule",
       "rsvp",
       "gift",
       "footer",
@@ -208,8 +212,10 @@ export const TEMPLATES: Record<TemplateType, TemplateConfig> = {
     sectionOrder: [
       "hero",
       "couple",
+      "story",
       "gallery",
       "location",
+      "schedule",
       "gift",
       "rsvp",
       "footer",
@@ -231,7 +237,9 @@ export const TEMPLATES: Record<TemplateType, TemplateConfig> = {
     sectionOrder: [
       "hero",
       "couple",
+      "story",
       "location",
+      "schedule",
       "gallery",
       "rsvp",
       "gift",

@@ -31,6 +31,8 @@ import {
   Bot,
   Share2,
   Sparkles,
+  Clock,
+  BookHeart,
 } from "lucide-react";
 import { toast } from "sonner";
 import {
@@ -38,10 +40,12 @@ import {
   saveWeddingData,
   addGuest,
   deleteGuest,
+  generateGuestId,
   WeddingData,
   Guest,
   RSVPResponse,
   TemplateType,
+  ScheduleItem,
 } from "@/lib/weddingStore";
 import { uploadWeddingImage, deleteWeddingImage } from "@/lib/storage";
 import { ThemeSelector } from "@/components/admin/ThemeSelector";
@@ -121,6 +125,38 @@ const Admin = () => {
   const copyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text);
     toast.success("Link copied to clipboard!");
+  };
+
+  const addScheduleItem = () => {
+    if (!data) return;
+    const item: ScheduleItem = {
+      id: generateGuestId(),
+      time: "",
+      title: "",
+      description: "",
+    };
+    setData({
+      ...data,
+      schedule: { ...data.schedule, items: [...data.schedule.items, item] },
+    });
+  };
+
+  const updateScheduleItem = (
+    index: number,
+    field: keyof ScheduleItem,
+    value: string,
+  ) => {
+    if (!data) return;
+    const items = data.schedule.items.map((item, i) =>
+      i === index ? { ...item, [field]: value } : item,
+    );
+    setData({ ...data, schedule: { ...data.schedule, items } });
+  };
+
+  const removeScheduleItem = (index: number) => {
+    if (!data) return;
+    const items = data.schedule.items.filter((_, i) => i !== index);
+    setData({ ...data, schedule: { ...data.schedule, items } });
   };
 
   const MAX_IMAGE_BYTES = Infinity; // no client-side size limit
@@ -335,7 +371,9 @@ const Admin = () => {
           <div className="flex items-center gap-3">
             <Button
               variant="outline"
-              onClick={() => window.open("/wedding", "_blank")}
+              onClick={() =>
+                window.open(`/wedding?template=${data.template}`, "_blank")
+              }
               className="hidden sm:flex">
               <ExternalLink className="w-4 h-4 mr-2" />
               Preview
@@ -388,6 +426,18 @@ const Admin = () => {
               className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
               <Heart className="w-4 h-4 mr-2" />
               <span className="hidden sm:inline">Couple</span>
+            </TabsTrigger>
+            <TabsTrigger
+              value="story"
+              className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
+              <BookHeart className="w-4 h-4 mr-2" />
+              <span className="hidden sm:inline">Story</span>
+            </TabsTrigger>
+            <TabsTrigger
+              value="schedule"
+              className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
+              <Clock className="w-4 h-4 mr-2" />
+              <span className="hidden sm:inline">Schedule</span>
             </TabsTrigger>
             <TabsTrigger
               value="date"
@@ -947,6 +997,194 @@ const Admin = () => {
                     />
                   </div>
                 </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          {/* Our Story Tab */}
+          <TabsContent value="story">
+            <Card>
+              <CardHeader>
+                <CardTitle className="font-serif">Our Love Story</CardTitle>
+                <CardDescription>
+                  A short story shown as its own section on the invitation
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                <div className="flex items-center space-x-3">
+                  <Switch
+                    id="storyEnabled"
+                    checked={data.story.enabled}
+                    onCheckedChange={(checked) =>
+                      setData({
+                        ...data,
+                        story: { ...data.story, enabled: checked },
+                      })
+                    }
+                  />
+                  <Label htmlFor="storyEnabled">Show the "Our Story" section</Label>
+                </div>
+
+                {data.story.enabled && (
+                  <div className="space-y-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="storyTitle">Section title</Label>
+                      <Input
+                        id="storyTitle"
+                        value={data.story.title}
+                        onChange={(e) =>
+                          setData({
+                            ...data,
+                            story: { ...data.story, title: e.target.value },
+                          })
+                        }
+                        placeholder="Our Love Story"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="storyText">Story</Label>
+                      <Textarea
+                        id="storyText"
+                        rows={6}
+                        value={data.story.text}
+                        onChange={(e) =>
+                          setData({
+                            ...data,
+                            story: { ...data.story, text: e.target.value },
+                          })
+                        }
+                        placeholder="How you met, your journey together..."
+                      />
+                    </div>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          {/* Schedule Tab */}
+          <TabsContent value="schedule">
+            <Card>
+              <CardHeader>
+                <CardTitle className="font-serif">
+                  Wedding Day Schedule
+                </CardTitle>
+                <CardDescription>
+                  A timeline of the day's events shown on the invitation
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                <div className="flex items-center space-x-3">
+                  <Switch
+                    id="scheduleEnabled"
+                    checked={data.schedule.enabled}
+                    onCheckedChange={(checked) =>
+                      setData({
+                        ...data,
+                        schedule: { ...data.schedule, enabled: checked },
+                      })
+                    }
+                  />
+                  <Label htmlFor="scheduleEnabled">
+                    Show the schedule section
+                  </Label>
+                </div>
+
+                {data.schedule.enabled && (
+                  <div className="space-y-6">
+                    <div className="space-y-2">
+                      <Label htmlFor="scheduleTitle">Section title</Label>
+                      <Input
+                        id="scheduleTitle"
+                        value={data.schedule.title}
+                        onChange={(e) =>
+                          setData({
+                            ...data,
+                            schedule: {
+                              ...data.schedule,
+                              title: e.target.value,
+                            },
+                          })
+                        }
+                        placeholder="Wedding Day Schedule"
+                      />
+                    </div>
+
+                    <div className="space-y-4">
+                      {data.schedule.items.length === 0 ? (
+                        <p className="text-center text-muted-foreground py-6">
+                          No events yet. Add your first one below.
+                        </p>
+                      ) : (
+                        data.schedule.items.map((item, index) => (
+                          <div
+                            key={item.id}
+                            className="p-4 bg-muted/50 rounded-lg space-y-3">
+                            <div className="flex gap-3">
+                              <div className="w-28 shrink-0 space-y-1">
+                                <Label className="text-xs">Time</Label>
+                                <Input
+                                  type="time"
+                                  value={item.time}
+                                  onChange={(e) =>
+                                    updateScheduleItem(
+                                      index,
+                                      "time",
+                                      e.target.value,
+                                    )
+                                  }
+                                />
+                              </div>
+                              <div className="flex-1 space-y-1">
+                                <Label className="text-xs">Title</Label>
+                                <Input
+                                  value={item.title}
+                                  onChange={(e) =>
+                                    updateScheduleItem(
+                                      index,
+                                      "title",
+                                      e.target.value,
+                                    )
+                                  }
+                                  placeholder="e.g. Reception Dinner"
+                                />
+                              </div>
+                              <Button
+                                variant="destructive"
+                                size="sm"
+                                className="mt-6"
+                                onClick={() => removeScheduleItem(index)}>
+                                <Trash2 className="w-4 h-4" />
+                              </Button>
+                            </div>
+                            <div className="space-y-1">
+                              <Label className="text-xs">Description</Label>
+                              <Input
+                                value={item.description}
+                                onChange={(e) =>
+                                  updateScheduleItem(
+                                    index,
+                                    "description",
+                                    e.target.value,
+                                  )
+                                }
+                                placeholder="Short details (optional)"
+                              />
+                            </div>
+                          </div>
+                        ))
+                      )}
+
+                      <Button
+                        variant="outline"
+                        onClick={addScheduleItem}
+                        className="w-full">
+                        <Plus className="w-4 h-4 mr-2" />
+                        Add event
+                      </Button>
+                    </div>
+                  </div>
+                )}
               </CardContent>
             </Card>
           </TabsContent>

@@ -2,6 +2,8 @@ import { Fragment, type ReactNode } from "react";
 import type { WeddingData, Guest } from "@/lib/weddingStore";
 import type { Language } from "@/lib/i18n";
 import { CoupleSection } from "../CoupleSection";
+import { StorySection } from "../StorySection";
+import { ScheduleSection } from "../ScheduleSection";
 import { LocationSection } from "../LocationSection";
 import { PhotoGallery } from "../PhotoGallery";
 import { GiftSection } from "../GiftSection";
@@ -10,6 +12,8 @@ import { Footer } from "../Footer";
 
 export type SectionKey =
   | "couple"
+  | "story"
+  | "schedule"
   | "location"
   | "gallery"
   | "gift"
@@ -18,7 +22,9 @@ export type SectionKey =
 
 const DEFAULT_ORDER: SectionKey[] = [
   "couple",
+  "story",
   "location",
+  "schedule",
   "gallery",
   "gift",
   "rsvp",
@@ -57,6 +63,10 @@ export const TemplateSections = ({
         brideParentsKh={weddingData.brideParentsKh}
         language={language}
       />
+    ),
+    story: <StorySection story={weddingData.story} language={language} />,
+    schedule: (
+      <ScheduleSection schedule={weddingData.schedule} language={language} />
     ),
     location: (
       <LocationSection

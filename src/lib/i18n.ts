@@ -33,6 +33,9 @@ export interface Translations {
   // Gallery Section
   ourStory: string;
   photoGallery: string;
+
+  // Story & Schedule Sections
+  weddingSchedule: string;
   
   // RSVP Section
   rsvpTitle: string;
@@ -101,6 +104,9 @@ const translations: Record<Language, Translations> = {
     // Gallery Section
     ourStory: 'Our Story',
     photoGallery: 'Photo Gallery',
+
+    // Story & Schedule Sections
+    weddingSchedule: 'Wedding Day Schedule',
     
     // RSVP Section
     rsvpTitle: 'RSVP',
@@ -167,6 +173,9 @@ const translations: Record<Language, Translations> = {
     // Gallery Section
     ourStory: 'រឿងរ៉ាវរបស់យើង',
     photoGallery: 'វិចិត្រសាល',
+
+    // Story & Schedule Sections
+    weddingSchedule: 'កម្មវិធីថ្ងៃមង្គលការ',
     
     // RSVP Section
     rsvpTitle: 'បញ្ជាក់ការចូលរួម',

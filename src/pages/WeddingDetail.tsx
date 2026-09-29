@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import { useWeddingData, useGuest } from "@/hooks/use-wedding-data";
 import { FloatingPetals } from "@/components/ui/FloatingPetals";
 import { OrnamentDivider } from "@/components/ui/OrnamentDivider";
 import { CountdownTimer } from "@/components/wedding/CountdownTimer";
 import { CoupleSection } from "@/components/wedding/CoupleSection";
+import { StorySection } from "@/components/wedding/StorySection";
+import { ScheduleSection } from "@/components/wedding/ScheduleSection";
 import { LocationSection } from "@/components/wedding/LocationSection";
 import { PhotoGallery } from "@/components/wedding/PhotoGallery";
 import { RSVPSection } from "@/components/wedding/RSVPSection";
@@ -19,7 +21,8 @@ import { SplitInvitation } from "@/components/wedding/templates/SplitInvitation"
 import { LanguageSwitcher } from "@/components/ui/LanguageSwitcher";
 import { Heart, Calendar } from "lucide-react";
 import { applyTheme, getTheme, ThemeType } from "@/lib/themeConfig";
-import { getTemplate } from "@/lib/templateConfig";
+import { getTemplate, TEMPLATES } from "@/lib/templateConfig";
+import type { TemplateType } from "@/lib/weddingStore";
 import { cn } from "@/lib/utils";
 import { Language, getStoredLanguage, getTranslations } from "@/lib/i18n";
 import {
@@ -29,9 +32,18 @@ import {
 
 const WeddingDetail = () => {
   const { guestId } = useParams<{ guestId: string }>();
+  const [searchParams] = useSearchParams();
   const { data: weddingData } = useWeddingData();
   const { data: guest } = useGuest(guestId);
   const [language, setLanguage] = useState<Language>(getStoredLanguage());
+
+  // Optional ?template= override so any template can be previewed without
+  // saving it (used by the admin Preview button).
+  const previewParam = searchParams.get("template");
+  const previewTemplate =
+    previewParam && previewParam in TEMPLATES
+      ? (previewParam as TemplateType)
+      : null;
 
   useEffect(() => {
     if (!weddingData) return;
@@ -68,7 +80,7 @@ const WeddingDetail = () => {
 
   const t = getTranslations(language);
   const theme = getTheme(weddingData.theme as ThemeType);
-  const template = getTemplate(weddingData.template);
+  const template = getTemplate(previewTemplate ?? weddingData.template);
   const anim = weddingData.animations ?? {
     enabled: true,
     floatingPetals: true,
@@ -94,7 +106,7 @@ const WeddingDetail = () => {
   const rootClassName = cn(
     "min-h-screen bg-background wedding-root animate-fade-in",
     `theme-${weddingData.theme}`,
-    `template-${weddingData.template}`,
+    `template-${template.id}`,
     !animOn && "animations-off",
     (!animOn || !anim.photoHoverZoom) && "no-photo-zoom",
   );
@@ -306,6 +318,9 @@ const WeddingDetail = () => {
         language={language}
       />
 
+      {/* Our Story Section */}
+      <StorySection story={weddingData.story} language={language} />
+
       {/* Location Section */}
       <LocationSection
         eventTitle={weddingData.eventTitle}
@@ -313,6 +328,9 @@ const WeddingDetail = () => {
         eventMapUrl={weddingData.eventMapUrl}
         language={language}
       />
+
+      {/* Wedding Day Schedule */}
+      <ScheduleSection schedule={weddingData.schedule} language={language} />
 
       {/* Photo Gallery */}
       <PhotoGallery photos={weddingData.photos} language={language} />

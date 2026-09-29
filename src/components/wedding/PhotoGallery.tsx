@@ -56,7 +56,7 @@ export const PhotoGallery = ({ photos, language }: PhotoGalleryProps) => {
           {photos.map((photo, index) => (
             <div
               key={index}
-              className="aspect-square overflow-hidden rounded-lg cursor-pointer group shadow-card hover:shadow-elevated transition-all duration-300"
+              className="aspect-square overflow-hidden rounded-lg cursor-pointer group shadow-card hover:shadow-elevated transition-all duration-300 bg-muted/40"
               onClick={() => setSelectedIndex(index)}
             >
               <FadeInImage

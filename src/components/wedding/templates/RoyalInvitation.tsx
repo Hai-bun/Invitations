@@ -48,7 +48,7 @@ export const RoyalInvitation = ({
   const fade = (c: string) => (animOn ? c : "");
   const order = getTemplate("royal").sectionOrder.filter(
     (k) => k !== "hero",
-  ) as ("couple" | "location" | "gallery" | "gift" | "rsvp" | "footer")[];
+  ) as ("couple" | "story" | "schedule" | "location" | "gallery" | "gift" | "rsvp" | "footer")[];
 
   return (
     <>
