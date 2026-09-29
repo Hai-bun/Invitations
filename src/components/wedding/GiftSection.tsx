@@ -72,7 +72,7 @@ export const GiftSection = ({
   };
 
   return (
-    <section className="py-16 px-4 bg-romantic-gradient">
+    <section className="scroll-reveal py-16 px-4 bg-romantic-gradient">
       <div className="max-w-md mx-auto text-center">
         <Gift className="w-10 h-10 text-primary mx-auto mb-4" />
 

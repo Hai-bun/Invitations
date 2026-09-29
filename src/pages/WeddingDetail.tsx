@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import { useParams, useSearchParams } from "react-router-dom";
 import { useWeddingData, useGuest } from "@/hooks/use-wedding-data";
 import { FloatingPetals } from "@/components/ui/FloatingPetals";
@@ -20,7 +20,7 @@ import { SplitInvitation } from "@/components/wedding/templates/SplitInvitation"
 
 import { LanguageSwitcher } from "@/components/ui/LanguageSwitcher";
 import { Heart, Calendar } from "lucide-react";
-import { applyTheme, getTheme, ThemeType } from "@/lib/themeConfig";
+import { applyTheme, getTheme, ThemeType, THEMES } from "@/lib/themeConfig";
 import { getTemplate, TEMPLATES } from "@/lib/templateConfig";
 import type { TemplateType } from "@/lib/weddingStore";
 import { cn } from "@/lib/utils";
@@ -45,13 +45,20 @@ const WeddingDetail = () => {
       ? (previewParam as TemplateType)
       : null;
 
+  // Optional ?theme= override, same idea as ?template= — preview any theme
+  // without saving it.
+  const themeParam = searchParams.get("theme");
+  const previewTheme =
+    themeParam && themeParam in THEMES ? (themeParam as ThemeType) : null;
+  const activeThemeId = previewTheme ?? (weddingData?.theme as ThemeType);
+
   useEffect(() => {
     if (!weddingData) return;
-    applyTheme(weddingData.theme as ThemeType, {
+    applyTheme(activeThemeId, {
       headingFont: weddingData.headingFont,
       bodyFont: weddingData.bodyFont,
     });
-  }, [weddingData]);
+  }, [weddingData, activeThemeId]);
 
   // Set animation speed CSS variable whenever speedMultiplier changes
   const speedMultiplier =
@@ -68,6 +75,49 @@ const WeddingDetail = () => {
     );
   }, [speedMultiplier]);
 
+  // Scroll-reveal: sections rise into view as the guest scrolls to them.
+  // Progressive enhancement — content is visible by default and only hidden
+  // once we're set up, so it never disappears if JS/observer is unavailable.
+  useLayoutEffect(() => {
+    if (!weddingData) return;
+    const root = document.querySelector<HTMLElement>(".wedding-root");
+    if (!root) return;
+
+    const a = weddingData.animations;
+    const effTemplate = previewTemplate ?? weddingData.template;
+    const on =
+      (a?.enabled ?? true) &&
+      (a?.fadeInOnScroll ?? true) &&
+      effTemplate !== "reel" &&
+      !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    const els = Array.from(
+      root.querySelectorAll<HTMLElement>(".scroll-reveal"),
+    );
+    if (!on) {
+      els.forEach((el) => el.classList.add("is-visible"));
+      return;
+    }
+
+    root.classList.add("reveal-ready");
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("is-visible");
+            io.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.12, rootMargin: "0px 0px -6% 0px" },
+    );
+    els.forEach((el) => io.observe(el));
+    return () => {
+      io.disconnect();
+      root.classList.remove("reveal-ready");
+    };
+  }, [weddingData, previewTemplate]);
+
   if (!weddingData) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background">
@@ -79,7 +129,7 @@ const WeddingDetail = () => {
   }
 
   const t = getTranslations(language);
-  const theme = getTheme(weddingData.theme as ThemeType);
+  const theme = getTheme(activeThemeId);
   const template = getTemplate(previewTemplate ?? weddingData.template);
   const anim = weddingData.animations ?? {
     enabled: true,
@@ -105,7 +155,7 @@ const WeddingDetail = () => {
 
   const rootClassName = cn(
     "min-h-screen bg-background wedding-root animate-fade-in",
-    `theme-${weddingData.theme}`,
+    `theme-${activeThemeId}`,
     `template-${template.id}`,
     !animOn && "animations-off",
     (!animOn || !anim.photoHoverZoom) && "no-photo-zoom",

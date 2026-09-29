@@ -23,7 +23,7 @@ export const ScheduleSection = ({ schedule, language }: ScheduleSectionProps) =>
   if (!schedule?.enabled || items.length === 0) return null;
 
   return (
-    <section className="py-16 px-4 bg-romantic-gradient">
+    <section className="scroll-reveal py-16 px-4 bg-romantic-gradient">
       <div className="max-w-2xl mx-auto">
         <div className="text-center mb-10">
           <Clock className="w-10 h-10 text-primary mx-auto mb-4" />

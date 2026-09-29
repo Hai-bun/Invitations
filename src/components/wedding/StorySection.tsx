@@ -15,7 +15,7 @@ export const StorySection = ({ story, language }: StorySectionProps) => {
   if (!story?.enabled || !story.text?.trim()) return null;
 
   return (
-    <section className="py-16 px-4 bg-card">
+    <section className="scroll-reveal py-16 px-4 bg-card">
       <div className="max-w-2xl mx-auto text-center">
         <Heart className="w-10 h-10 text-primary mx-auto mb-4" fill="currentColor" />
         <h2 className="font-serif text-3xl sm:text-4xl font-semibold text-foreground mb-4">

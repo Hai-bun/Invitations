@@ -64,7 +64,7 @@ export const LocationSection = ({ eventTitle, eventAddress, eventMapUrl, languag
     : `https://maps.google.com/maps?q=${encodeURIComponent(eventAddress)}`;
 
   return (
-    <section className="py-16 px-4 bg-card">
+    <section className="scroll-reveal py-16 px-4 bg-card">
       <div className="max-w-4xl mx-auto text-center">
         <MapPin className="w-10 h-10 text-primary mx-auto mb-4" />
         
