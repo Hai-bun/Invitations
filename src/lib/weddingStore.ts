@@ -11,7 +11,11 @@ export type TemplateType =
   | "royal"
   | "editorial"
   | "botanical"
-  | "split";
+  | "split"
+  | "artdeco"
+  | "polaroid"
+  | "mono"
+  | "tropical";
 
 export interface SocialLinks {
   telegram: string;

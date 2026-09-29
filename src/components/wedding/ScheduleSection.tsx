@@ -24,7 +24,7 @@ export const ScheduleSection = ({ schedule, language }: ScheduleSectionProps) =>
 
   return (
     <section className="scroll-reveal py-16 px-4 bg-romantic-gradient">
-      <div className="max-w-2xl mx-auto">
+      <div className="max-w-md mx-auto">
         <div className="text-center mb-10">
           <Clock className="w-10 h-10 text-primary mx-auto mb-4" />
           <h2 className="font-serif text-3xl sm:text-4xl font-semibold text-foreground">
@@ -32,50 +32,34 @@ export const ScheduleSection = ({ schedule, language }: ScheduleSectionProps) =>
           </h2>
         </div>
 
-        <div className="relative">
-          {/* Vertical timeline spine */}
-          <div className="absolute left-[calc(0.5rem-1px)] sm:left-1/2 top-2 bottom-2 w-px bg-primary/30 sm:-translate-x-1/2" />
+        <ol className="schedule-timeline">
+          {items.map((item, index) => (
+            <li key={item.id || index} className="flex gap-5">
+              {/* Rail: dot + connecting line */}
+              <div className="flex flex-col items-center">
+                <span className="mt-1.5 w-4 h-4 rounded-full bg-primary ring-4 ring-background shrink-0" />
+                {index < items.length - 1 && (
+                  <span className="w-px flex-1 bg-primary/25 my-1" />
+                )}
+              </div>
 
-          <ul className="space-y-8">
-            {items.map((item, index) => (
-              <li
-                key={item.id || index}
-                className="relative pl-8 sm:pl-0 sm:grid sm:grid-cols-2 sm:gap-8 sm:items-center">
-                {/* Node dot */}
-                <span className="absolute left-0 top-1.5 sm:left-1/2 sm:-translate-x-1/2 w-4 h-4 rounded-full bg-primary ring-4 ring-background" />
-
-                {/* Time — left column on desktop, alternating side */}
-                <div
-                  className={
-                    index % 2 === 0
-                      ? "sm:text-right sm:pr-8"
-                      : "sm:order-2 sm:text-left sm:pl-8"
-                  }>
-                  <p className="font-serif text-xl text-primary font-semibold">
-                    {displayTime(item.time)}
+              {/* Content */}
+              <div className="pb-8">
+                <p className="font-serif text-lg font-semibold text-primary leading-none">
+                  {displayTime(item.time)}
+                </p>
+                <h3 className="font-serif text-lg font-semibold text-foreground mt-1.5">
+                  {item.title}
+                </h3>
+                {item.description?.trim() && (
+                  <p className="text-sm text-muted-foreground mt-1">
+                    {item.description}
                   </p>
-                </div>
-
-                {/* Detail card */}
-                <div
-                  className={
-                    index % 2 === 0
-                      ? "sm:order-2 sm:text-left sm:pl-8"
-                      : "sm:text-right sm:pr-8"
-                  }>
-                  <h3 className="font-serif text-lg font-semibold text-foreground">
-                    {item.title}
-                  </h3>
-                  {item.description?.trim() && (
-                    <p className="text-sm text-muted-foreground mt-1">
-                      {item.description}
-                    </p>
-                  )}
-                </div>
-              </li>
-            ))}
-          </ul>
-        </div>
+                )}
+              </div>
+            </li>
+          ))}
+        </ol>
       </div>
     </section>
   );

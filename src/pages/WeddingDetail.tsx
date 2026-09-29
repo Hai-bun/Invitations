@@ -18,6 +18,10 @@ import { RoyalInvitation } from "@/components/wedding/templates/RoyalInvitation"
 import { EditorialInvitation } from "@/components/wedding/templates/EditorialInvitation";
 import { BotanicalInvitation } from "@/components/wedding/templates/BotanicalInvitation";
 import { SplitInvitation } from "@/components/wedding/templates/SplitInvitation";
+import { ArtDecoInvitation } from "@/components/wedding/templates/ArtDecoInvitation";
+import { PolaroidInvitation } from "@/components/wedding/templates/PolaroidInvitation";
+import { MonoInvitation } from "@/components/wedding/templates/MonoInvitation";
+import { TropicalInvitation } from "@/components/wedding/templates/TropicalInvitation";
 
 import { LanguageSwitcher } from "@/components/ui/LanguageSwitcher";
 import { Heart, Calendar } from "lucide-react";
@@ -148,7 +152,8 @@ const WeddingDetail = () => {
   // Ambient sparkles suit most templates; skip the clean Editorial and the
   // Reel (which has its own cinematic grain).
   const showSparkles =
-    animOn && !["editorial", "reel"].includes(template.id);
+    animOn &&
+    !["editorial", "reel", "mono", "polaroid"].includes(template.id);
   const fadeCls = (base: string) => (animOn && anim.fadeInOnScroll ? base : "");
 
   const handleLanguageChange = (newLang: Language) => {
@@ -174,6 +179,10 @@ const WeddingDetail = () => {
     editorial: EditorialInvitation,
     botanical: BotanicalInvitation,
     split: SplitInvitation,
+    artdeco: ArtDecoInvitation,
+    polaroid: PolaroidInvitation,
+    mono: MonoInvitation,
+    tropical: TropicalInvitation,
   }[template.id as string];
 
   if (SelfContainedTemplate) {

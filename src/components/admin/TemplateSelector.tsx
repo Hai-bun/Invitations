@@ -149,6 +149,55 @@ const templatePreviews: Record<TemplateType, React.ReactNode> = {
       </div>
     </div>
   ),
+  artdeco: (
+    <div className="h-full bg-[#0e0e13] flex flex-col items-center justify-center p-2 relative overflow-hidden">
+      <div className="absolute inset-1.5 border border-[#d4af50]/60" />
+      <div className="w-8 h-0.5 bg-[repeating-linear-gradient(90deg,#d4af50_0_1px,transparent_1px_4px)]" />
+      <div className="text-[10px] font-serif uppercase tracking-[0.15em] text-[#f2e4bf] mt-1">
+        A & B
+      </div>
+      <div className="flex items-center gap-1 mt-1 text-[#d4af50]">
+        <span className="w-3 h-px bg-current" />
+        <span className="text-[7px]">&amp;</span>
+        <span className="w-3 h-px bg-current" />
+      </div>
+    </div>
+  ),
+  polaroid: (
+    <div className="h-full bg-[#f5eee1] flex items-center justify-center p-2 relative overflow-hidden">
+      <div className="bg-white p-1 pb-3 shadow-md rotate-[-6deg]">
+        <div className="w-10 h-10 bg-gradient-to-br from-[#d9c3a5] to-[#b89b78]" />
+        <div className="text-[6px] text-center font-script text-[#6a5c4c] mt-0.5">
+          A & B
+        </div>
+      </div>
+      <div className="absolute -top-0.5 left-1/2 -translate-x-1/2 w-6 h-2 bg-[#b4c8be]/60 rotate-[-4deg]" />
+    </div>
+  ),
+  mono: (
+    <div className="h-full bg-white flex flex-col justify-center p-3 relative overflow-hidden">
+      <div className="h-px bg-black" />
+      <div className="text-[14px] leading-none font-serif font-light text-neutral-900 mt-1">
+        Anna
+      </div>
+      <div className="text-[14px] leading-none font-serif font-light text-neutral-900">
+        Ben
+      </div>
+      <div className="h-px bg-black mt-1" />
+    </div>
+  ),
+  tropical: (
+    <div className="h-full bg-gradient-to-br from-[#157a6e] via-[#5bbfae] to-[#f3d9b5] flex flex-col items-center justify-center p-2 relative overflow-hidden">
+      <div className="absolute -top-1 -left-1 text-[14px] rotate-[-20deg]">🌴</div>
+      <div className="absolute -top-1 -right-1 text-[14px] scale-x-[-1] rotate-[-20deg]">🌴</div>
+      <div className="text-[11px] font-script text-white drop-shadow mt-1">
+        A &amp; B
+      </div>
+      <div className="text-[6px] uppercase tracking-[0.2em] text-white/90 mt-0.5">
+        Paradise
+      </div>
+    </div>
+  ),
 };
 
 export const TemplateSelector = ({
