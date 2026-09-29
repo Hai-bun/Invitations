@@ -291,10 +291,10 @@ const buildWeddingProfileRow = (
   groom_parent_names: weddingData.groomParents,
   bride_parent_names_kh: weddingData.brideParentsKh,
   groom_parent_names_kh: weddingData.groomParentsKh,
-  // Store the chosen wall-clock date & time as UTC so it round-trips exactly
-  // (the read side uses getUTC*) and shows the same for every guest regardless
-  // of their device timezone.
-  wedding_date_time: `${weddingData.weddingDate}T${weddingData.weddingTime}:00Z`,
+  // Store the exact wall-clock date & time the couple entered (no timezone
+  // suffix). The column is `timestamp without time zone`, so this is stored
+  // literally and read back verbatim — the time never shifts per device.
+  wedding_date_time: `${weddingData.weddingDate}T${weddingData.weddingTime}:00`,
   theme: weddingData.theme,
   template: weddingData.template,
   background_image_url: weddingData.backgroundImage,
@@ -327,24 +327,21 @@ const mapProfileToWeddingData = (
   photos: Database["public"]["Tables"]["photo_gallery"]["Row"][],
   gift: Database["public"]["Tables"]["wedding_gifts"]["Row"] | null,
 ): WeddingData => {
-  const weddingDateTime = profile.wedding_date_time
-    ? new Date(profile.wedding_date_time)
-    : new Date(
-        `${DEFAULT_WEDDING_DATA.weddingDate}T${DEFAULT_WEDDING_DATA.weddingTime}`,
-      );
+  // wedding_date_time comes back as a naive ISO-ish string, e.g.
+  // "2026-12-20T16:00:00" (the column is `timestamp without time zone`) or
+  // "...+00:00". Pull the date and time straight out of the string so NO
+  // timezone conversion is ever applied — the wall-clock time the couple
+  // entered is exactly what's shown, on every device.
+  const rawDateTime =
+    profile.wedding_date_time ??
+    `${DEFAULT_WEDDING_DATA.weddingDate}T${DEFAULT_WEDDING_DATA.weddingTime}:00`;
+  const dtMatch = rawDateTime.match(/(\d{4}-\d{2}-\d{2})[T ](\d{2}:\d{2})/);
 
   const getSavedDate = () =>
-    `${weddingDateTime.getUTCFullYear()}-${String(
-      weddingDateTime.getUTCMonth() + 1,
-    ).padStart(
-      2,
-      "0",
-    )}-${String(weddingDateTime.getUTCDate()).padStart(2, "0")}`;
+    dtMatch ? dtMatch[1] : DEFAULT_WEDDING_DATA.weddingDate;
 
   const getSavedTime = () =>
-    `${String(weddingDateTime.getUTCHours()).padStart(2, "0")}:${String(
-      weddingDateTime.getUTCMinutes(),
-    ).padStart(2, "0")}`;
+    dtMatch ? dtMatch[2] : DEFAULT_WEDDING_DATA.weddingTime;
 
   return {
     groomName: profile.groom_name ?? DEFAULT_WEDDING_DATA.groomName,
