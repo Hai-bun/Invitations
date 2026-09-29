@@ -306,9 +306,13 @@ const buildWeddingProfileRow = (
   show_countdown: weddingData.showCountdown,
   social_links: weddingData.socialLinks,
   telegram_config: weddingData.telegramConfig,
+  // Story & Schedule are packed into the existing welcome_popup jsonb column so
+  // no new database columns (migration) are required to persist them.
   welcome_popup: {
     enabled: weddingData.welcomePopupEnabled,
     message: weddingData.welcomePopupMessage,
+    story: weddingData.story,
+    schedule: weddingData.schedule,
   },
   animations: weddingData.animations,
   event_title: weddingData.eventTitle,
@@ -390,10 +394,10 @@ const mapProfileToWeddingData = (
       profile.welcome_popup?.message ??
       DEFAULT_WEDDING_DATA.welcomePopupMessage,
     story:
-      (profile as { love_story?: StoryConfig }).love_story ??
+      (profile.welcome_popup as { story?: StoryConfig })?.story ??
       DEFAULT_WEDDING_DATA.story,
     schedule:
-      (profile as { wedding_schedule?: ScheduleConfig }).wedding_schedule ??
+      (profile.welcome_popup as { schedule?: ScheduleConfig })?.schedule ??
       DEFAULT_WEDDING_DATA.schedule,
     animations: profile.animations ?? DEFAULT_WEDDING_DATA.animations,
   };
@@ -498,23 +502,6 @@ export const saveWeddingData = async (
   if (profileError) {
     console.error("Failed to save wedding profile:", profileError);
     return false;
-  }
-
-  // Story & Schedule live in columns added by a later migration. Save them
-  // separately and best-effort so a wedding without that migration applied
-  // still saves everything else successfully.
-  const { error: contentError } = await supabase
-    .from("wedding_profiles")
-    .update({
-      love_story: updated.story,
-      wedding_schedule: updated.schedule,
-    } as never)
-    .eq("id", DEFAULT_WEDDING_ID);
-  if (contentError) {
-    console.warn(
-      "Story/Schedule not saved — apply the add_content_sections migration to enable these sections.",
-      contentError,
-    );
   }
 
   const giftRow: Database["public"]["Tables"]["wedding_gifts"]["Insert"] = {

@@ -43,7 +43,7 @@ export const PhotoGallery = ({ photos, language }: PhotoGalleryProps) => {
   }
 
   return (
-    <section className="py-16 px-4 bg-romantic-gradient">
+    <section className="gallery-section py-16 px-4 bg-romantic-gradient">
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-10">
           <Camera className="w-10 h-10 text-primary mx-auto mb-4" />
@@ -52,11 +52,11 @@ export const PhotoGallery = ({ photos, language }: PhotoGalleryProps) => {
           </h2>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4">
+        <div className="gallery-grid grid grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4">
           {photos.map((photo, index) => (
             <div
               key={index}
-              className="aspect-square overflow-hidden rounded-lg cursor-pointer group shadow-card hover:shadow-elevated transition-all duration-300 bg-muted/40"
+              className="gallery-item aspect-square overflow-hidden rounded-lg cursor-pointer group shadow-card hover:shadow-elevated transition-all duration-300 bg-muted/40"
               onClick={() => setSelectedIndex(index)}
             >
               <FadeInImage

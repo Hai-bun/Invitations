@@ -1432,9 +1432,8 @@
     font-size: clamp(1.9rem, 5vw, 3rem);
     line-height: 1.03;
   }
-  .template-editorial .rounded-lg,
-  .template-editorial .rounded-xl {
-    border-radius: 0 !important;
+  .template-editorial .shadow-card {
+    box-shadow: none;
   }
 
   /* Botanical — soft rose accent, leafy dividers, extra-rounded cards */
@@ -1445,10 +1444,6 @@
   }
   .template-botanical .text-gold {
     color: #7d9b6a !important;
-  }
-  .template-botanical .shadow-card,
-  .template-botanical .rounded-lg {
-    border-radius: 1.25rem !important;
   }
 
   /* Split — warm bronze accent, thin rule under headings */
@@ -1484,5 +1479,121 @@
       animation: none;
       opacity: 1;
     }
+  }
+}
+
+/* ==============================================================
+   Distinct SECTION LAYOUTS per template (couple + gallery).
+   These are intentionally UNLAYERED so they override Tailwind's
+   utility classes (rounded-lg, gap-3, grid-cols-3, shadow-card),
+   which otherwise win because @layer utilities outranks @layer
+   components regardless of selector specificity.
+   ============================================================== */
+
+/* ---- Royal: temple-window arched, gold-framed photos + framed couple cards */
+.template-royal .gallery-grid {
+  gap: 1.25rem;
+}
+.template-royal .gallery-item {
+  border: 2px solid rgba(200, 162, 76, 0.55);
+  border-radius: 130px 130px 12px 12px;
+  padding: 6px;
+  background: linear-gradient(180deg, #fff8ea, #f1e4c6);
+  box-shadow: 0 12px 30px rgba(74, 17, 24, 0.15);
+}
+.template-royal .gallery-item img {
+  border-radius: 124px 124px 8px 8px;
+}
+.template-royal .couple-person {
+  border: 1px solid rgba(200, 162, 76, 0.5);
+  border-radius: 8px;
+  padding: 2rem 1.5rem;
+  background: linear-gradient(180deg, #fffaf0, #f6ecd3);
+  box-shadow: 0 12px 30px rgba(74, 17, 24, 0.08);
+}
+
+/* ---- Editorial: magazine mosaic (first photo large) + left, ruled couple */
+.template-editorial .gallery-item {
+  border-radius: 0;
+  box-shadow: none;
+}
+.template-editorial .gallery-item img {
+  filter: grayscale(0.4) contrast(1.05);
+  transition: filter 0.4s ease;
+}
+.template-editorial .gallery-item:hover img {
+  filter: grayscale(0);
+}
+@media (min-width: 640px) {
+  .template-editorial .gallery-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.6rem;
+  }
+  .template-editorial .gallery-item:first-child {
+    grid-column: span 2;
+    grid-row: span 2;
+  }
+}
+.template-editorial .couple-grid {
+  gap: 0;
+  align-items: stretch;
+}
+.template-editorial .couple-person {
+  border-top: 2px solid #16130f;
+  padding-top: 1.1rem;
+  text-align: left;
+}
+.template-editorial .couple-name {
+  font-family: var(--font-serif);
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+.template-editorial .couple-heart,
+.template-editorial .couple-heart-mobile {
+  display: none;
+}
+
+/* ---- Botanical: circular photos in a soft ring + rounded couple cards */
+.template-botanical .gallery-grid {
+  gap: 1.5rem;
+}
+.template-botanical .gallery-item {
+  border-radius: 9999px;
+  border: 3px solid rgba(125, 155, 106, 0.35);
+  box-shadow: 0 10px 26px rgba(217, 140, 156, 0.18);
+  background: #ffffff;
+}
+.template-botanical .gallery-item img {
+  border-radius: 9999px;
+}
+.template-botanical .couple-person {
+  background: rgba(255, 255, 255, 0.55);
+  border: 1px solid rgba(125, 155, 106, 0.25);
+  border-radius: 1.5rem;
+  padding: 1.75rem 1.5rem;
+}
+
+/* ---- Split: seamless edge-to-edge grid + center-divided couple */
+.template-split .gallery-grid {
+  gap: 0;
+  grid-template-columns: repeat(2, 1fr);
+}
+.template-split .gallery-item {
+  border-radius: 0;
+  box-shadow: none;
+}
+@media (min-width: 768px) {
+  .template-split .gallery-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .template-split .couple-groom {
+    border-right: 1px solid rgba(184, 134, 90, 0.4);
+    padding-right: 3rem;
+  }
+  .template-split .couple-bride {
+    padding-left: 3rem;
+  }
+  .template-split .couple-heart {
+    display: none;
   }
 }

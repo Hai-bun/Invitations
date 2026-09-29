@@ -38,30 +38,30 @@ export const CoupleSection = ({
     lang === "km" && brideParentsKh ? brideParentsKh : brideParents;
 
   return (
-    <section className="py-16 px-4 text-center bg-romantic-gradient">
+    <section className="couple-section py-16 px-4 text-center bg-romantic-gradient">
       <div className="max-w-4xl mx-auto">
-        <p className="text-sm uppercase tracking-[0.3em] text-muted-foreground mb-4 animate-fade-in-up">
+        <p className="couple-eyebrow text-sm uppercase tracking-[0.3em] text-muted-foreground mb-4 animate-fade-in-up">
           {t.theCouple}
         </p>
 
         <OrnamentDivider className="mb-8" />
 
-        <div className="grid md:grid-cols-2 gap-8 md:gap-12 items-center">
+        <div className="couple-grid grid md:grid-cols-2 gap-8 md:gap-12 items-center">
           {/* Groom */}
-          <div className="animate-fade-in-up delay-200">
-            <h3 className="font-script text-4xl sm:text-5xl text-foreground mb-3">
+          <div className="couple-person couple-groom animate-fade-in-up delay-200">
+            <h3 className="couple-name font-script text-4xl sm:text-5xl text-foreground mb-3">
               {displayGroomName}
             </h3>
-            <p className="text-sm text-muted-foreground tracking-wide">
+            <p className="couple-role text-sm text-muted-foreground tracking-wide">
               {t.sonOf}
             </p>
-            <p className="text-base text-foreground/80 font-serif italic">
+            <p className="couple-parents text-base text-foreground/80 font-serif italic">
               {displayGroomParents}
             </p>
           </div>
 
           {/* Heart Divider - visible on mobile */}
-          <div className="md:hidden flex justify-center">
+          <div className="couple-heart-mobile md:hidden flex justify-center">
             <Heart
               className="w-8 h-8 text-primary animate-heartbeat"
               fill="currentColor"
@@ -69,21 +69,21 @@ export const CoupleSection = ({
           </div>
 
           {/* Bride */}
-          <div className="animate-fade-in-up delay-300">
-            <h3 className="font-script text-4xl sm:text-5xl text-foreground mb-3">
+          <div className="couple-person couple-bride animate-fade-in-up delay-300">
+            <h3 className="couple-name font-script text-4xl sm:text-5xl text-foreground mb-3">
               {displayBrideName}
             </h3>
-            <p className="text-sm text-muted-foreground tracking-wide">
+            <p className="couple-role text-sm text-muted-foreground tracking-wide">
               {t.daughterOf}
             </p>
-            <p className="text-base text-foreground/80 font-serif italic">
+            <p className="couple-parents text-base text-foreground/80 font-serif italic">
               {displayBrideParents}
             </p>
           </div>
         </div>
 
         {/* Heart Divider - visible on desktop */}
-        <div className="hidden md:flex justify-center mt-8">
+        <div className="couple-heart hidden md:flex justify-center mt-8">
           <Heart
             className="w-10 h-10 text-primary animate-heartbeat"
             fill="currentColor"
