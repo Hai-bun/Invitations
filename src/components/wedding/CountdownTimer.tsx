@@ -42,7 +42,7 @@ export const CountdownTimer = ({ targetDate, targetTime, language }: CountdownTi
 
   const TimeBlock = ({ value, label }: { value: number; label: string }) => (
     <div className="flex flex-col items-center">
-      <div className="w-16 h-16 sm:w-20 sm:h-20 bg-card rounded-lg shadow-card flex items-center justify-center border border-border">
+      <div className="countdown-box w-16 h-16 sm:w-20 sm:h-20 bg-card rounded-lg shadow-card flex items-center justify-center border border-border">
         <span className="text-2xl sm:text-3xl font-serif font-semibold text-foreground">
           {value.toString().padStart(2, '0')}
         </span>

@@ -2,6 +2,7 @@ import { useEffect, useLayoutEffect, useState } from "react";
 import { useParams, useSearchParams } from "react-router-dom";
 import { useWeddingData, useGuest } from "@/hooks/use-wedding-data";
 import { FloatingPetals } from "@/components/ui/FloatingPetals";
+import { SparkleField } from "@/components/ui/SparkleField";
 import { OrnamentDivider } from "@/components/ui/OrnamentDivider";
 import { CountdownTimer } from "@/components/wedding/CountdownTimer";
 import { CoupleSection } from "@/components/wedding/CoupleSection";
@@ -144,6 +145,10 @@ const WeddingDetail = () => {
   const showDecorations = template.features.showOrnaments;
   const showPetals =
     animOn && anim.floatingPetals && template.features.showPetals;
+  // Ambient sparkles suit most templates; skip the clean Editorial and the
+  // Reel (which has its own cinematic grain).
+  const showSparkles =
+    animOn && !["editorial", "reel"].includes(template.id);
   const fadeCls = (base: string) => (animOn && anim.fadeInOnScroll ? base : "");
 
   const handleLanguageChange = (newLang: Language) => {
@@ -178,6 +183,7 @@ const WeddingDetail = () => {
           onLanguageChange={handleLanguageChange}
           currentLanguage={language}
         />
+        {showSparkles && <SparkleField />}
         <SelfContainedTemplate
           weddingData={weddingData}
           guest={guest ?? null}
@@ -196,6 +202,7 @@ const WeddingDetail = () => {
       />
 
       {showPetals && <FloatingPetals />}
+      {showSparkles && <SparkleField />}
 
       {/* Hero Section */}
       <section
