@@ -53,7 +53,7 @@ export const BotanicalInvitation = ({
   language,
 }: TemplateProps) => {
   const t = getTranslations(language);
-  const { groom, bride } = getCoupleDisplay(weddingData, language);
+  const { groom, bride, amp } = getCoupleDisplay(weddingData, language);
   const anim = weddingData.animations;
   const animOn = anim?.enabled ?? true;
   const fade = (c: string) => (animOn ? c : "");
@@ -95,7 +95,7 @@ export const BotanicalInvitation = ({
               "botanical-amp my-2",
               fade("animate-fade-in-up delay-300"),
             )}>
-            &amp;
+            {amp}
           </div>
           <h1
             className={cn(

@@ -43,7 +43,7 @@ export const RoyalInvitation = ({
   language,
 }: TemplateProps) => {
   const t = getTranslations(language);
-  const { groom, bride } = getCoupleDisplay(weddingData, language);
+  const { groom, bride, amp } = getCoupleDisplay(weddingData, language);
   const animOn = weddingData.animations?.enabled ?? true;
   const fade = (c: string) => (animOn ? c : "");
   const order = getTemplate("royal").sectionOrder.filter(
@@ -86,7 +86,7 @@ export const RoyalInvitation = ({
               "royal-amp my-3",
               fade("animate-fade-in-up delay-300"),
             )}>
-            &amp;
+            {amp}
           </div>
 
           <h1

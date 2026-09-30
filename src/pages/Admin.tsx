@@ -253,6 +253,34 @@ const Admin = () => {
     e.target.value = "";
   };
 
+  const handleMonogramUpload = async (
+    e: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (!validateImageFile(file)) {
+      e.target.value = "";
+      return;
+    }
+    if (!(await verifyImageMagicBytes(file))) {
+      toast.error(`${file.name}: file content is not a valid image`);
+      e.target.value = "";
+      return;
+    }
+    const publicUrl = await uploadWeddingImage(file, "monogram");
+    if (!publicUrl) {
+      toast.error(`${file.name}: upload failed`);
+      e.target.value = "";
+      return;
+    }
+    if (data.monogramImage) {
+      await deleteWeddingImage(data.monogramImage);
+    }
+    setData((prev) => ({ ...prev, monogramImage: publicUrl }));
+    e.target.value = "";
+    toast.success("Monogram uploaded");
+  };
+
   const handleBackgroundMediaUpload = async (
     e: React.ChangeEvent<HTMLInputElement>,
   ) => {
@@ -936,6 +964,50 @@ const Admin = () => {
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-6">
+                {/* Wedding monogram / crest */}
+                <div className="space-y-3 border-b pb-6">
+                  <div>
+                    <h3 className="text-base font-medium text-foreground">
+                      Wedding Monogram / Logo
+                    </h3>
+                    <p className="text-sm text-muted-foreground mt-1">
+                      Optional. Shown centered at the top of the invitation. A
+                      transparent PNG works best.
+                    </p>
+                  </div>
+                  <div className="border-2 border-dashed border-border rounded-lg p-4 text-center">
+                    <Input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleMonogramUpload}
+                      className="max-w-xs mx-auto"
+                    />
+                  </div>
+                  {data.monogramImage && (
+                    <div className="flex flex-col items-center gap-3">
+                      <img
+                        src={data.monogramImage}
+                        alt="Monogram preview"
+                        className="w-40 h-40 object-contain rounded-lg border border-border bg-muted/30"
+                      />
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="border-destructive text-destructive hover:bg-destructive hover:text-destructive-foreground"
+                        onClick={async () => {
+                          if (data.monogramImage) {
+                            await deleteWeddingImage(data.monogramImage);
+                          }
+                          setData({ ...data, monogramImage: "" });
+                          toast.success("Monogram removed");
+                        }}>
+                        <Trash2 className="w-4 h-4 mr-2" />
+                        Remove monogram
+                      </Button>
+                    </div>
+                  )}
+                </div>
+
                 <div className="grid sm:grid-cols-2 gap-6">
                   <div className="space-y-2">
                     <Label htmlFor="groomName">Groom's Full Name</Label>

@@ -52,7 +52,7 @@ export const GlassGardenInvitation = ({
   language,
 }: TemplateProps) => {
   const t = getTranslations(language);
-  const { groom, bride } = getCoupleDisplay(weddingData, language);
+  const { groom, bride, amp } = getCoupleDisplay(weddingData, language);
   const animOn = weddingData.animations?.enabled ?? true;
   const fade = (c: string) => (animOn ? c : "");
   const order = getTemplate("glassgarden").sectionOrder.filter(
@@ -85,7 +85,7 @@ export const GlassGardenInvitation = ({
           </h1>
           <div
             className={cn("glass-amp", fade("animate-fade-in-up delay-300"))}>
-            &amp;
+            {amp}
           </div>
           <h1
             className={cn(

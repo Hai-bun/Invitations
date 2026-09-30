@@ -67,6 +67,9 @@ export interface WeddingData {
   // Photo Gallery
   photos: string[];
 
+  // Wedding monogram / crest (optional)
+  monogramImage: string;
+
   // KHQR Gift
   khqrImage: string;
   giftEnabled: boolean;
@@ -168,6 +171,7 @@ const DEFAULT_WEDDING_DATA: WeddingData = {
   bodyFont: "Lato",
   nameFont: "",
   photos: [],
+  monogramImage: "",
   khqrImage: "",
   giftEnabled: true,
   guests: [],
@@ -322,6 +326,7 @@ const buildWeddingProfileRow = (
     story: weddingData.story,
     schedule: weddingData.schedule,
     nameFont: weddingData.nameFont,
+    monogramImage: weddingData.monogramImage,
   },
   animations: weddingData.animations,
   event_title: weddingData.eventTitle,
@@ -386,6 +391,9 @@ const mapProfileToWeddingData = (
     nameFont:
       (profile.welcome_popup as { nameFont?: string })?.nameFont ??
       DEFAULT_WEDDING_DATA.nameFont,
+    monogramImage:
+      (profile.welcome_popup as { monogramImage?: string })?.monogramImage ??
+      DEFAULT_WEDDING_DATA.monogramImage,
     photos: photos.map((photo) => photo.image_url),
     khqrImage: gift?.khqr_image_url ?? DEFAULT_WEDDING_DATA.khqrImage,
     giftEnabled: gift?.enabled ?? DEFAULT_WEDDING_DATA.giftEnabled,

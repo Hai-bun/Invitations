@@ -2,6 +2,7 @@ import { Fragment, type ReactNode } from "react";
 import type { WeddingData, Guest } from "@/lib/weddingStore";
 import type { Language } from "@/lib/i18n";
 import { CoupleSection } from "../CoupleSection";
+import { MonogramSection } from "../MonogramSection";
 import { StorySection } from "../StorySection";
 import { ScheduleSection } from "../ScheduleSection";
 import { LocationSection } from "../LocationSection";
@@ -103,6 +104,7 @@ export const TemplateSections = ({
 
   return (
     <>
+      <MonogramSection image={weddingData.monogramImage} language={language} />
       {order.map((key) => (
         <Fragment key={key}>{nodes[key]}</Fragment>
       ))}
@@ -110,7 +112,7 @@ export const TemplateSections = ({
   );
 };
 
-/** Language-aware display names for the couple, shared by template heroes. */
+/** Language-aware display names + "and" separator for the couple heroes. */
 export const getCoupleDisplay = (
   weddingData: WeddingData,
   language: Language,
@@ -123,4 +125,6 @@ export const getCoupleDisplay = (
     language === "km" && weddingData.brideNameKh
       ? weddingData.brideNameKh
       : weddingData.brideName,
+  // Khmer uses the word "និង" ("and") between the names instead of "&".
+  amp: language === "km" ? "និង" : "&",
 });

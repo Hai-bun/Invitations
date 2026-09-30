@@ -6,6 +6,7 @@ import { SparkleField } from "@/components/ui/SparkleField";
 import { OrnamentDivider } from "@/components/ui/OrnamentDivider";
 import { CountdownTimer } from "@/components/wedding/CountdownTimer";
 import { CoupleSection } from "@/components/wedding/CoupleSection";
+import { MonogramSection } from "@/components/wedding/MonogramSection";
 import { StorySection } from "@/components/wedding/StorySection";
 import { ScheduleSection } from "@/components/wedding/ScheduleSection";
 import { LocationSection } from "@/components/wedding/LocationSection";
@@ -378,6 +379,9 @@ const WeddingDetail = () => {
           </div>
         )}
       </section>
+
+      {/* Wedding monogram / crest (if uploaded) */}
+      <MonogramSection image={weddingData.monogramImage} language={language} />
 
       {/* Couple & Family Section */}
       <CoupleSection
