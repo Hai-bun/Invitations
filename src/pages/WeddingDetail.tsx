@@ -65,6 +65,7 @@ const WeddingDetail = () => {
     applyTheme(activeThemeId, {
       headingFont: weddingData.headingFont,
       bodyFont: weddingData.bodyFont,
+      nameFont: weddingData.nameFont,
     });
   }, [weddingData, activeThemeId]);
 

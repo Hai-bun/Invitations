@@ -70,10 +70,14 @@ export default {
         gold: "hsl(var(--gold))",
         sage: "hsl(var(--sage))",
       },
+      // Reference the CSS variables so the font utilities (.font-serif/
+      // .font-sans/.font-script) follow the theme + custom fonts (heading,
+      // body, couple-name) instead of being hardcoded. The variables carry
+      // their own Khmer + generic fallbacks (see applyTheme / :root).
       fontFamily: {
-        script: ["'Great Vibes'", "cursive"],
-        serif: ["'Cormorant Garamond'", "serif"],
-        sans: ["'Lato'", "sans-serif"],
+        script: ["var(--font-script)"],
+        serif: ["var(--font-serif)"],
+        sans: ["var(--font-sans)"],
       },
       borderRadius: {
         lg: "var(--radius)",

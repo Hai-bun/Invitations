@@ -62,6 +62,7 @@ export interface WeddingData {
   accentColor: string;
   headingFont: string;
   bodyFont: string;
+  nameFont: string;
 
   // Photo Gallery
   photos: string[];
@@ -165,6 +166,7 @@ const DEFAULT_WEDDING_DATA: WeddingData = {
   accentColor: "#d4a574",
   headingFont: "Cormorant Garamond",
   bodyFont: "Lato",
+  nameFont: "",
   photos: [],
   khqrImage: "",
   giftEnabled: true,
@@ -319,6 +321,7 @@ const buildWeddingProfileRow = (
     message: weddingData.welcomePopupMessage,
     story: weddingData.story,
     schedule: weddingData.schedule,
+    nameFont: weddingData.nameFont,
   },
   animations: weddingData.animations,
   event_title: weddingData.eventTitle,
@@ -380,6 +383,9 @@ const mapProfileToWeddingData = (
     accentColor: profile.accent_color ?? DEFAULT_WEDDING_DATA.accentColor,
     headingFont: profile.heading_font ?? DEFAULT_WEDDING_DATA.headingFont,
     bodyFont: profile.body_font ?? DEFAULT_WEDDING_DATA.bodyFont,
+    nameFont:
+      (profile.welcome_popup as { nameFont?: string })?.nameFont ??
+      DEFAULT_WEDDING_DATA.nameFont,
     photos: photos.map((photo) => photo.image_url),
     khqrImage: gift?.khqr_image_url ?? DEFAULT_WEDDING_DATA.khqrImage,
     giftEnabled: gift?.enabled ?? DEFAULT_WEDDING_DATA.giftEnabled,

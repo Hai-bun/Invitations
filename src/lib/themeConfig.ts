@@ -145,7 +145,7 @@ export const getTheme = (themeId: ThemeType): ThemeConfig => {
 
 export const applyTheme = (
   themeId: ThemeType,
-  customFonts?: { headingFont?: string; bodyFont?: string },
+  customFonts?: { headingFont?: string; bodyFont?: string; nameFont?: string },
 ): void => {
   const theme = getTheme(themeId);
   const root = document.documentElement;
@@ -168,6 +168,7 @@ export const applyTheme = (
 
   const headingFont = customFonts?.headingFont?.trim() || theme.fonts.heading;
   const bodyFont = customFonts?.bodyFont?.trim() || theme.fonts.body;
+  const nameFont = customFonts?.nameFont?.trim();
 
   // Keep a Khmer fallback after the chosen Latin font so Khmer text renders in
   // a proper Khmer typeface no matter which custom font is selected.
@@ -179,9 +180,14 @@ export const applyTheme = (
     "--font-sans",
     `"${bodyFont}", "Noto Sans Khmer", sans-serif`,
   );
+  // The couple names use --font-script. If the couple picked a name font, use
+  // it first; otherwise fall back to the theme's script + Moul (Khmer) so names
+  // still look elegant by default.
   root.style.setProperty(
     "--font-script",
-    `"${theme.fonts.script}", "Moul", cursive`,
+    nameFont
+      ? `"${nameFont}", "${theme.fonts.script}", "Moul", cursive`
+      : `"${theme.fonts.script}", "Moul", cursive`,
   );
 
   // Store theme-specific classes

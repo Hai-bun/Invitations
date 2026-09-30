@@ -64,6 +64,7 @@ const Admin = () => {
       applyTheme(weddingData.theme as ThemeType, {
         headingFont: weddingData.headingFont,
         bodyFont: weddingData.bodyFont,
+        nameFont: weddingData.nameFont,
       });
     };
 
@@ -75,8 +76,9 @@ const Admin = () => {
     applyTheme(data.theme as ThemeType, {
       headingFont: data.headingFont,
       bodyFont: data.bodyFont,
+      nameFont: data.nameFont,
     });
-  }, [data?.theme, data?.headingFont, data?.bodyFont]);
+  }, [data?.theme, data?.headingFont, data?.bodyFont, data?.nameFont]);
 
   const handleSave = async () => {
     if (!data) return;
@@ -704,7 +706,10 @@ const Admin = () => {
                     </h3>
                     <p className="text-sm text-muted-foreground mt-1">
                       Use Google font names such as Cormorant Garamond, Playfair
-                      Display, Libre Baskerville, Montserrat, or Lato.
+                      Display, Libre Baskerville, Montserrat, or Lato. For Khmer
+                      couple names, try <strong>Moul</strong> in the “Couple
+                      names” field — keep the Body font a normal font so small
+                      labels stay readable.
                     </p>
                   </div>
 
@@ -731,6 +736,22 @@ const Admin = () => {
                         }
                         placeholder="Lato"
                       />
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label htmlFor="nameFont">Couple names font</Label>
+                      <Input
+                        id="nameFont"
+                        value={data.nameFont}
+                        onChange={(e) =>
+                          setData({ ...data, nameFont: e.target.value })
+                        }
+                        placeholder="e.g. Moul (leave empty for the elegant script)"
+                      />
+                      <p className="text-xs text-muted-foreground">
+                        Controls the big couple names on the hero and Couple
+                        section.
+                      </p>
                     </div>
                   </div>
                 </div>
