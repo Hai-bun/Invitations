@@ -23,6 +23,8 @@ import { PolaroidInvitation } from "@/components/wedding/templates/PolaroidInvit
 import { MonoInvitation } from "@/components/wedding/templates/MonoInvitation";
 import { TropicalInvitation } from "@/components/wedding/templates/TropicalInvitation";
 import { GlassGardenInvitation } from "@/components/wedding/templates/GlassGardenInvitation";
+import { CuteInvitation } from "@/components/wedding/templates/CuteInvitation";
+import { CuteStickers } from "@/components/ui/CuteStickers";
 
 import { LanguageSwitcher } from "@/components/ui/LanguageSwitcher";
 import { Heart, Calendar } from "lucide-react";
@@ -154,7 +156,8 @@ const WeddingDetail = () => {
   // Reel (which has its own cinematic grain).
   const showSparkles =
     animOn &&
-    !["editorial", "reel", "mono", "polaroid"].includes(template.id);
+    !["editorial", "reel", "mono", "polaroid", "cute"].includes(template.id);
+  const showCuteStickers = animOn && template.id === "cute";
   const fadeCls = (base: string) => (animOn && anim.fadeInOnScroll ? base : "");
 
   const handleLanguageChange = (newLang: Language) => {
@@ -185,6 +188,7 @@ const WeddingDetail = () => {
     mono: MonoInvitation,
     tropical: TropicalInvitation,
     glassgarden: GlassGardenInvitation,
+    cute: CuteInvitation,
   }[template.id as string];
 
   if (SelfContainedTemplate) {
@@ -195,6 +199,7 @@ const WeddingDetail = () => {
           currentLanguage={language}
         />
         {showSparkles && <SparkleField />}
+        {showCuteStickers && <CuteStickers />}
         <SelfContainedTemplate
           weddingData={weddingData}
           guest={guest ?? null}

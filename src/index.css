@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&family=Lato:wght@300;400;700&family=Great+Vibes&family=Playfair+Display:wght@400;500;600;700&family=Libre+Baskerville:wght@400;700&family=Montserrat:wght@400;500;600;700&family=EB+Garamond:wght@400;500;600;700&family=Noto+Serif+Khmer:wght@400;500;600;700&family=Noto+Sans+Khmer:wght@300;400;500;700&family=Moul&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&family=Lato:wght@300;400;700&family=Great+Vibes&family=Playfair+Display:wght@400;500;600;700&family=Libre+Baskerville:wght@400;700&family=Montserrat:wght@400;500;600;700&family=EB+Garamond:wght@400;500;600;700&family=Noto+Serif+Khmer:wght@400;500;600;700&family=Noto+Sans+Khmer:wght@300;400;500;700&family=Moul&family=Baloo+2:wght@500;600;700&family=Quicksand:wght@400;500;600;700&display=swap");
 
 @layer base {
   :root {
@@ -2270,4 +2270,166 @@
   object-fit: cover;
   display: block;
   user-select: none;
+}
+
+/* ---------- Cutie Sweethearts — pastel kawaii with border stickers ---------- */
+.template-cute {
+  --background: 340 60% 97%;
+  --foreground: 330 34% 32%;
+  --card: 350 80% 99%;
+  --card-foreground: 330 34% 32%;
+  --muted: 340 45% 95%;
+  --muted-foreground: 330 22% 52%;
+  --primary: 340 72% 68%;
+  --primary-foreground: 350 80% 99%;
+  --secondary: 190 55% 90%;
+  --accent: 45 92% 70%;
+  --border: 340 50% 89%;
+  --ring: 340 72% 68%;
+  --gradient-romantic: linear-gradient(180deg, #fff2f7, #fdeef6);
+  background:
+    radial-gradient(circle at 12% 14%, rgba(255, 214, 232, 0.7), transparent 40%),
+    radial-gradient(circle at 88% 20%, rgba(200, 236, 244, 0.6), transparent 40%),
+    radial-gradient(circle at 80% 84%, rgba(255, 234, 200, 0.6), transparent 44%),
+    radial-gradient(circle at 18% 86%, rgba(226, 214, 246, 0.6), transparent 44%),
+    linear-gradient(180deg, #fff4f9, #fdeef6);
+}
+.template-cute .cute-name,
+.template-cute h2,
+.template-cute h3 {
+  font-family: "Baloo 2", "Quicksand", cursive;
+  font-weight: 700;
+}
+
+.template-cute .cute-hero {
+  background: transparent;
+}
+.template-cute .cute-card {
+  background: rgba(255, 255, 255, 0.82);
+  border: 3px dashed hsl(340 65% 82%);
+  border-radius: 34px;
+  box-shadow: 0 24px 50px rgba(240, 150, 190, 0.28);
+}
+.template-cute .cute-border-sticker {
+  position: absolute;
+  font-size: 1.7rem;
+  line-height: 1;
+  filter: drop-shadow(0 3px 4px rgba(0, 0, 0, 0.08));
+  z-index: 2;
+}
+.template-cute .cute-heart {
+  display: flex;
+  justify-content: center;
+  color: hsl(340 72% 66%);
+}
+.template-cute .cute-tag {
+  font-family: "Quicksand", var(--font-sans);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  font-size: 0.8rem;
+  color: hsl(340 45% 55%);
+}
+.template-cute .cute-kicker {
+  font-family: "Quicksand", var(--font-sans);
+  font-weight: 500;
+  font-size: 1rem;
+  color: hsl(330 26% 48%);
+}
+.template-cute .cute-name {
+  font-size: clamp(2.4rem, 8vw, 3.6rem);
+  line-height: 1.05;
+  color: hsl(338 46% 40%);
+}
+.template-cute .cute-date {
+  font-family: "Quicksand", var(--font-sans);
+  font-weight: 600;
+  color: hsl(338 40% 46%);
+  background: hsl(340 70% 95%);
+  border-radius: 9999px;
+  padding: 0.4rem 1.1rem;
+  font-size: 0.9rem;
+}
+
+/* Cute rounded, bubbly sections */
+.template-cute section {
+  background: rgba(255, 255, 255, 0.55);
+}
+.template-cute section:nth-of-type(even) {
+  background: rgba(255, 244, 250, 0.7);
+}
+.template-cute .shadow-card,
+.template-cute .rounded-lg,
+.template-cute .rounded-xl {
+  border-radius: 26px;
+}
+.template-cute .gallery-item {
+  border-radius: 22px;
+  border: 3px solid #fff;
+  box-shadow: 0 12px 26px rgba(240, 150, 190, 0.25);
+}
+.template-cute .couple-person {
+  background: rgba(255, 255, 255, 0.75);
+  border: 2px dashed hsl(340 55% 85%);
+  border-radius: 26px;
+  padding: 1.6rem 1.3rem;
+}
+.template-cute .bg-primary {
+  border-radius: 9999px;
+}
+
+/* Cute floating sticker field (whole page) */
+.cute-sticker-field {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 4;
+  overflow: hidden;
+}
+.cute-sticker {
+  position: absolute;
+  line-height: 1;
+  filter: drop-shadow(0 3px 5px rgba(0, 0, 0, 0.08));
+  animation: cute-drift var(--dur, 7s) ease-in-out infinite;
+  animation-delay: var(--delay, 0s);
+  opacity: 0.9;
+}
+
+/* Sticker animation keyframes */
+@keyframes cute-wiggle {
+  0%, 100% { transform: rotate(-9deg); }
+  50% { transform: rotate(9deg); }
+}
+@keyframes cute-bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-9px); }
+}
+@keyframes cute-float {
+  0%, 100% { transform: translateY(0) rotate(-4deg); }
+  50% { transform: translateY(-7px) rotate(4deg); }
+}
+@keyframes cute-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+@keyframes cute-heart-beat {
+  0%, 100% { transform: scale(1); }
+  30% { transform: scale(1.22); }
+  60% { transform: scale(0.96); }
+}
+@keyframes cute-drift {
+  0%, 100% { transform: translateY(0) rotate(-6deg); }
+  50% { transform: translateY(-14px) rotate(6deg); }
+}
+.template-cute .cute-border-sticker.cute-wiggle { animation: cute-wiggle 2.2s ease-in-out infinite; }
+.template-cute .cute-border-sticker.cute-bounce { animation: cute-bounce 1.8s ease-in-out infinite; }
+.template-cute .cute-border-sticker.cute-float { animation: cute-float 3s ease-in-out infinite; }
+.template-cute .cute-border-sticker.cute-spin { animation: cute-spin 6s linear infinite; }
+.cute-heart-beat { animation: cute-heart-beat 1.4s ease-in-out infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  .cute-sticker-field,
+  .template-cute .cute-border-sticker {
+    animation: none !important;
+  }
+  .cute-heart-beat { animation: none; }
 }

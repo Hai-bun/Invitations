@@ -210,6 +210,23 @@ const templatePreviews: Record<TemplateType, React.ReactNode> = {
       </div>
     </div>
   ),
+  cute: (
+    <div className="h-full flex items-center justify-center p-2 relative overflow-hidden bg-[radial-gradient(circle_at_15%_15%,#ffd6e8,transparent_45%),radial-gradient(circle_at_85%_85%,#ffe9c8,transparent_45%),linear-gradient(180deg,#fff4f9,#fdeef6)]">
+      <div className="absolute top-0.5 left-1 text-[10px]">🎀</div>
+      <div className="absolute top-1 right-1 text-[10px]">⭐</div>
+      <div className="absolute bottom-1 left-1.5 text-[10px]">💗</div>
+      <div className="absolute bottom-0.5 right-1.5 text-[10px]">🌈</div>
+      <div className="bg-white/80 border-2 border-dashed border-[#f0aac8] rounded-2xl px-3 py-2 flex flex-col items-center">
+        <div className="text-[10px] font-bold text-[#c25b86] leading-tight">
+          A
+        </div>
+        <div className="text-[8px] text-[#e57ba6]">💕</div>
+        <div className="text-[10px] font-bold text-[#c25b86] leading-tight">
+          B
+        </div>
+      </div>
+    </div>
+  ),
 };
 
 export const TemplateSelector = ({

@@ -378,6 +378,31 @@ export const TEMPLATES: Record<TemplateType, TemplateConfig> = {
       animatedEntrance: true,
     },
   },
+  cute: {
+    id: "cute",
+    name: "Cutie Sweethearts",
+    description:
+      "Playful pastel kawaii style with animated stickers dancing around the border and bubbly rounded cards",
+    preview: "🎀",
+    heroLayout: "centered",
+    sectionOrder: [
+      "hero",
+      "couple",
+      "story",
+      "gallery",
+      "location",
+      "schedule",
+      "gift",
+      "rsvp",
+      "footer",
+    ],
+    features: {
+      showOrnaments: false,
+      showPetals: false,
+      parallaxHero: false,
+      animatedEntrance: true,
+    },
+  },
 };
 
 export const getTemplate = (templateId: TemplateType): TemplateConfig => {
