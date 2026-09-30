@@ -2111,3 +2111,163 @@
   border-radius: 1.25rem;
   padding: 1.6rem 1.4rem;
 }
+
+/* ---------- Glass Garden — glassmorphism over a soft green garden ---------- */
+.template-glassgarden {
+  --background: 140 30% 94%;
+  --foreground: 150 30% 20%;
+  --card: 150 35% 98%;
+  --card-foreground: 150 30% 20%;
+  --muted: 140 24% 90%;
+  --muted-foreground: 150 12% 40%;
+  --primary: 150 40% 34%;
+  --primary-foreground: 140 30% 97%;
+  --secondary: 140 24% 90%;
+  --accent: 150 40% 34%;
+  --border: 150 22% 82%;
+  --ring: 150 40% 34%;
+  --gradient-romantic: transparent;
+  background:
+    radial-gradient(circle at 15% 18%, rgba(180, 212, 180, 0.6), transparent 42%),
+    radial-gradient(circle at 85% 12%, rgba(240, 198, 205, 0.42), transparent 40%),
+    radial-gradient(circle at 78% 82%, rgba(196, 226, 198, 0.55), transparent 46%),
+    radial-gradient(circle at 22% 86%, rgba(236, 226, 198, 0.5), transparent 46%),
+    linear-gradient(180deg, #eef5ec, #e4efe4);
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+}
+/* Every section becomes a frosted glass panel over the fixed garden gradient */
+.template-glassgarden section {
+  background: rgba(255, 255, 255, 0.42);
+  -webkit-backdrop-filter: blur(16px) saturate(1.15);
+  backdrop-filter: blur(16px) saturate(1.15);
+  border-top: 1px solid rgba(255, 255, 255, 0.55);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.28);
+}
+.template-glassgarden .glass-hero,
+.template-glassgarden .glass-cal-section,
+.template-glassgarden .coverflow-section {
+  background: transparent;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  border: none;
+}
+.template-glassgarden h2,
+.template-glassgarden h3 { color: hsl(150 34% 24%); }
+
+/* Frosted glass cards */
+.template-glassgarden .glass-card {
+  background: rgba(255, 255, 255, 0.34);
+  -webkit-backdrop-filter: blur(20px) saturate(1.25);
+  backdrop-filter: blur(20px) saturate(1.25);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  border-radius: 220px 220px 26px 26px;
+  box-shadow: 0 30px 70px rgba(46, 84, 56, 0.18);
+}
+.template-glassgarden .glass-card-flat { border-radius: 26px; }
+.template-glassgarden .glass-heart {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 46px;
+  height: 46px;
+  border-radius: 9999px;
+  background: hsl(150 40% 32%);
+  color: #fff;
+  box-shadow: 0 8px 20px rgba(46, 84, 56, 0.3);
+}
+.template-glassgarden .glass-leaf {
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  color: hsl(150 34% 40%);
+}
+.template-glassgarden .glass-leaf-tl { top: 14px; left: 14px; }
+.template-glassgarden .glass-leaf-br {
+  bottom: 14px;
+  right: 14px;
+  transform: rotate(180deg);
+}
+.template-glassgarden .glass-tag {
+  font-family: var(--font-sans);
+  text-transform: uppercase;
+  letter-spacing: 0.26em;
+  font-size: 0.66rem;
+  color: hsl(150 20% 42%);
+}
+.template-glassgarden .glass-name {
+  font-size: clamp(2.4rem, 8vw, 3.6rem);
+  line-height: 1.1;
+  color: hsl(150 36% 24%);
+}
+.template-glassgarden .glass-amp {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 1.4rem;
+  color: hsl(150 30% 40%);
+  margin: 0.1rem 0;
+}
+.template-glassgarden .glass-date {
+  font-family: var(--font-serif);
+  color: hsl(150 26% 32%);
+  font-size: 0.95rem;
+}
+
+/* Month calendar */
+.month-calendar-title {
+  font-family: var(--font-serif);
+  font-size: 1.25rem;
+  color: hsl(var(--primary));
+  margin-bottom: 0.75rem;
+}
+.month-calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+}
+.month-calendar-wd {
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: hsl(var(--muted-foreground));
+  padding-bottom: 4px;
+}
+.month-calendar-day {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 1;
+  font-size: 0.78rem;
+  color: hsl(var(--foreground) / 0.75);
+  border-radius: 9999px;
+}
+.month-calendar-day.is-wedding {
+  background: hsl(var(--primary));
+  color: #fff;
+  box-shadow: 0 6px 16px hsl(var(--primary) / 0.4);
+}
+
+/* Coverflow gallery */
+.coverflow-viewport { overflow: hidden; padding: 1.5rem 0; }
+.coverflow-container { display: flex; align-items: center; }
+.coverflow-slide {
+  flex: 0 0 70%;
+  min-width: 0;
+  padding: 0 6px;
+}
+@media (min-width: 640px) {
+  .coverflow-slide { flex: 0 0 52%; }
+}
+.coverflow-inner {
+  border-radius: 1.1rem;
+  overflow: hidden;
+  box-shadow: 0 22px 50px rgba(46, 84, 56, 0.25);
+  will-change: transform, opacity;
+}
+.coverflow-inner img {
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+  display: block;
+  user-select: none;
+}

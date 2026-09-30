@@ -22,6 +22,7 @@ import { ArtDecoInvitation } from "@/components/wedding/templates/ArtDecoInvitat
 import { PolaroidInvitation } from "@/components/wedding/templates/PolaroidInvitation";
 import { MonoInvitation } from "@/components/wedding/templates/MonoInvitation";
 import { TropicalInvitation } from "@/components/wedding/templates/TropicalInvitation";
+import { GlassGardenInvitation } from "@/components/wedding/templates/GlassGardenInvitation";
 
 import { LanguageSwitcher } from "@/components/ui/LanguageSwitcher";
 import { Heart, Calendar } from "lucide-react";
@@ -183,6 +184,7 @@ const WeddingDetail = () => {
     polaroid: PolaroidInvitation,
     mono: MonoInvitation,
     tropical: TropicalInvitation,
+    glassgarden: GlassGardenInvitation,
   }[template.id as string];
 
   if (SelfContainedTemplate) {

@@ -352,6 +352,32 @@ export const TEMPLATES: Record<TemplateType, TemplateConfig> = {
       animatedEntrance: true,
     },
   },
+  glassgarden: {
+    id: "glassgarden",
+    name: "Glass Garden",
+    description:
+      "Frosted glassmorphism cards over a soft green watercolor garden, with a month calendar and a 3D coverflow gallery",
+    preview: "🪟",
+    heroLayout: "centered",
+    // gallery is rendered as a bespoke 3D coverflow by the template itself,
+    // so it is intentionally left out of the shared section stack.
+    sectionOrder: [
+      "hero",
+      "couple",
+      "story",
+      "location",
+      "schedule",
+      "gift",
+      "rsvp",
+      "footer",
+    ],
+    features: {
+      showOrnaments: true,
+      showPetals: false,
+      parallaxHero: false,
+      animatedEntrance: true,
+    },
+  },
 };
 
 export const getTemplate = (templateId: TemplateType): TemplateConfig => {

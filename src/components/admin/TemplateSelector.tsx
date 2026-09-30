@@ -198,6 +198,18 @@ const templatePreviews: Record<TemplateType, React.ReactNode> = {
       </div>
     </div>
   ),
+  glassgarden: (
+    <div className="h-full flex items-center justify-center p-2 relative overflow-hidden bg-[radial-gradient(circle_at_20%_20%,#b4d4b4,transparent_45%),radial-gradient(circle_at_85%_80%,#f0c6cd,transparent_45%),linear-gradient(180deg,#eef5ec,#e4efe4)]">
+      <div className="bg-white/40 backdrop-blur-sm border border-white/60 rounded-t-[28px] rounded-b-md px-3 py-3 flex flex-col items-center shadow-sm">
+        <div className="w-4 h-4 rounded-full bg-[#3a7a52] flex items-center justify-center mb-1">
+          <span className="text-white text-[7px]">♥</span>
+        </div>
+        <div className="text-[10px] font-script text-[#2e5438] leading-tight">
+          A &amp; B
+        </div>
+      </div>
+    </div>
+  ),
 };
 
 export const TemplateSelector = ({
