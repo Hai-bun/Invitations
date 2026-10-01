@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import { Camera } from "lucide-react";
 import { getTranslations, type Language, getStoredLanguage } from "@/lib/i18n";
@@ -19,27 +19,60 @@ export const CoverflowGallery = ({ photos, language }: CoverflowGalleryProps) =>
     containScroll: false,
   });
 
-  useEffect(() => {
-    if (!emblaApi) return;
-    const run = () => {
-      const progress = emblaApi.scrollProgress();
-      const snaps = emblaApi.scrollSnapList();
-      emblaApi.slideNodes().forEach((node, i) => {
-        const inner = node.querySelector<HTMLElement>(".coverflow-inner");
-        if (!inner) return;
+  // Cache the slide inner nodes so the scroll handler never queries the DOM.
+  const nodes = useRef<HTMLElement[]>([]);
+  const raf = useRef(0);
+
+  const cacheNodes = useCallback(
+    (api: NonNullable<typeof emblaApi>) => {
+      nodes.current = api
+        .slideNodes()
+        .map((s) => s.querySelector<HTMLElement>(".coverflow-inner"))
+        .filter((n): n is HTMLElement => n !== null);
+    },
+    [],
+  );
+
+  // Writes only transform/opacity (compositor-friendly — no layout reads).
+  const tween = useCallback(
+    (api: NonNullable<typeof emblaApi>) => {
+      const progress = api.scrollProgress();
+      const snaps = api.scrollSnapList();
+      nodes.current.forEach((node, i) => {
         let diff = Math.abs(snaps[i] - progress);
         diff = Math.min(diff, Math.abs(diff - 1)); // handle loop wrap
         const scale = Math.max(0.74, 1 - diff * 1.5);
-        inner.style.transform = `scale(${scale})`;
-        inner.style.opacity = String(Math.max(0.4, scale));
+        node.style.transform = `scale(${scale})`;
+        node.style.opacity = String(Math.max(0.4, scale));
+      });
+    },
+    [],
+  );
+
+  useEffect(() => {
+    if (!emblaApi) return;
+    cacheNodes(emblaApi);
+    tween(emblaApi);
+
+    // Coalesce many scroll events into a single update per animation frame.
+    const onScroll = () => {
+      if (raf.current) return;
+      raf.current = requestAnimationFrame(() => {
+        raf.current = 0;
+        tween(emblaApi);
       });
     };
-    run();
-    emblaApi.on("scroll", run).on("reInit", run);
-    return () => {
-      emblaApi.off("scroll", run).off("reInit", run);
+    const onReInit = () => {
+      cacheNodes(emblaApi);
+      tween(emblaApi);
     };
-  }, [emblaApi]);
+
+    emblaApi.on("scroll", onScroll).on("reInit", onReInit);
+    return () => {
+      emblaApi.off("scroll", onScroll).off("reInit", onReInit);
+      if (raf.current) cancelAnimationFrame(raf.current);
+    };
+  }, [emblaApi, cacheNodes, tween]);
 
   if (!photos.length) return null;
 
@@ -61,6 +94,7 @@ export const CoverflowGallery = ({ photos, language }: CoverflowGalleryProps) =>
                     src={photo}
                     alt={`Wedding photo ${i + 1}`}
                     loading="lazy"
+                    decoding="async"
                     draggable={false}
                   />
                 </div>
