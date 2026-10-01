@@ -1209,6 +1209,23 @@ const Admin = () => {
                         }
                         placeholder="Wedding Day Schedule"
                       />
+                      <Label htmlFor="scheduleTitleKh" className="mt-2">
+                        Section title (Khmer)
+                      </Label>
+                      <Input
+                        id="scheduleTitleKh"
+                        value={data.schedule.titleKh ?? ""}
+                        onChange={(e) =>
+                          setData({
+                            ...data,
+                            schedule: {
+                              ...data.schedule,
+                              titleKh: e.target.value,
+                            },
+                          })
+                        }
+                        placeholder="កម្មវិធីថ្ងៃមង្គលការ"
+                      />
                     </div>
 
                     <div className="space-y-4">
@@ -1249,6 +1266,17 @@ const Admin = () => {
                                   }
                                   placeholder="e.g. Reception Dinner"
                                 />
+                                <Input
+                                  value={item.titleKh ?? ""}
+                                  onChange={(e) =>
+                                    updateScheduleItem(
+                                      index,
+                                      "titleKh",
+                                      e.target.value,
+                                    )
+                                  }
+                                  placeholder="ចំណងជើង (ភាសាខ្មែរ)"
+                                />
                               </div>
                               <Button
                                 variant="destructive"
@@ -1270,6 +1298,17 @@ const Admin = () => {
                                   )
                                 }
                                 placeholder="Short details (optional)"
+                              />
+                              <Input
+                                value={item.descriptionKh ?? ""}
+                                onChange={(e) =>
+                                  updateScheduleItem(
+                                    index,
+                                    "descriptionKh",
+                                    e.target.value,
+                                  )
+                                }
+                                placeholder="ការពិពណ៌នា (ភាសាខ្មែរ)"
                               />
                             </div>
                           </div>
@@ -1360,6 +1399,17 @@ const Admin = () => {
                     }
                     placeholder="Wedding Ceremony & Reception"
                   />
+                  <Label htmlFor="eventTitleKh" className="mt-2">
+                    Event Title (Khmer)
+                  </Label>
+                  <Input
+                    id="eventTitleKh"
+                    value={data.eventTitleKh ?? ""}
+                    onChange={(e) =>
+                      setData({ ...data, eventTitleKh: e.target.value })
+                    }
+                    placeholder="ពិធីមង្គលការ និង ពិធីជប់លៀង"
+                  />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="eventAddress">Event Address</Label>
@@ -1370,6 +1420,18 @@ const Admin = () => {
                       setData({ ...data, eventAddress: e.target.value })
                     }
                     placeholder="Enter the full venue address"
+                    rows={3}
+                  />
+                  <Label htmlFor="eventAddressKh" className="mt-2">
+                    Event Address (Khmer)
+                  </Label>
+                  <Textarea
+                    id="eventAddressKh"
+                    value={data.eventAddressKh ?? ""}
+                    onChange={(e) =>
+                      setData({ ...data, eventAddressKh: e.target.value })
+                    }
+                    placeholder="បញ្ចូលអាសយដ្ឋានជាភាសាខ្មែរ"
                     rows={3}
                   />
                 </div>

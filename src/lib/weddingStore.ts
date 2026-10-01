@@ -51,6 +51,8 @@ export interface WeddingData {
   // Event Location
   eventTitle: string;
   eventAddress: string;
+  eventTitleKh?: string;
+  eventAddressKh?: string;
   eventMapUrl: string;
 
   // Theme Settings
@@ -111,11 +113,14 @@ export interface ScheduleItem {
   time: string;
   title: string;
   description: string;
+  titleKh?: string;
+  descriptionKh?: string;
 }
 
 export interface ScheduleConfig {
   enabled: boolean;
   title: string;
+  titleKh?: string;
   items: ScheduleItem[];
 }
 
@@ -159,6 +164,8 @@ const DEFAULT_WEDDING_DATA: WeddingData = {
   showCountdown: true,
   eventTitle: "Wedding Ceremony & Reception",
   eventAddress: "Royal Palace Gardens, Phnom Penh, Cambodia",
+  eventTitleKh: "ពិធីមង្គលការ និង ពិធីជប់លៀង",
+  eventAddressKh: "",
   eventMapUrl:
     "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3908.7512345678!2d104.9282!3d11.5564!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2sRoyal+Palace!5e0!3m2!1sen!2skh!4v1234567890",
   theme: "luxury",
@@ -198,24 +205,31 @@ const DEFAULT_WEDDING_DATA: WeddingData = {
   schedule: {
     enabled: false,
     title: "Wedding Day Schedule",
+    titleKh: "",
     items: [
       {
         id: "s1",
         time: "07:00",
         title: "Morning Ceremony",
         description: "Traditional Khmer ceremony at the family home",
+        titleKh: "ពិធីពេលព្រឹក",
+        descriptionKh: "ពិធីប្រពៃណីខ្មែរនៅឯផ្ទះ",
       },
       {
         id: "s2",
         time: "10:00",
         title: "Blessing & Photos",
         description: "Blessings from elders followed by family photos",
+        titleKh: "ពិធីពរជ័យ និង ថតរូប",
+        descriptionKh: "ទទួលពរជ័យពីចាស់ទុំ និង ថតរូបគ្រួសារ",
       },
       {
         id: "s3",
         time: "17:00",
         title: "Reception Dinner",
         description: "Join us for dinner, music and celebration",
+        titleKh: "ពិធីជប់លៀង",
+        descriptionKh: "អញ្ជើញរួមពិសាអាហារ តន្ត្រី និង ការប្រារព្ធ",
       },
     ],
   },
@@ -327,6 +341,8 @@ const buildWeddingProfileRow = (
     schedule: weddingData.schedule,
     nameFont: weddingData.nameFont,
     monogramImage: weddingData.monogramImage,
+    eventTitleKh: weddingData.eventTitleKh,
+    eventAddressKh: weddingData.eventAddressKh,
   },
   animations: weddingData.animations,
   event_title: weddingData.eventTitle,
@@ -375,6 +391,12 @@ const mapProfileToWeddingData = (
     showCountdown: profile.show_countdown ?? DEFAULT_WEDDING_DATA.showCountdown,
     eventTitle: profile.event_title ?? DEFAULT_WEDDING_DATA.eventTitle,
     eventAddress: profile.event_address ?? DEFAULT_WEDDING_DATA.eventAddress,
+    eventTitleKh:
+      (profile.welcome_popup as { eventTitleKh?: string })?.eventTitleKh ??
+      DEFAULT_WEDDING_DATA.eventTitleKh,
+    eventAddressKh:
+      (profile.welcome_popup as { eventAddressKh?: string })?.eventAddressKh ??
+      DEFAULT_WEDDING_DATA.eventAddressKh,
     eventMapUrl: profile.event_map_url ?? DEFAULT_WEDDING_DATA.eventMapUrl,
     theme:
       (profile.theme as WeddingData["theme"]) ?? DEFAULT_WEDDING_DATA.theme,

@@ -403,6 +403,8 @@ const WeddingDetail = () => {
       <LocationSection
         eventTitle={weddingData.eventTitle}
         eventAddress={weddingData.eventAddress}
+        eventTitleKh={weddingData.eventTitleKh}
+        eventAddressKh={weddingData.eventAddressKh}
         eventMapUrl={weddingData.eventMapUrl}
         language={language}
       />

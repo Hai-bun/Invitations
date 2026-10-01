@@ -6,6 +6,8 @@ interface LocationSectionProps {
   eventTitle: string;
   eventAddress: string;
   eventMapUrl: string;
+  eventTitleKh?: string;
+  eventAddressKh?: string;
   language?: Language;
 }
 
@@ -53,9 +55,13 @@ const getEmbedUrl = (url: string, address: string): string => {
   return `https://maps.google.com/maps?q=${encodeURIComponent(address)}&output=embed`;
 };
 
-export const LocationSection = ({ eventTitle, eventAddress, eventMapUrl, language }: LocationSectionProps) => {
+export const LocationSection = ({ eventTitle, eventAddress, eventMapUrl, eventTitleKh, eventAddressKh, language }: LocationSectionProps) => {
   const lang = language || getStoredLanguage();
   const t = getTranslations(lang);
+  const displayTitle =
+    lang === "km" && eventTitleKh?.trim() ? eventTitleKh : eventTitle;
+  const displayAddress =
+    lang === "km" && eventAddressKh?.trim() ? eventAddressKh : eventAddress;
   const embedUrl = getEmbedUrl(eventMapUrl, eventAddress);
   
   // Use the Google Maps URL directly for directions (not address-based)
@@ -69,11 +75,11 @@ export const LocationSection = ({ eventTitle, eventAddress, eventMapUrl, languag
         <MapPin className="w-10 h-10 text-primary mx-auto mb-4" />
         
         <h2 className="font-serif text-3xl sm:text-4xl font-semibold text-foreground mb-2">
-          {eventTitle}
+          {displayTitle}
         </h2>
-        
+
         <p className="text-muted-foreground mb-8 max-w-md mx-auto">
-          {eventAddress}
+          {displayAddress}
         </p>
         
         {/* Embedded Map */}
