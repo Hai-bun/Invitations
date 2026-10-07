@@ -91,6 +91,33 @@ export const AuroraInvitation = ({ weddingData, guest, language }: TemplateProps
   const galleryRef = useRef<HTMLElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
 
+  // Keep each full name on a single line: shrink the heading just enough that
+  // the widest name fits the available width (re-run on resize / font load).
+  const nameRef = useRef<HTMLHeadingElement>(null);
+  useEffect(() => {
+    const h1 = nameRef.current;
+    if (!h1) return;
+    const fit = () => {
+      h1.style.setProperty("--fit", "1");
+      const avail = h1.clientWidth;
+      const widest = Math.max(
+        0,
+        ...Array.from(h1.querySelectorAll<HTMLElement>(".mo-split")).map((s) => s.offsetWidth),
+      );
+      if (avail > 0 && widest > avail) {
+        h1.style.setProperty("--fit", String(Math.floor((avail / widest) * 100) / 100));
+      }
+    };
+    fit();
+    window.addEventListener("resize", fit);
+    document.fonts?.ready.then(fit);
+    document.fonts?.addEventListener?.("loadingdone", fit);
+    return () => {
+      window.removeEventListener("resize", fit);
+      document.fonts?.removeEventListener?.("loadingdone", fit);
+    };
+  }, [groom, bride, language]);
+
   // One rAF loop writes CSS vars / transforms directly: hero parallax, scroll
   // progress bar, and the pinned horizontal photo gallery with per-photo
   // parallax. React never re-renders on scroll.
@@ -203,7 +230,7 @@ export const AuroraInvitation = ({ weddingData, guest, language }: TemplateProps
           )}
           <p className={cn("mo-kicker", fade("animate-fade-in-up delay-700"))}>{t.weInviteYou}</p>
 
-          <h1 className="mo-name">
+          <h1 ref={nameRef} className="mo-name">
             <SplitName text={groom} start={4} on={animOn} />
             <span className={cn("mo-amp", fade("animate-fade-in-up delay-1000"))}>{amp}</span>
             <SplitName text={bride} start={groom.length + 10} on={animOn} />

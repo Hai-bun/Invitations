@@ -2791,3 +2791,7 @@
   /* Keep the hero text clear of the badge in the top-left corner. */
   .mo-hero { padding-top: 9rem; }
 }
+
+/* One line per name: never wrap, JS scales --fit so the widest name fits. */
+.mo-split { flex-wrap: nowrap; width: max-content; }
+.mo-name { font-size: calc(clamp(2.6rem, 13vw, 6.5rem) * var(--fit, 1)); overflow-wrap: normal; width: 100%; }
