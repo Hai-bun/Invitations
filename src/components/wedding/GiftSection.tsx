@@ -1,5 +1,4 @@
-import { Gift, Download, Share2 } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Gift, Download, Share2, ScanLine, Heart } from "lucide-react";
 import { toast } from "sonner";
 import { getTranslations, Language, getStoredLanguage } from "@/lib/i18n";
 import { FadeInImage } from "@/components/ui/FadeInImage";
@@ -9,6 +8,25 @@ interface GiftSectionProps {
   enabled: boolean;
   language?: Language;
 }
+
+const triggerDownload = (href: string) => {
+  const link = document.createElement("a");
+  link.href = href;
+  link.download = "wedding-gift-khqr.png";
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+};
+
+// Fetches the KHQR image as a File so it can be saved or shared as a picture.
+const fetchImageFile = async (url: string): Promise<File> => {
+  const res = await fetch(url, { mode: "cors" });
+  if (!res.ok) throw new Error("fetch failed");
+  const blob = await res.blob();
+  const type = blob.type || "image/png";
+  const ext = type.split("/")[1]?.replace("jpeg", "jpg") || "png";
+  return new File([blob], `wedding-gift-khqr.${ext}`, { type });
+};
 
 export const GiftSection = ({
   khqrImage,
@@ -25,97 +43,101 @@ export const GiftSection = ({
       toast.error("No KHQR image available");
       return;
     }
-
     try {
-      const response = await fetch(khqrImage);
-      const blob = await response.blob();
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement("a");
-      link.href = url;
-      link.download = "wedding-gift-khqr.png";
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
+      const file = await fetchImageFile(khqrImage);
+      const url = URL.createObjectURL(file);
+      triggerDownload(url);
       URL.revokeObjectURL(url);
-      toast.success("KHQR image downloaded!");
     } catch {
-      const link = document.createElement("a");
-      link.href = khqrImage;
-      link.download = "wedding-gift-khqr.png";
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      toast.success("KHQR image downloaded!");
+      triggerDownload(khqrImage);
     }
+    toast.success("KHQR image downloaded!");
   };
 
+  // Shares the KHQR picture itself (not the invitation link). Browsers that
+  // can't share files get the image saved to the device instead.
   const handleShare = async () => {
     if (!khqrImage) {
       toast.error("No KHQR image available");
       return;
     }
-
-    if (navigator.share) {
+    let file: File;
+    try {
+      file = await fetchImageFile(khqrImage);
+    } catch {
+      await handleDownload();
+      return;
+    }
+    if (navigator.canShare?.({ files: [file] })) {
       try {
         await navigator.share({
+          files: [file],
           title: t.weddingGift,
           text: t.scanQR,
-          url: window.location.href,
         });
-      } catch {
-        toast.info("Share cancelled");
+      } catch (e) {
+        if ((e as DOMException)?.name !== "AbortError") {
+          toast.error("Could not share the image");
+        }
       }
     } else {
-      await navigator.clipboard.writeText(window.location.href);
-      toast.success("Link copied to clipboard!");
+      const url = URL.createObjectURL(file);
+      triggerDownload(url);
+      URL.revokeObjectURL(url);
+      toast.info("Sharing isn't supported here, so the image was saved instead");
     }
   };
 
   return (
-    <section className="scroll-reveal py-16 px-4 bg-romantic-gradient">
-      <div className="max-w-md mx-auto text-center">
-        <Gift className="w-10 h-10 text-primary mx-auto mb-4" />
+    <section className="gift-section scroll-reveal py-16 px-4">
+      <div className="gift-card max-w-sm mx-auto text-center">
+        <div className="gift-card-inner">
+          <div className="gift-icon" aria-hidden="true">
+            <Gift className="w-7 h-7" />
+            <Heart className="gift-icon-heart w-4 h-4" fill="currentColor" />
+          </div>
 
-        <h2 className="font-serif text-3xl sm:text-4xl font-semibold text-foreground mb-2">
-          {t.weddingGift}
-        </h2>
+          <h2 className="font-serif text-3xl sm:text-4xl font-semibold text-foreground mt-4 mb-2">
+            {t.weddingGift}
+          </h2>
+          <p className="text-muted-foreground text-sm mb-6">{t.giftMessage}</p>
 
-        <p className="text-muted-foreground mb-8">{t.giftMessage}</p>
-
-        {khqrImage ? (
-          <div className="bg-card p-4 rounded-xl shadow-card mb-6 inline-block">
-            <div className="bg-background rounded-lg p-2 overflow-hidden">
+          {khqrImage ? (
+            <div className="gift-qr">
+              <span className="gift-corner gift-corner-tl" />
+              <span className="gift-corner gift-corner-tr" />
+              <span className="gift-corner gift-corner-bl" />
+              <span className="gift-corner gift-corner-br" />
               <FadeInImage
                 src={khqrImage}
                 alt="KHQR Code"
-                className="w-56 h-auto mx-auto object-contain rounded"
-                style={{ maxHeight: "280px" }}
+                className="w-full h-auto mx-auto object-contain rounded-lg"
+                style={{ maxHeight: "320px" }}
               />
+              <span className="gift-scan" aria-hidden="true" />
             </div>
-          </div>
-        ) : (
-          <div className="bg-card p-6 rounded-xl shadow-card mb-6">
-            <div className="w-48 h-48 mx-auto bg-muted rounded-lg flex items-center justify-center">
-              <p className="text-muted-foreground text-sm">KHQR Code</p>
+          ) : (
+            <div className="gift-qr gift-qr-empty">
+              <ScanLine className="w-10 h-10 text-muted-foreground" />
+              <p className="text-muted-foreground text-sm mt-2">KHQR Code</p>
             </div>
-          </div>
-        )}
+          )}
 
-        <div className="flex justify-center gap-4">
-          <Button
-            variant="outline"
-            onClick={handleDownload}
-            className="border-primary text-primary hover:bg-primary hover:text-primary-foreground">
-            <Download className="w-4 h-4 mr-2" />
-            {t.save}
-          </Button>
-          <Button
-            variant="outline"
-            onClick={handleShare}
-            className="border-primary text-primary hover:bg-primary hover:text-primary-foreground">
-            <Share2 className="w-4 h-4 mr-2" />
-            {t.share}
-          </Button>
+          <p className="gift-hint">
+            <ScanLine className="w-4 h-4" />
+            {t.scanQR}
+          </p>
+
+          <div className="gift-actions">
+            <button type="button" onClick={handleDownload} className="gift-btn gift-btn-solid">
+              <Download className="w-4 h-4" />
+              {t.save}
+            </button>
+            <button type="button" onClick={handleShare} className="gift-btn gift-btn-ghost">
+              <Share2 className="w-4 h-4" />
+              {t.share}
+            </button>
+          </div>
         </div>
       </div>
     </section>

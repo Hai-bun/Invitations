@@ -20,6 +20,7 @@ import {
   MapPin,
   Camera,
   Gift,
+  Crop,
   Copy,
   Trash2,
   Plus,
@@ -49,6 +50,7 @@ import {
 } from "@/lib/weddingStore";
 import { uploadWeddingImage, deleteWeddingImage } from "@/lib/storage";
 import { ThemeSelector } from "@/components/admin/ThemeSelector";
+import { ImageCropDialog } from "@/components/admin/ImageCropDialog";
 import { TemplateSelector } from "@/components/admin/TemplateSelector";
 import { ThemeType, applyTheme } from "@/lib/themeConfig";
 
@@ -228,29 +230,49 @@ const Admin = () => {
     e.target.value = "";
   };
 
-  const handleKHQRUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    if (!validateImageFile(file)) {
-      e.target.value = "";
-      return;
-    }
-    if (!(await verifyImageMagicBytes(file))) {
-      toast.error(`${file.name}: file content is not a valid image`);
-      e.target.value = "";
-      return;
-    }
+  // KHQR: the picked file goes through a crop dialog first so extra margins
+  // around a screenshot can be trimmed before upload.
+  const [khqrCrop, setKhqrCrop] = useState<{
+    src: string;
+    name: string;
+    type: string;
+    file: File | null;
+  } | null>(null);
+
+  const closeKhqrCrop = () => {
+    if (khqrCrop?.file) URL.revokeObjectURL(khqrCrop.src);
+    setKhqrCrop(null);
+  };
+
+  const saveKhqrFile = async (file: File) => {
     const publicUrl = await uploadWeddingImage(file, "khqr");
     if (!publicUrl) {
       toast.error(`${file.name}: upload failed`);
-      e.target.value = "";
       return;
     }
     if (data.khqrImage) {
       await deleteWeddingImage(data.khqrImage);
     }
     setData((prev) => ({ ...prev, khqrImage: publicUrl }));
+    closeKhqrCrop();
+    toast.success("KHQR image saved");
+  };
+
+  const handleKHQRUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
     e.target.value = "";
+    if (!file) return;
+    if (!validateImageFile(file)) return;
+    if (!(await verifyImageMagicBytes(file))) {
+      toast.error(`${file.name}: file content is not a valid image`);
+      return;
+    }
+    setKhqrCrop({
+      src: URL.createObjectURL(file),
+      name: file.name,
+      type: file.type,
+      file,
+    });
   };
 
   const handleMonogramUpload = async (
@@ -1527,6 +1549,21 @@ const Admin = () => {
 
                 {data.giftEnabled && (
                   <div className="space-y-4">
+                    <ImageCropDialog
+                      src={khqrCrop?.src ?? null}
+                      fileName={khqrCrop?.name}
+                      fileType={khqrCrop?.type}
+                      title="Crop KHQR image"
+                      defaultAspect={1}
+                      onCancel={closeKhqrCrop}
+                      onConfirm={saveKhqrFile}
+                      onUseOriginal={
+                        khqrCrop?.file
+                          ? () => saveKhqrFile(khqrCrop.file as File)
+                          : undefined
+                      }
+                    />
+
                     <div className="border-2 border-dashed border-border rounded-lg p-8 text-center">
                       <Gift className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
                       <p className="text-muted-foreground mb-4">
@@ -1559,6 +1596,22 @@ const Admin = () => {
                               setData({ ...data, khqrImage: "" });
                             }}>
                             <Trash2 className="w-4 h-4" />
+                          </Button>
+                        </div>
+                        <div className="flex justify-center">
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() =>
+                              setKhqrCrop({
+                                src: data.khqrImage,
+                                name: "khqr.png",
+                                type: "image/png",
+                                file: null,
+                              })
+                            }>
+                            <Crop className="w-4 h-4 mr-2" />
+                            Crop current image
                           </Button>
                         </div>
                       </div>

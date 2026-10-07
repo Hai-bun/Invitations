@@ -2680,3 +2680,87 @@
 @media (max-width: 480px) {
   .mo-badge { left: 0.75rem; top: 4.25rem; }
 }
+
+/* ==============================================================
+   Wedding Gift — glowing gift card with a scan-frame around the KHQR.
+   Colours come from theme tokens so it fits every template.
+   ============================================================== */
+.gift-section { position: relative; }
+.gift-card {
+  position: relative;
+  border-radius: 32px;
+  padding: 2px;
+  background: conic-gradient(from var(--gift-angle, 0deg), hsl(var(--primary)), hsl(var(--accent)), hsl(var(--primary) / 0.15), hsl(var(--primary)));
+  animation: gift-spin 6s linear infinite;
+  box-shadow: 0 30px 60px -28px hsl(var(--primary) / 0.55);
+}
+@property --gift-angle { syntax: "<angle>"; initial-value: 0deg; inherits: false; }
+@keyframes gift-spin { to { --gift-angle: 360deg; } }
+.gift-card-inner {
+  border-radius: 30px;
+  padding: 2rem 1.5rem 1.75rem;
+  background: hsl(var(--card));
+  background-image: radial-gradient(circle at 50% -20%, hsl(var(--primary) / 0.14), transparent 60%);
+}
+.gift-icon {
+  position: relative;
+  width: 4rem; height: 4rem; margin: 0 auto;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 9999px;
+  color: hsl(var(--primary-foreground));
+  background: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--accent)));
+  box-shadow: 0 12px 28px -8px hsl(var(--primary) / 0.7);
+  animation: gift-bob 3s ease-in-out infinite;
+}
+.gift-icon-heart { position: absolute; top: -0.2rem; right: -0.2rem; color: hsl(var(--primary)); background: hsl(var(--card)); border-radius: 9999px; padding: 3px; width: 1.4rem; height: 1.4rem; animation: gift-beat 1.6s ease-in-out infinite; }
+@keyframes gift-beat { 0%,100% { transform: scale(1); } 40% { transform: scale(1.25); } }
+@keyframes gift-bob { 0%,100% { transform: translateY(0) rotate(-3deg); } 50% { transform: translateY(-6px) rotate(3deg); } }
+
+.gift-qr {
+  position: relative;
+  margin: 0 auto;
+  width: min(100%, 17rem);
+  padding: 1.1rem;
+  background: #fff;
+  border-radius: 22px;
+  box-shadow: inset 0 0 0 1px hsl(var(--border)), 0 14px 30px -16px rgba(0, 0, 0, 0.25);
+  overflow: hidden;
+}
+.gift-qr-empty { display: flex; flex-direction: column; align-items: center; justify-content: center; aspect-ratio: 1; }
+.gift-corner { position: absolute; width: 1.6rem; height: 1.6rem; border: 3px solid hsl(var(--primary)); }
+.gift-corner-tl { top: 0.5rem; left: 0.5rem; border-right: 0; border-bottom: 0; border-top-left-radius: 12px; }
+.gift-corner-tr { top: 0.5rem; right: 0.5rem; border-left: 0; border-bottom: 0; border-top-right-radius: 12px; }
+.gift-corner-bl { bottom: 0.5rem; left: 0.5rem; border-right: 0; border-top: 0; border-bottom-left-radius: 12px; }
+.gift-corner-br { bottom: 0.5rem; right: 0.5rem; border-left: 0; border-top: 0; border-bottom-right-radius: 12px; }
+.gift-scan {
+  position: absolute; left: 0.9rem; right: 0.9rem; top: 0.9rem; height: 3px; border-radius: 3px;
+  background: linear-gradient(90deg, transparent, hsl(var(--primary)), transparent);
+  box-shadow: 0 0 14px 2px hsl(var(--primary) / 0.6);
+  animation: gift-scan 2.8s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes gift-scan { 0%,100% { top: 6%; opacity: 0; } 12%,88% { opacity: 1; } 50% { top: 94%; } }
+
+.gift-hint {
+  display: inline-flex; align-items: center; gap: 0.4rem; margin-top: 1.1rem;
+  padding: 0.35rem 0.9rem; border-radius: 9999px; font-size: 0.8rem;
+  color: hsl(var(--primary)); background: hsl(var(--primary) / 0.1);
+}
+.gift-actions { display: flex; gap: 0.75rem; margin-top: 1.25rem; }
+.gift-btn {
+  flex: 1; display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
+  padding: 0.8rem 1rem; border-radius: 9999px; font-weight: 600; font-size: 0.9rem;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+.gift-btn:active { transform: scale(0.97); }
+.gift-btn-solid { color: hsl(var(--primary-foreground)); background: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--accent))); box-shadow: 0 10px 24px -10px hsl(var(--primary) / 0.8); }
+.gift-btn-solid:hover { transform: translateY(-2px); }
+.gift-btn-ghost { color: hsl(var(--primary)); background: transparent; box-shadow: inset 0 0 0 2px hsl(var(--primary)); }
+.gift-btn-ghost:hover { background: hsl(var(--primary) / 0.1); transform: translateY(-2px); }
+
+@media (prefers-reduced-motion: reduce) {
+  .gift-card, .gift-icon, .gift-icon-heart, .gift-scan { animation: none !important; }
+  .gift-scan { display: none; }
+}
+.animations-off .gift-card, .animations-off .gift-icon, .animations-off .gift-scan { animation: none; }
+.animations-off .gift-scan { display: none; }
