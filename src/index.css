@@ -2798,10 +2798,20 @@
 /* Khmer clusters must never be spaced, tracked or uppercased: any letter-spacing
    (including negative) misplaces vowel/sign marks. html[lang=km] is set by the
    invitation pages. */
-html:lang(km) .wedding-root *,
-html:lang(km) .wedding-root *::before,
-html:lang(km) .wedding-root *::after {
+html:lang(km) *,
+html:lang(km) *::before,
+html:lang(km) *::after {
   letter-spacing: 0 !important;
   text-transform: none !important;
 }
 html:lang(km) .wedding-root .font-script { word-spacing: 0.1em; }
+
+/* Self-hosted copy of the admin's Khmer display font, so every browser and
+   phone renders it the same (it is not available on Google Fonts). */
+@font-face {
+  font-family: "AKbalthom Kbach Regular";
+  src: url("/fonts/AKbalthom-Kbach-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}

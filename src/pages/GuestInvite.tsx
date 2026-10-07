@@ -1,3 +1,4 @@
+import { FitText } from "@/components/ui/FitText";
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { FloatingPetals } from "@/components/ui/FloatingPetals";
@@ -133,8 +134,22 @@ const GuestInvite = () => {
           </p>
 
           {guest && (
-            <h1 className="font-script text-4xl sm:text-5xl mb-5 animate-fade-in-up delay-200">
-              {t.dearGuest} {guest.name}
+            <h1 className="mb-5 animate-fade-in-up delay-200">
+              <span className="block font-serif text-xl sm:text-2xl text-white/85 mb-1">
+                {t.dearGuest}
+              </span>
+              {/* Long names (e.g. with nicknames) wrap inside the card and the
+                  text steps down in size as the name gets longer. */}
+              <span
+                className={`block font-script leading-tight break-words [overflow-wrap:anywhere] ${
+                  guest.name.length <= 14
+                    ? "text-5xl sm:text-6xl"
+                    : guest.name.length <= 26
+                      ? "text-4xl sm:text-5xl"
+                      : "text-3xl sm:text-4xl"
+                }`}>
+                {guest.name}
+              </span>
             </h1>
           )}
 
@@ -145,11 +160,11 @@ const GuestInvite = () => {
           {/* Couple names */}
           <div className="mb-7 animate-fade-in-up delay-500">
             <h2 className="font-script text-4xl sm:text-5xl leading-tight">
-              {displayGroom}
+              <FitText>{displayGroom}</FitText>
             </h2>
             <p className="font-serif text-2xl my-1 text-white/90">{amp}</p>
             <h2 className="font-script text-4xl sm:text-5xl leading-tight">
-              {displayBride}
+              <FitText>{displayBride}</FitText>
             </h2>
           </div>
 
