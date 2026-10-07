@@ -178,7 +178,7 @@ export const AuroraInvitation = ({ weddingData, guest, language }: TemplateProps
 
       {/* ---------- Hero: full-bleed photo, Ken Burns, curtain reveal ---------- */}
       <section className="mo-hero">
-        <div className="mo-hero-media" aria-hidden="true">
+        <div className={cn("mo-hero-media", animOn && "mo-hero-media-open")} aria-hidden="true">
           {heroImg ? (
             heroIsVideo ? (
               <video className="mo-hero-img" src={heroImg} autoPlay loop muted playsInline />
@@ -189,8 +189,6 @@ export const AuroraInvitation = ({ weddingData, guest, language }: TemplateProps
             <div className="mo-hero-fallback" />
           )}
           <div className="mo-hero-shade" />
-          <span className={cn("mo-curtain mo-curtain-l", animOn && "mo-curtain-open")} />
-          <span className={cn("mo-curtain mo-curtain-r", animOn && "mo-curtain-open")} />
         </div>
 
         <div className="mo-hero-inner">

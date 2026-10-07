@@ -2764,3 +2764,15 @@
 }
 .animations-off .gift-card, .animations-off .gift-icon, .animations-off .gift-scan { animation: none; }
 .animations-off .gift-scan { display: none; }
+
+/* Hero reveal: the photo opens from the centre over dark plum (never a blank
+   cream page), replacing the earlier cream curtain panels. */
+.mo-hero { background: #2a0f22; }
+.mo-curtain { display: none !important; }
+.mo-hero-media-open { animation: mo-photo-open 1.2s cubic-bezier(0.77, 0, 0.18, 1) both; }
+@keyframes mo-photo-open {
+  from { clip-path: inset(0 50% 0 50%); }
+  to { clip-path: inset(0 0 0 0); }
+}
+.mo-static .mo-hero-media-open { animation: none; }
+@media (prefers-reduced-motion: reduce) { .mo-hero-media-open { animation: none; } }
