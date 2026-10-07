@@ -2815,3 +2815,93 @@ html:lang(km) .wedding-root .font-script { word-spacing: 0.1em; }
   font-style: normal;
   font-display: swap;
 }
+
+/* ==============================================================
+   Save the Date — tilted polaroid on the left, label + heading + date +
+   countdown on the right, gold sparkles twinkling around.
+   ============================================================== */
+.mo-save {
+  position: relative;
+  overflow: hidden;
+  padding: 5rem 1.25rem;
+  background: linear-gradient(180deg, hsl(30 60% 97%), hsl(25 55% 94%));
+}
+.mo-save-inner {
+  position: relative;
+  z-index: 1;
+  max-width: 64rem;
+  margin: 0 auto;
+  display: grid;
+  gap: 3rem;
+  align-items: center;
+  text-align: center;
+}
+@media (min-width: 768px) {
+  .mo-save-inner { grid-template-columns: 1fr 1fr; gap: 4rem; text-align: left; }
+  .mo-save-inner:not(:has(.mo-polaroid)) { grid-template-columns: 1fr; text-align: center; }
+}
+
+.mo-sparkles { position: absolute; inset: 0; pointer-events: none; }
+.mo-sparkle {
+  position: absolute;
+  color: #d4a24c;
+  opacity: 0.35;
+  animation: mo-twinkle 3.4s ease-in-out infinite;
+}
+@keyframes mo-twinkle {
+  0%, 100% { opacity: 0.15; transform: scale(0.7) rotate(0deg); }
+  50% { opacity: 1; transform: scale(1.15) rotate(25deg); }
+}
+
+/* Polaroid */
+.mo-polaroid { margin: 0; justify-self: center; width: min(84%, 22rem); }
+.mo-polaroid-photo {
+  background: #fff;
+  padding: 0.9rem 0.9rem 3.4rem;
+  border-radius: 6px;
+  box-shadow: 0 30px 60px -22px rgba(60, 20, 50, 0.45), 0 4px 10px rgba(60, 20, 50, 0.12);
+  transform: rotate(-4deg);
+  animation: mo-polaroid-float 7s ease-in-out infinite;
+  transition: transform 0.5s ease;
+}
+.mo-polaroid:hover .mo-polaroid-photo { animation-play-state: paused; transform: rotate(0deg) scale(1.03); }
+.mo-polaroid-photo img { display: block; width: 100%; aspect-ratio: 4 / 5; object-fit: cover; border-radius: 2px; }
+@keyframes mo-polaroid-float {
+  0%, 100% { transform: rotate(-4deg) translateY(0); }
+  50% { transform: rotate(-2.5deg) translateY(-10px); }
+}
+/* Entrance: the polaroid drops in from a steeper tilt */
+.mo-polaroid.mo-reveal { opacity: 0; transform: translateY(60px) rotate(-10deg) scale(0.92); transition: opacity 0.9s ease, transform 1s cubic-bezier(0.2, 0.8, 0.2, 1); }
+.mo-polaroid.mo-reveal.is-in { opacity: 1; transform: none; }
+
+/* Text column: children rise in one after another */
+.mo-save-text > * { opacity: 0; transform: translateY(20px); transition: opacity 0.7s ease, transform 0.7s ease; }
+.mo-save-text.is-in > * { opacity: 1; transform: none; }
+.mo-save-text.is-in > *:nth-child(2) { transition-delay: 0.12s; }
+.mo-save-text.is-in > *:nth-child(3) { transition-delay: 0.24s; }
+.mo-save-text.is-in > *:nth-child(4) { transition-delay: 0.36s; }
+.mo-save-text.is-in > *:nth-child(5) { transition-delay: 0.48s; }
+
+.mo-save-eyebrow { font-size: 0.78rem; letter-spacing: 0.3em; text-transform: uppercase; color: hsl(320 20% 42%); margin-bottom: 0.75rem; }
+.mo-save-title {
+  font-family: var(--font-serif, "Playfair Display", serif);
+  font-weight: 700; line-height: 1.05;
+  font-size: clamp(2.4rem, 7vw, 4.2rem);
+  color: hsl(320 35% 18%);
+  margin-bottom: 1rem;
+}
+.mo-save-sub { color: hsl(320 15% 40%); font-size: 1.05rem; margin-bottom: 1.75rem; }
+.mo-save .mo-date { margin-top: 0; }
+.mo-save-countdown { margin-top: 1.75rem; }
+@media (min-width: 768px) {
+  .mo-save-countdown > div { justify-content: flex-start; }
+}
+
+/* Static fallback (animations off / reduced motion) */
+.mo-static .mo-polaroid.mo-reveal { opacity: 1; transform: none; transition: none; }
+.mo-static .mo-polaroid-photo { animation: none; }
+.mo-static .mo-save-text > * { opacity: 1; transform: none; transition: none; }
+.mo-static .mo-sparkle { animation: none; opacity: 0.5; }
+@media (prefers-reduced-motion: reduce) {
+  .mo-polaroid-photo, .mo-sparkle { animation: none !important; }
+}

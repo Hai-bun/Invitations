@@ -59,6 +59,11 @@ export interface Translations {
   // Footer
   thankYou: string;
   madeWithLove: string;
+
+  // Save the date
+  markYourCalendar: string;
+  saveTheDate: string;
+  saveTheDateText: string;
   
   // Welcome Popup
   welcomeTitle: string;
@@ -130,6 +135,11 @@ const translations: Record<Language, Translations> = {
     // Footer
     thankYou: 'Thank you for being part of our special day',
     madeWithLove: 'Made with love',
+
+    // Save the date
+    markYourCalendar: 'Mark your calendar',
+    saveTheDate: 'Save the Date',
+    saveTheDateText: "We can't wait to celebrate with you.",
     
     // Welcome Popup
     welcomeTitle: 'You are Invited',
@@ -199,6 +209,11 @@ const translations: Record<Language, Translations> = {
     // Footer
     thankYou: 'អរគុណសម្រាប់ការចូលរួមក្នុងថ្ងៃពិសេសរបស់យើង',
     madeWithLove: 'បង្កើតដោយក្តីស្រលាញ់',
+
+    // Save the date
+    markYourCalendar: 'សូមកត់ត្រាទុកថ្ងៃ',
+    saveTheDate: 'កក់ទុកថ្ងៃពិសេស',
+    saveTheDateText: 'យើងរង់ចាំអបអរសាទរជាមួយលោកអ្នក។',
     
     // Welcome Popup
     welcomeTitle: 'អ្នកត្រូវបានអញ្ជើញ',

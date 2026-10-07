@@ -72,6 +72,22 @@ const SpinBadge = ({ text, image }: { text: string; image?: string }) => (
   </div>
 );
 
+// Fixed positions (not random) so server/client renders match and the field is stable.
+const SPARKLES: Array<{ x: string; y: string; s: number; d: string }> = [
+  { x: "4%", y: "8%", s: 14, d: "0s" },
+  { x: "12%", y: "72%", s: 22, d: "0.6s" },
+  { x: "22%", y: "20%", s: 10, d: "1.2s" },
+  { x: "33%", y: "88%", s: 16, d: "0.3s" },
+  { x: "47%", y: "6%", s: 12, d: "1.5s" },
+  { x: "58%", y: "30%", s: 26, d: "0.9s" },
+  { x: "66%", y: "82%", s: 14, d: "0.2s" },
+  { x: "74%", y: "12%", s: 18, d: "1.1s" },
+  { x: "82%", y: "52%", s: 12, d: "1.8s" },
+  { x: "90%", y: "20%", s: 20, d: "0.5s" },
+  { x: "94%", y: "78%", s: 14, d: "1.4s" },
+  { x: "40%", y: "50%", s: 10, d: "2s" },
+];
+
 const clamp01 = (n: number) => Math.min(1, Math.max(0, n));
 
 export const AuroraInvitation = ({ weddingData, guest, language }: TemplateProps) => {
@@ -86,6 +102,8 @@ export const AuroraInvitation = ({ weddingData, guest, language }: TemplateProps
   const heroImg = weddingData.backgroundImage || photos[0] || "";
   const heroIsVideo = /\.(mp4|webm|ogg)(\?|$)/i.test(heroImg);
   const dateText = formatWeddingDate(weddingData.weddingDate, language);
+  // Polaroid photo: prefer one that is not already the hero image.
+  const saveImg = photos.find((p) => p !== heroImg) || photos[0] || "";
 
   const shellRef = useRef<HTMLDivElement>(null);
   const galleryRef = useRef<HTMLElement>(null);
@@ -235,25 +253,6 @@ export const AuroraInvitation = ({ weddingData, guest, language }: TemplateProps
             <span className={cn("mo-amp", fade("animate-fade-in-up delay-1000"))}>{amp}</span>
             <SplitName text={bride} start={groom.length + 10} on={animOn} />
           </h1>
-
-          <div className={cn("mo-date", fade("animate-fade-in-up delay-1000"))}>
-            <Calendar className="w-4 h-4" />
-            <span>
-              {dateText}
-              {" · "}
-              {formatWeddingTime(weddingData.weddingTime)}
-            </span>
-          </div>
-
-          {weddingData.showCountdown && (
-            <div className={cn("mo-countdown", fade("animate-fade-in-up delay-1000"))}>
-              <CountdownTimer
-                targetDate={weddingData.weddingDate}
-                targetTime={weddingData.weddingTime}
-                language={language}
-              />
-            </div>
-          )}
         </div>
 
         <SpinBadge
@@ -261,6 +260,56 @@ export const AuroraInvitation = ({ weddingData, guest, language }: TemplateProps
           image={weddingData.monogramImage || photos[1] || photos[0]}
         />
         <ChevronDown className="mo-scroll-cue w-6 h-6" aria-hidden="true" />
+      </section>
+
+      {/* ---------- Save the Date: tilted polaroid + date + countdown ---------- */}
+      <section className="mo-save">
+        <div className="mo-sparkles" aria-hidden="true">
+          {SPARKLES.map((s, i) => (
+            <svg
+              key={i}
+              viewBox="0 0 24 24"
+              className="mo-sparkle"
+              style={{ left: s.x, top: s.y, width: s.s, height: s.s, animationDelay: s.d } as CSSProperties}>
+              <path d="M12 0c.6 6.5 5 11.4 12 12-7 .6-11.4 5.5-12 12-.6-6.5-5-11.4-12-12C7 11.4 11.4 6.5 12 0z" fill="currentColor" />
+            </svg>
+          ))}
+        </div>
+
+        <div className="mo-save-inner">
+          {saveImg && (
+            <figure className="mo-polaroid mo-reveal">
+              <div className="mo-polaroid-photo">
+                <img src={saveImg} alt="" loading="lazy" draggable={false} />
+              </div>
+            </figure>
+          )}
+
+          <div className="mo-save-text mo-reveal">
+            <p className="mo-save-eyebrow">{t.markYourCalendar}</p>
+            <h2 className="mo-save-title">{t.saveTheDate}</h2>
+            <p className="mo-save-sub">{t.saveTheDateText}</p>
+
+            <div className="mo-date">
+              <Calendar className="w-4 h-4" />
+              <span>
+                {dateText}
+                {" · "}
+                {formatWeddingTime(weddingData.weddingTime)}
+              </span>
+            </div>
+
+            {weddingData.showCountdown && (
+              <div className="mo-save-countdown">
+                <CountdownTimer
+                  targetDate={weddingData.weddingDate}
+                  targetTime={weddingData.weddingTime}
+                  language={language}
+                />
+              </div>
+            )}
+          </div>
+        </div>
       </section>
 
       {/* ---------- Two photo ribbons drifting in opposite directions ---------- */}
