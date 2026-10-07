@@ -2633,3 +2633,22 @@
   .aurora-char-in { animation: none; opacity: 1; }
   .aurora-hero-inner { transform: none; opacity: 1; }
 }
+
+/* Long couple names must never overflow their card on phones. Script fonts
+   are wide, so scale down with the viewport and wrap inside the card. */
+.template-glassgarden .glass-name,
+.template-cute .cute-name,
+.wedding-root .couple-name {
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  text-wrap: balance;
+}
+@media (max-width: 480px) {
+  .template-glassgarden .glass-name { font-size: clamp(1.6rem, 7.2vw, 2.4rem); line-height: 1.15; }
+  .template-cute .cute-name { font-size: clamp(1.7rem, 7.5vw, 2.4rem); }
+  .template-aurora .aurora-name { font-size: clamp(2.2rem, 10vw, 3.4rem); overflow-wrap: anywhere; }
+  .wedding-root .couple-name { font-size: clamp(1.6rem, 8vw, 2.2rem); }
+  .template-glassgarden .glass-card { padding-left: 1.25rem; padding-right: 1.25rem; }
+  .template-cute .cute-card { padding-left: 1.25rem; padding-right: 1.25rem; }
+}
+.wedding-root h1 { max-width: 100%; overflow-wrap: anywhere; }
