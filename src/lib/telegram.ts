@@ -1,47 +1,59 @@
-const escapeHtml = (s: string) =>
-  s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+import { supabase } from "@/integrations/supabase/client";
+import type { TelegramConfig } from "@/lib/weddingStore";
+
+const WEDDING_ID = "default-wedding";
 
 export interface TelegramResult {
   ok: boolean;
   error?: string;
 }
 
-// Sends through our own /api/telegram relay first (works even where the guest's
-// network blocks api.telegram.org), then falls back to calling Telegram directly.
+// Admin "Test": goes through our server (needs the signed-in session).
 export const sendTelegramMessage = async (
   botToken: string,
   chatId: string,
   html: string,
 ): Promise<TelegramResult> => {
-  let relayError = "";
+  const { data: session } = await supabase.auth.getSession();
   try {
     const res = await fetch("/api/telegram", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ botToken: botToken.trim(), chatId: String(chatId).trim(), text: html }),
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${session.session?.access_token ?? ""}`,
+      },
+      body: JSON.stringify({ botToken, chatId, text: html }),
     });
-    const type = res.headers.get("content-type") ?? "";
-    if (type.includes("application/json")) {
-      const body = await res.json();
-      if (body.ok) return { ok: true };
-      relayError = body.description || "Telegram rejected the message";
-      // A real Telegram answer (bad token / chat) will not improve by retrying.
-      if (res.status !== 502 || !/reach/i.test(relayError)) return { ok: false, error: relayError };
-    }
+    const body = await res.json().catch(() => null);
+    if (!body) return { ok: false, error: `Server error ${res.status} (is /api deployed?)` };
+    return body.ok ? { ok: true } : { ok: false, error: body.description || `Error ${res.status}` };
   } catch {
-    /* relay unavailable (e.g. local dev) - try direct */
-  }
-  try {
-    const res = await fetch(`https://api.telegram.org/bot${botToken.trim()}/sendMessage`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ chat_id: String(chatId).trim(), text: html, parse_mode: "HTML" }),
-    });
-    const body = await res.json().catch(() => ({}));
-    return res.ok ? { ok: true } : { ok: false, error: body?.description || `Telegram error ${res.status}` };
-  } catch {
-    return { ok: false, error: relayError || "Could not connect to Telegram (network blocked?)" };
+    return { ok: false, error: "Could not reach the server" };
   }
 };
 
-export const telegramEscape = escapeHtml;
+// Owner-only credentials (RLS blocks everyone else).
+export const getTelegramConfig = async (): Promise<TelegramConfig | null> => {
+  const { data: session } = await supabase.auth.getSession();
+  if (!session.session) return null;
+  const { data, error } = await supabase
+    .from("telegram_secrets" as never)
+    .select("enabled, bot_token, chat_id")
+    .eq("wedding_id", WEDDING_ID)
+    .maybeSingle();
+  if (error || !data) return null;
+  const row = data as unknown as { enabled: boolean; bot_token: string; chat_id: string };
+  return { enabled: row.enabled, botToken: row.bot_token, chatId: row.chat_id };
+};
+
+export const saveTelegramConfig = async (cfg: TelegramConfig): Promise<boolean> => {
+  const { error } = await supabase.from("telegram_secrets" as never).upsert({
+    wedding_id: WEDDING_ID,
+    enabled: cfg.enabled,
+    bot_token: cfg.botToken.trim(),
+    chat_id: String(cfg.chatId).trim(),
+    updated_at: new Date().toISOString(),
+  } as never);
+  if (error) console.error("Failed to save Telegram settings:", error);
+  return !error;
+};

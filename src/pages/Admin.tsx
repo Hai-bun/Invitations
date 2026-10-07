@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { sendTelegramMessage } from "@/lib/telegram";
+import { sendTelegramMessage, getTelegramConfig, saveTelegramConfig } from "@/lib/telegram";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Card,
@@ -65,6 +65,8 @@ const Admin = () => {
   useEffect(() => {
     const loadWeddingData = async () => {
       const weddingData = await getWeddingData();
+      const tg = await getTelegramConfig();
+      if (tg) weddingData.telegramConfig = tg;
       setData(weddingData);
       applyTheme(weddingData.theme as ThemeType, {
         headingFont: weddingData.headingFont,
@@ -95,9 +97,12 @@ const Admin = () => {
     const success = await saveWeddingData(data);
     setIsSaving(false);
     if (success) {
-      toast.success("Settings saved successfully!");
+      const tgSaved = await saveTelegramConfig(data.telegramConfig);
+      if (tgSaved) toast.success("Settings saved successfully!");
+      else toast.warning("Settings saved, but the Telegram settings were NOT saved. Run the telegram_secrets migration first.");
       // Reload data from database to ensure persistence
       const updated = await getWeddingData();
+      updated.telegramConfig = (await getTelegramConfig()) ?? data.telegramConfig;
       setData(updated);
     } else {
       toast.error("Failed to save settings. Please try again.");

@@ -1,5 +1,4 @@
 import { supabase } from "@/integrations/supabase/client";
-import { sendTelegramMessage, telegramEscape } from "@/lib/telegram";
 import type { Database } from "@/integrations/supabase/types";
 
 export type TemplateType =
@@ -392,7 +391,8 @@ const buildWeddingProfileRow = (
   body_font: weddingData.bodyFont,
   show_countdown: weddingData.showCountdown,
   social_links: weddingData.socialLinks,
-  telegram_config: weddingData.telegramConfig,
+  // Credentials live in the owner-only telegram_secrets table, never here.
+  telegram_config: {},
   // Story & Schedule are packed into the existing welcome_popup jsonb column so
   // no new database columns (migration) are required to persist them.
   welcome_popup: {
@@ -509,8 +509,7 @@ const mapProfileToWeddingData = (
       .filter((guest) => guest.rsvp_status !== "pending")
       .map(mapGuestRowToResponse),
     socialLinks: profile.social_links ?? DEFAULT_WEDDING_DATA.socialLinks,
-    telegramConfig:
-      profile.telegram_config ?? DEFAULT_WEDDING_DATA.telegramConfig,
+    telegramConfig: DEFAULT_WEDDING_DATA.telegramConfig,
     welcomePopupEnabled:
       profile.welcome_popup?.enabled ??
       DEFAULT_WEDDING_DATA.welcomePopupEnabled,
@@ -824,49 +823,21 @@ export const deletePhotoByUrl = async (imageUrl: string): Promise<boolean> => {
   return true;
 };
 
+// The server reads the bot credentials itself; the browser only reports the RSVP.
 export const sendRSVPToTelegram = async (
   guestName: string,
   attending: boolean,
   message: string,
 ): Promise<boolean> => {
-  const { data: profile, error: profileError } = await supabase
-    .from("wedding_profiles")
-    .select("telegram_config")
-    .eq("id", DEFAULT_WEDDING_ID)
-    .single();
-
-  if (profileError || !profile) {
-    console.error("Failed to retrieve Telegram config:", profileError);
+  try {
+    const res = await fetch("/api/rsvp-notify", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ guestName, attending, message }),
+    });
+    return res.ok;
+  } catch (error) {
+    console.error("Failed to send Telegram notification:", error);
     return false;
   }
-
-  const telegramConfig = profile.telegram_config as TelegramConfig;
-
-  if (
-    !telegramConfig?.enabled ||
-    !telegramConfig?.botToken ||
-    !telegramConfig?.chatId
-  ) {
-    return false;
-  }
-
-  const text =
-    `🎊 <b>New RSVP Response</b>
-
-` +
-    `👤 <b>Guest:</b> ${telegramEscape(guestName)}
-` +
-    `✅ <b>Status:</b> ${attending ? "Attending" : "Not Attending"}
-` +
-    `💌 <b>Message:</b> ${telegramEscape(message || "No message")}
-` +
-    `📅 <b>Date:</b> ${new Date().toLocaleString()}`;
-
-  const result = await sendTelegramMessage(
-    telegramConfig.botToken,
-    telegramConfig.chatId,
-    text,
-  );
-  if (!result.ok) console.error("Telegram notification failed:", result.error);
-  return result.ok;
 };
