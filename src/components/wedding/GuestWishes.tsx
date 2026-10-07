@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Check, Heart, X } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { getTranslations, type Language } from "@/lib/i18n";
@@ -15,6 +15,8 @@ interface Wish {
 export const GuestWishes = ({ language }: { language: Language }) => {
   const t = getTranslations(language);
   const [wishes, setWishes] = useState<Wish[]>([]);
+  const listRef = useRef<HTMLUListElement>(null);
+  const [maxH, setMaxH] = useState<number>();
 
   useEffect(() => {
     let live = true;
@@ -32,6 +34,21 @@ export const GuestWishes = ({ language }: { language: Language }) => {
     };
   }, []);
 
+  // Show exactly the first 5 guests; the rest scroll.
+  useEffect(() => {
+    const ul = listRef.current;
+    if (!ul) return;
+    const measure = () => {
+      const items = ul.children;
+      if (items.length <= 5) return setMaxH(undefined);
+      const last = items[4] as HTMLElement;
+      setMaxH(last.offsetTop + last.offsetHeight - (items[0] as HTMLElement).offsetTop);
+    };
+    measure();
+    window.addEventListener("resize", measure);
+    return () => window.removeEventListener("resize", measure);
+  }, [wishes]);
+
   if (!wishes.length) return null;
 
   return (
@@ -40,7 +57,10 @@ export const GuestWishes = ({ language }: { language: Language }) => {
         <Heart className="w-5 h-5 text-primary" fill="currentColor" />
         {t.wishesTitle}
       </h3>
-      <ul className="space-y-3 max-h-[28rem] overflow-y-auto pr-1">
+      <ul
+        ref={listRef}
+        style={maxH ? { maxHeight: maxH } : undefined}
+        className="relative space-y-3 overflow-y-auto pr-1">
         {wishes.map((w) => {
           const yes = w.rsvp_status === "attending";
           return (
