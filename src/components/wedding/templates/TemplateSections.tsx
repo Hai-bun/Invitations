@@ -82,7 +82,7 @@ export const TemplateSections = ({
         language={language}
       />
     ),
-    gallery: <PhotoGallery photos={weddingData.photos} language={language} />,
+    gallery: <PhotoGallery photos={weddingData.photos} language={language} layout={weddingData.galleryLayout} />,
     gift: (
       <GiftSection
         khqrImage={weddingData.khqrImage}

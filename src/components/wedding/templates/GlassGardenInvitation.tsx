@@ -6,6 +6,7 @@ import { formatWeddingDate, formatWeddingTime } from "@/lib/weddingFormat";
 import { CountdownTimer } from "../CountdownTimer";
 import { MonthCalendar } from "../MonthCalendar";
 import { CoverflowGallery } from "../CoverflowGallery";
+import { PhotoGallery } from "../PhotoGallery";
 import { TemplateSections, getCoupleDisplay, type SectionKey } from "./TemplateSections";
 import { getTemplate } from "@/lib/templateConfig";
 
@@ -128,7 +129,11 @@ export const GlassGardenInvitation = ({
         </div>
       </section>
 
-      <CoverflowGallery photos={weddingData.photos} language={language} />
+      {weddingData.galleryLayout && weddingData.galleryLayout !== "default" ? (
+        <PhotoGallery photos={weddingData.photos} language={language} layout={weddingData.galleryLayout} />
+      ) : (
+        <CoverflowGallery photos={weddingData.photos} language={language} />
+      )}
 
       <TemplateSections
         weddingData={weddingData}

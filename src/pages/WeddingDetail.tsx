@@ -421,7 +421,7 @@ const WeddingDetail = () => {
       <ScheduleSection schedule={weddingData.schedule} language={language} />
 
       {/* Photo Gallery */}
-      <PhotoGallery photos={weddingData.photos} language={language} />
+      <PhotoGallery photos={weddingData.photos} language={language} layout={weddingData.galleryLayout} />
 
       {/* Gift Section */}
       <GiftSection

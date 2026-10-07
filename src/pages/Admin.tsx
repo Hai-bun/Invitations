@@ -51,6 +51,7 @@ import {
 import { uploadWeddingImage, deleteWeddingImage } from "@/lib/storage";
 import { ThemeSelector } from "@/components/admin/ThemeSelector";
 import { ImageCropDialog } from "@/components/admin/ImageCropDialog";
+import { GalleryLayoutSelector } from "@/components/admin/GalleryLayoutSelector";
 import { TemplateSelector } from "@/components/admin/TemplateSelector";
 import { ThemeType, applyTheme } from "@/lib/themeConfig";
 
@@ -1565,6 +1566,23 @@ const Admin = () => {
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-6">
+                <div className="space-y-3">
+                  <div>
+                    <Label>Gallery layout</Label>
+                    <p className="text-xs text-muted-foreground mt-1">
+                      Choose how guests see your photos. “Template default”
+                      keeps the gallery that comes with your template.
+                    </p>
+                  </div>
+                  <GalleryLayoutSelector
+                    value={data.galleryLayout ?? "default"}
+                    onChange={(galleryLayout) =>
+                      setData({ ...data, galleryLayout })
+                    }
+                    photos={data.photos}
+                  />
+                </div>
+
                 <div className="border-2 border-dashed border-border rounded-lg p-8 text-center">
                   <Camera className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
                   <p className="text-muted-foreground mb-4">

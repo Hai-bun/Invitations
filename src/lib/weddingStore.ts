@@ -20,6 +20,16 @@ export type TemplateType =
   | "cute"
   | "aurora";
 
+export type GalleryLayout =
+  | "default"
+  | "rhythm"
+  | "square"
+  | "editorial"
+  | "strip"
+  | "staggered"
+  | "mosaic"
+  | "band";
+
 export interface CustomFont {
   family: string;
   url: string;
@@ -73,6 +83,8 @@ export interface WeddingData {
   nameFont: string;
   /** Uploaded font files (admin PC fonts aren't available on guests' phones). */
   customFonts: CustomFont[];
+  /** How the photo gallery is laid out ("default" = the template's own gallery). */
+  galleryLayout: GalleryLayout;
 
   // Photo Gallery
   photos: string[];
@@ -186,6 +198,7 @@ const DEFAULT_WEDDING_DATA: WeddingData = {
   bodyFont: "Lato",
   nameFont: "",
   customFonts: [],
+  galleryLayout: "default",
   photos: [],
   monogramImage: "",
   khqrImage: "",
@@ -350,6 +363,7 @@ const buildWeddingProfileRow = (
     schedule: weddingData.schedule,
     nameFont: weddingData.nameFont,
     customFonts: weddingData.customFonts,
+    galleryLayout: weddingData.galleryLayout,
     monogramImage: weddingData.monogramImage,
     eventTitleKh: weddingData.eventTitleKh,
     eventAddressKh: weddingData.eventAddressKh,
@@ -426,6 +440,9 @@ const mapProfileToWeddingData = (
     customFonts:
       (profile.welcome_popup as { customFonts?: CustomFont[] })?.customFonts ??
       DEFAULT_WEDDING_DATA.customFonts,
+    galleryLayout:
+      (profile.welcome_popup as { galleryLayout?: GalleryLayout })
+        ?.galleryLayout ?? DEFAULT_WEDDING_DATA.galleryLayout,
     monogramImage:
       (profile.welcome_popup as { monogramImage?: string })?.monogramImage ??
       DEFAULT_WEDDING_DATA.monogramImage,

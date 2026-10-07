@@ -52,7 +52,7 @@ export const ReelInvitation = ({
       />
     ),
     gallery: (
-      <PhotoGallery photos={weddingData.photos} language={language} />
+      <PhotoGallery photos={weddingData.photos} language={language} layout={weddingData.galleryLayout} />
     ),
     location: (
       <LocationSection

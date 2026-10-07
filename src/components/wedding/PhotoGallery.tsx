@@ -3,13 +3,18 @@ import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { ChevronLeft, ChevronRight, X, Camera } from "lucide-react";
 import { getTranslations, Language, getStoredLanguage } from "@/lib/i18n";
 import { FadeInImage } from "@/components/ui/FadeInImage";
+import { cn } from "@/lib/utils";
+import type { GalleryLayout } from "@/lib/weddingStore";
 
 interface PhotoGalleryProps {
   photos: string[];
   language?: Language;
+  /** Admin-chosen layout; "default" keeps the template's own grid. */
+  layout?: GalleryLayout;
 }
 
-export const PhotoGallery = ({ photos, language }: PhotoGalleryProps) => {
+export const PhotoGallery = ({ photos, language, layout = "default" }: PhotoGalleryProps) => {
+  const custom = layout !== "default";
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
   const lang = language || getStoredLanguage();
   const t = getTranslations(lang);
@@ -43,7 +48,7 @@ export const PhotoGallery = ({ photos, language }: PhotoGalleryProps) => {
   }
 
   return (
-    <section className="gallery-section scroll-reveal py-16 px-4 bg-romantic-gradient">
+    <section className={cn("gallery-section scroll-reveal py-16 px-4 bg-romantic-gradient", custom && "gl-wrap")}>
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-10">
           <Camera className="w-10 h-10 text-primary mx-auto mb-4" />
@@ -52,11 +57,11 @@ export const PhotoGallery = ({ photos, language }: PhotoGalleryProps) => {
           </h2>
         </div>
 
-        <div className="gallery-grid grid grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4">
+        <div className={cn("gallery-grid", custom ? `gl-grid gl-${layout}` : "grid grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4")}>
           {photos.map((photo, index) => (
             <div
               key={index}
-              className="gallery-item aspect-square overflow-hidden rounded-lg cursor-pointer group shadow-card hover:shadow-elevated transition-all duration-300 bg-muted/40"
+              className={cn("gallery-item overflow-hidden cursor-pointer group transition-all duration-300 bg-muted/40", custom ? "gl-item" : "aspect-square rounded-lg shadow-card hover:shadow-elevated")}
               onClick={() => setSelectedIndex(index)}
             >
               <FadeInImage

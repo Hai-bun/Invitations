@@ -5,6 +5,7 @@ import type { Guest, WeddingData } from "@/lib/weddingStore";
 import { getTranslations, type Language } from "@/lib/i18n";
 import { formatWeddingDate, formatWeddingTime } from "@/lib/weddingFormat";
 import { CountdownTimer } from "../CountdownTimer";
+import { PhotoGallery } from "../PhotoGallery";
 import { TemplateSections, getCoupleDisplay, type SectionKey } from "./TemplateSections";
 import { getTemplate } from "@/lib/templateConfig";
 
@@ -99,6 +100,8 @@ export const AuroraInvitation = ({ weddingData, guest, language }: TemplateProps
     (k) => k !== "hero" && k !== "gallery",
   ) as SectionKey[];
   const photos = weddingData.photos ?? [];
+  // An admin-chosen gallery layout replaces the signature pinned gallery.
+  const customLayout = !!weddingData.galleryLayout && weddingData.galleryLayout !== "default";
   const heroImg = weddingData.backgroundImage || photos[0] || "";
   const heroIsVideo = /\.(mp4|webm|ogg)(\?|$)/i.test(heroImg);
   const dateText = formatWeddingDate(weddingData.weddingDate, language);
@@ -216,7 +219,7 @@ export const AuroraInvitation = ({ weddingData, guest, language }: TemplateProps
       if (raf) cancelAnimationFrame(raf);
       if (gallery) gallery.style.height = "";
     };
-  }, [animOn, photos.length]);
+  }, [animOn, photos.length, customLayout]);
 
   const rowA = photos.length ? [...photos, ...photos, ...photos].slice(0, Math.max(8, photos.length * 2)) : [];
   const rowB = [...rowA].reverse();
@@ -337,8 +340,11 @@ export const AuroraInvitation = ({ weddingData, guest, language }: TemplateProps
         order={order.filter((k) => ["couple", "story", "location", "schedule"].includes(k))}
       />
 
+      {customLayout && (
+        <PhotoGallery photos={photos} language={language} layout={weddingData.galleryLayout} />
+      )}
       {/* ---------- Pinned horizontal gallery with per-photo parallax ---------- */}
-      {photos.length > 0 && (
+      {photos.length > 0 && !customLayout && (
         <section ref={galleryRef} className="mo-gallery" aria-label={t.photoGallery}>
           <div className="mo-gallery-pin">
             <h2 className="mo-gallery-title">{t.photoGallery}</h2>
