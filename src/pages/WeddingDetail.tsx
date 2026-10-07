@@ -25,6 +25,7 @@ import { MonoInvitation } from "@/components/wedding/templates/MonoInvitation";
 import { TropicalInvitation } from "@/components/wedding/templates/TropicalInvitation";
 import { GlassGardenInvitation } from "@/components/wedding/templates/GlassGardenInvitation";
 import { CuteInvitation } from "@/components/wedding/templates/CuteInvitation";
+import { AuroraInvitation } from "@/components/wedding/templates/AuroraInvitation";
 import { CuteStickers } from "@/components/ui/CuteStickers";
 
 import { LanguageSwitcher } from "@/components/ui/LanguageSwitcher";
@@ -158,7 +159,7 @@ const WeddingDetail = () => {
   // Reel (which has its own cinematic grain).
   const showSparkles =
     animOn &&
-    !["editorial", "reel", "mono", "polaroid", "cute"].includes(template.id);
+    !["editorial", "reel", "mono", "polaroid", "cute", "aurora"].includes(template.id);
   const showCuteStickers = animOn && template.id === "cute";
   const fadeCls = (base: string) => (animOn && anim.fadeInOnScroll ? base : "");
 
@@ -191,6 +192,7 @@ const WeddingDetail = () => {
     tropical: TropicalInvitation,
     glassgarden: GlassGardenInvitation,
     cute: CuteInvitation,
+    aurora: AuroraInvitation,
   }[template.id as string];
 
   if (SelfContainedTemplate) {

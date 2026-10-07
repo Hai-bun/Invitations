@@ -17,7 +17,8 @@ export type TemplateType =
   | "mono"
   | "tropical"
   | "glassgarden"
-  | "cute";
+  | "cute"
+  | "aurora";
 
 export interface SocialLinks {
   telegram: string;

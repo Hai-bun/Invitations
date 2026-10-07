@@ -227,9 +227,23 @@ const templatePreviews: Record<TemplateType, React.ReactNode> = {
       </div>
     </div>
   ),
+  aurora: (
+    <div className="h-full flex flex-col items-center justify-center p-2 relative overflow-hidden bg-[#0b0b1a]">
+      <div className="absolute -top-3 -left-3 w-14 h-14 rounded-full bg-[#7c5cff]/60 blur-xl animate-pulse" />
+      <div className="absolute -bottom-4 -right-2 w-16 h-16 rounded-full bg-[#22d3ee]/50 blur-xl animate-pulse" />
+      <div className="absolute top-3 right-4 w-8 h-8 rounded-full bg-[#ff6ad5]/40 blur-lg" />
+      <div className="relative text-[5px] uppercase tracking-[0.3em] text-white/60">
+        Invited
+      </div>
+      <div className="relative text-[12px] font-semibold tracking-wide bg-gradient-to-r from-[#a78bfa] via-[#67e8f9] to-[#f9a8d4] bg-clip-text text-transparent">
+        Anna &amp; Ben
+      </div>
+      <div className="relative mt-1 w-8 h-px bg-white/40" />
+    </div>
+  ),
 };
 
-export const TemplateSelector = ({
+export const TemplateSelector= ({
   selectedTemplate,
   onTemplateChange,
 }: TemplateSelectorProps) => {

@@ -403,9 +403,34 @@ export const TEMPLATES: Record<TemplateType, TemplateConfig> = {
       animatedEntrance: true,
     },
   },
+  aurora: {
+    id: "aurora",
+    name: "Aurora Motion",
+    description:
+      "Modern web-style invitation with a drifting aurora glow, cursor spotlight, letter-by-letter name reveal, scroll progress and a live marquee",
+    preview: "🌌",
+    heroLayout: "centered",
+    sectionOrder: [
+      "hero",
+      "couple",
+      "story",
+      "location",
+      "schedule",
+      "gallery",
+      "gift",
+      "rsvp",
+      "footer",
+    ],
+    features: {
+      showOrnaments: false,
+      showPetals: false,
+      parallaxHero: true,
+      animatedEntrance: true,
+    },
+  },
 };
 
-export const getTemplate = (templateId: TemplateType): TemplateConfig => {
+export const getTemplate= (templateId: TemplateType): TemplateConfig => {
   return TEMPLATES[templateId] || TEMPLATES.classic;
 };
 

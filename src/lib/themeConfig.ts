@@ -143,6 +143,38 @@ export const getTheme = (themeId: ThemeType): ThemeConfig => {
   return THEMES[themeId] || THEMES.luxury;
 };
 
+// System fonts that phones don't ship with, mapped to a metric-compatible
+// Google font so mobile matches what the admin sees on desktop.
+const SYSTEM_FONT_SUBSTITUTES: Record<string, string> = {
+  arial: "Arimo",
+  helvetica: "Arimo",
+  "helvetica neue": "Arimo",
+  "times new roman": "Tinos",
+  times: "Tinos",
+  "courier new": "Cousine",
+  georgia: "Gelasio",
+  calibri: "Carlito",
+  cambria: "Caladea",
+};
+
+const loadedFonts = new Set<string>();
+
+// Fonts the admin types in are only installed on the admin's own computer, so
+// request them from Google Fonts. Unknown names 400 harmlessly and fall back.
+const ensureFontLoaded = (name: string | undefined): string | undefined => {
+  const raw = name?.trim();
+  if (!raw) return undefined;
+  const family = SYSTEM_FONT_SUBSTITUTES[raw.toLowerCase()] ?? raw;
+  if (!loadedFonts.has(family)) {
+    loadedFonts.add(family);
+    const link = document.createElement("link");
+    link.rel = "stylesheet";
+    link.href = `https://fonts.googleapis.com/css2?family=${encodeURIComponent(family).replace(/%20/g, "+")}:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap`;
+    document.head.appendChild(link);
+  }
+  return family;
+};
+
 export const applyTheme = (
   themeId: ThemeType,
   customFonts?: { headingFont?: string; bodyFont?: string; nameFont?: string },
@@ -166,9 +198,10 @@ export const applyTheme = (
   root.style.setProperty("--ring", theme.colors.primary);
   root.style.setProperty("--hero-gradient", theme.style.gradientStyle);
 
-  const headingFont = customFonts?.headingFont?.trim() || theme.fonts.heading;
-  const bodyFont = customFonts?.bodyFont?.trim() || theme.fonts.body;
-  const nameFont = customFonts?.nameFont?.trim();
+  const headingFont =
+    ensureFontLoaded(customFonts?.headingFont) || theme.fonts.heading;
+  const bodyFont = ensureFontLoaded(customFonts?.bodyFont) || theme.fonts.body;
+  const nameFont = ensureFontLoaded(customFonts?.nameFont);
 
   // Keep a Khmer fallback after the chosen Latin font so Khmer text renders in
   // a proper Khmer typeface no matter which custom font is selected.
