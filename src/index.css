@@ -2794,3 +2794,14 @@
 /* One line per name: never wrap, JS scales --fit so the widest name fits. */
 .mo-split { flex-wrap: nowrap; width: max-content; }
 .mo-name { font-size: calc(clamp(2.6rem, 13vw, 6.5rem) * var(--fit, 1)); overflow-wrap: normal; width: 100%; }
+
+/* Khmer clusters must never be spaced, tracked or uppercased: any letter-spacing
+   (including negative) misplaces vowel/sign marks. html[lang=km] is set by the
+   invitation pages. */
+html:lang(km) .wedding-root *,
+html:lang(km) .wedding-root *::before,
+html:lang(km) .wedding-root *::after {
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+}
+html:lang(km) .wedding-root .font-script { word-spacing: 0.1em; }

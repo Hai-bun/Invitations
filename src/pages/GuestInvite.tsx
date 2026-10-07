@@ -23,6 +23,11 @@ const GuestInvite = () => {
   const { data: guest } = useGuest(guestId);
   const [language, setLanguage] = useState<Language>(getStoredLanguage());
 
+  // Tell the browser the page language so Khmer text is shaped/styled correctly.
+  useEffect(() => {
+    document.documentElement.lang = language;
+  }, [language]);
+
   // Match the couple's chosen theme + custom fonts on this cover too.
   useEffect(() => {
     if (!weddingData) return;

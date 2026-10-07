@@ -47,6 +47,11 @@ const WeddingDetail = () => {
   const { data: guest } = useGuest(guestId);
   const [language, setLanguage] = useState<Language>(getStoredLanguage());
 
+  // Tell the browser the page language so Khmer text is shaped/styled correctly.
+  useEffect(() => {
+    document.documentElement.lang = language;
+  }, [language]);
+
   // Optional ?template= override so any template can be previewed without
   // saving it (used by the admin Preview button).
   const previewParam = searchParams.get("template");
