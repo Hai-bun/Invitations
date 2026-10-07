@@ -5,6 +5,8 @@ import { getTranslations, Language, getStoredLanguage } from "@/lib/i18n";
 interface FooterProps {
   groomName: string;
   brideName: string;
+  groomNameKh?: string;
+  brideNameKh?: string;
   socialLinks: SocialLinks;
   language?: Language;
 }
@@ -34,7 +36,7 @@ const WhatsAppIcon = () => (
   </svg>
 );
 
-export const Footer = ({ groomName, brideName, socialLinks, language }: FooterProps) => {
+export const Footer = ({ groomName, brideName, groomNameKh, brideNameKh, socialLinks, language }: FooterProps) => {
   const hasSocialLinks = Object.values(socialLinks).some(link => link);
   const lang = language || getStoredLanguage();
   const t = getTranslations(lang);
@@ -42,8 +44,10 @@ export const Footer = ({ groomName, brideName, socialLinks, language }: FooterPr
   return (
     <footer className="py-12 px-4 text-center bg-card border-t border-border">
       <Heart className="w-8 h-8 text-primary mx-auto mb-4" fill="currentColor" />
-      <p className="font-script text-2xl text-foreground mb-2">
-        {groomName} & {brideName}
+      <p className="footer-names font-script text-2xl text-foreground mb-2">
+        {lang === "km" && groomNameKh ? groomNameKh : groomName}{" "}
+        {lang === "km" ? "និង" : "&"}{" "}
+        {lang === "km" && brideNameKh ? brideNameKh : brideName}
       </p>
       <p className="text-sm text-muted-foreground mb-6">
         {t.thankYou}

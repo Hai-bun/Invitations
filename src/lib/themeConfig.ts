@@ -207,11 +207,11 @@ export const applyTheme = (
   // a proper Khmer typeface no matter which custom font is selected.
   root.style.setProperty(
     "--font-serif",
-    `"${headingFont}", "Noto Serif Khmer", serif`,
+    `"${headingFont}", "${theme.fonts.heading}", "Noto Serif Khmer", serif`,
   );
   root.style.setProperty(
     "--font-sans",
-    `"${bodyFont}", "Noto Sans Khmer", sans-serif`,
+    `"${bodyFont}", "${theme.fonts.body}", "Noto Sans Khmer", sans-serif`,
   );
   // The couple names use --font-script. If the couple picked a name font, use
   // it first; otherwise fall back to the theme's script + Moul (Khmer) so names

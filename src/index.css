@@ -2651,3 +2651,32 @@
   text-transform: none;
 }
 .mo-km .mo-name { line-height: 1.35; }
+
+/* Khmer display fonts (Moul) ship one weight; synthetic bold smears the
+   glyphs, so never fake it. Script names get a real word gap. */
+.wedding-root h1,
+.wedding-root h2,
+.wedding-root h3,
+.wedding-root h4,
+.wedding-root .font-serif,
+.wedding-root .font-script {
+  font-synthesis: none;
+}
+.wedding-root .font-script { word-spacing: 0.25em; }
+
+/* Motion Showcase hero: bigger guest name, readable countdown, badge moved
+   clear of the countdown. */
+.mo-pill {
+  font-size: clamp(1.15rem, 5vw, 1.7rem);
+  font-weight: 600;
+  padding: 0.55rem 1.4rem;
+  margin-bottom: 1.25rem;
+}
+.mo-countdown .text-muted-foreground {
+  color: #fff;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.7);
+}
+.mo-badge { right: auto; left: 1rem; bottom: auto; top: 4.5rem; }
+@media (max-width: 480px) {
+  .mo-badge { left: 0.75rem; top: 4.25rem; }
+}

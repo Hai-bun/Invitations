@@ -101,6 +101,8 @@ export const TemplateSections = ({
       <Footer
         groomName={weddingData.groomName}
         brideName={weddingData.brideName}
+        groomNameKh={weddingData.groomNameKh}
+        brideNameKh={weddingData.brideNameKh}
         socialLinks={weddingData.socialLinks}
         language={language}
       />

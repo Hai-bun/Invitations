@@ -47,7 +47,7 @@ export const CountdownTimer = ({ targetDate, targetTime, language }: CountdownTi
           {value.toString().padStart(2, '0')}
         </span>
       </div>
-      <span className="mt-2 text-xs sm:text-sm uppercase tracking-widest text-muted-foreground">
+      <span className={`mt-2 text-xs sm:text-sm text-muted-foreground ${lang === "km" ? "" : "uppercase tracking-widest"}`}>
         {label}
       </span>
     </div>
