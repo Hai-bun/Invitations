@@ -52,7 +52,7 @@ const SplitName = ({ text, start, on }: { text: string; start: number; on: boole
 };
 
 // Circular rotating badge — text runs around a circle and slowly spins.
-const SpinBadge = ({ text }: { text: string }) => (
+const SpinBadge = ({ text, image }: { text: string; image?: string }) => (
   <div className="mo-badge" aria-hidden="true">
     <svg viewBox="0 0 120 120" className="mo-badge-ring">
       <defs>
@@ -64,7 +64,11 @@ const SpinBadge = ({ text }: { text: string }) => (
         </textPath>
       </text>
     </svg>
-    <Heart className="mo-badge-heart w-5 h-5" fill="currentColor" />
+    {image ? (
+      <img className="mo-badge-photo" src={image} alt="" draggable={false} />
+    ) : (
+      <Heart className="mo-badge-heart w-5 h-5" fill="currentColor" />
+    )}
   </div>
 );
 
@@ -225,7 +229,10 @@ export const AuroraInvitation = ({ weddingData, guest, language }: TemplateProps
           )}
         </div>
 
-        <SpinBadge text={`${dateText} • ${dateText} • `} />
+        <SpinBadge
+          text={`${dateText} • ${dateText} • `}
+          image={weddingData.monogramImage || photos[1] || photos[0]}
+        />
         <ChevronDown className="mo-scroll-cue w-6 h-6" aria-hidden="true" />
       </section>
 
