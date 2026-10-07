@@ -10,6 +10,8 @@ interface ImageSlotPickerProps {
   /** Images the admin can choose from (gallery photos, background, monogram). */
   options: string[];
   onChange: (url: string) => void;
+  /** Text on the "no photo chosen" tile (default "Auto"). */
+  autoLabel?: string;
 }
 
 /**
@@ -22,6 +24,7 @@ export const ImageSlotPicker = ({
   value,
   options,
   onChange,
+  autoLabel = "Auto",
 }: ImageSlotPickerProps) => {
   const choices = Array.from(new Set(options.filter(Boolean)));
 
@@ -49,7 +52,7 @@ export const ImageSlotPicker = ({
                 : "border-border text-muted-foreground hover:border-primary/50",
             )}>
             <Wand2 className="w-4 h-4" />
-            Auto
+            {autoLabel}
           </button>
 
           {choices.map((url) => {

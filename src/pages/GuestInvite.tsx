@@ -75,6 +75,14 @@ const GuestInvite = () => {
       : weddingData.brideName;
   const amp = language === "km" ? "និង" : "&";
 
+  // Seal photo picked in Admin; ignored if it is no longer one of the uploaded images.
+  const sealPick = weddingData.sectionImages?.seal;
+  const sealImage =
+    sealPick &&
+    [...(weddingData.photos ?? []), weddingData.backgroundImage, weddingData.monogramImage].includes(sealPick)
+      ? sealPick
+      : "";
+
   const bgMedia = weddingData.backgroundImage || weddingData.photos[0] || "";
   const isVideo = /\.(mp4|webm|ogg)(\?|$)/i.test(bgMedia);
 
@@ -120,13 +128,22 @@ const GuestInvite = () => {
       {/* Glass envelope card */}
       <div className="relative z-10 w-full max-w-md animate-fade-in-up">
         <div className="rounded-[2rem] border border-white/25 bg-white/10 backdrop-blur-xl shadow-2xl px-7 py-12 sm:px-10 text-center text-white">
-          {/* Seal */}
+          {/* Seal: a photo chosen in Admin, else the heart */}
           <div className="flex justify-center mb-6">
-            <div className="w-20 h-20 rounded-full bg-primary shadow-elevated flex items-center justify-center ring-4 ring-white/30">
-              <Heart
-                className="w-9 h-9 text-primary-foreground animate-heartbeat"
-                fill="currentColor"
-              />
+            <div className="w-24 h-24 rounded-full bg-primary shadow-elevated flex items-center justify-center ring-4 ring-white/30 overflow-hidden">
+              {sealImage ? (
+                <img
+                  src={sealImage}
+                  alt=""
+                  draggable={false}
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <Heart
+                  className="w-9 h-9 text-primary-foreground animate-heartbeat"
+                  fill="currentColor"
+                />
+              )}
             </div>
           </div>
 

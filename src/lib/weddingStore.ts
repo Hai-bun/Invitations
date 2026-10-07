@@ -42,10 +42,18 @@ export interface TextColors {
 export interface SectionImages {
   /** Motion Showcase hero photo (default: the Background image). */
   hero?: string;
-  /** Photo inside the spinning date badge. */
-  badge?: string;
   /** Polaroid photo in the Save the Date section. */
   polaroid?: string;
+  /** Photo in the round seal on the cover page (default: a heart icon). */
+  seal?: string;
+}
+
+export interface NavBrand {
+  /** Short names shown in the header bar, e.g. "HAI" / "CHHAY". */
+  groom?: string;
+  bride?: string;
+  groomKh?: string;
+  brideKh?: string;
 }
 
 export interface CustomFont {
@@ -109,6 +117,8 @@ export interface WeddingData {
   textColors: TextColors;
   /** Photos chosen in Admin for specific spots in the Motion Showcase template. */
   sectionImages: SectionImages;
+  /** Short nicknames for the header navigation brand. */
+  navBrand: NavBrand;
 
   // Photo Gallery
   photos: string[];
@@ -226,6 +236,7 @@ const DEFAULT_WEDDING_DATA: WeddingData = {
   showHeaderNav: true,
   textColors: {},
   sectionImages: {},
+  navBrand: {},
   photos: [],
   monogramImage: "",
   khqrImage: "",
@@ -394,6 +405,7 @@ const buildWeddingProfileRow = (
     showHeaderNav: weddingData.showHeaderNav,
     textColors: weddingData.textColors,
     sectionImages: weddingData.sectionImages,
+    navBrand: weddingData.navBrand,
     monogramImage: weddingData.monogramImage,
     eventTitleKh: weddingData.eventTitleKh,
     eventAddressKh: weddingData.eventAddressKh,
@@ -482,6 +494,9 @@ const mapProfileToWeddingData = (
     sectionImages:
       (profile.welcome_popup as { sectionImages?: SectionImages })
         ?.sectionImages ?? DEFAULT_WEDDING_DATA.sectionImages,
+    navBrand:
+      (profile.welcome_popup as { navBrand?: NavBrand })?.navBrand ??
+      DEFAULT_WEDDING_DATA.navBrand,
     monogramImage:
       (profile.welcome_popup as { monogramImage?: string })?.monogramImage ??
       DEFAULT_WEDDING_DATA.monogramImage,

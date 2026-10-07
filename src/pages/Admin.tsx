@@ -680,6 +680,60 @@ const Admin = () => {
                     }
                   />
                 </div>
+                <div className="space-y-4 rounded-lg border border-border p-4">
+                  <div>
+                    <Label className="text-base">Header names</Label>
+                    <p className="text-sm text-muted-foreground mt-1">
+                      Short names shown in the header bar as “HAI 💙 CHHAY”.
+                      Leave empty to use the first word of each name.
+                    </p>
+                  </div>
+                  <div className="grid gap-3 sm:grid-cols-2">
+                    {(
+                      [
+                        ["groom", "Groom (English)", "HAI"],
+                        ["bride", "Bride (English)", "CHHAY"],
+                        ["groomKh", "Groom (Khmer)", "ហៃ"],
+                        ["brideKh", "Bride (Khmer)", "ឆាយ"],
+                      ] as const
+                    ).map(([key, label, placeholder]) => (
+                      <div key={key} className="space-y-1">
+                        <Label htmlFor={`navBrand-${key}`}>{label}</Label>
+                        <Input
+                          id={`navBrand-${key}`}
+                          value={data.navBrand?.[key] ?? ""}
+                          placeholder={placeholder}
+                          onChange={(e) =>
+                            setData({
+                              ...data,
+                              navBrand: {
+                                ...data.navBrand,
+                                [key]: e.target.value,
+                              },
+                            })
+                          }
+                        />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="rounded-lg border border-border p-4">
+                  <ImageSlotPicker
+                    label="Cover seal photo"
+                    description="The round picture at the top of the cover page that guests see first. “Auto” shows the heart icon."
+                    autoLabel="Heart"
+                    value={data.sectionImages?.seal ?? ""}
+                    options={[data.monogramImage, data.backgroundImage, ...data.photos]}
+                    onChange={(url) =>
+                      setData({
+                        ...data,
+                        sectionImages: { ...data.sectionImages, seal: url },
+                      })
+                    }
+                  />
+                </div>
+
                 {data.template === "aurora" && (
                   <div className="space-y-5 rounded-lg border border-border p-4">
                     <div>
@@ -696,12 +750,6 @@ const Admin = () => {
                           "Hero photo",
                           "The full-screen photo behind the couple's names.",
                           [data.backgroundImage, ...data.photos],
-                        ],
-                        [
-                          "badge",
-                          "Round badge photo",
-                          "The small photo inside the spinning date badge.",
-                          [data.monogramImage, ...data.photos],
                         ],
                         [
                           "polaroid",

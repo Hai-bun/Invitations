@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from "react";
-import { Heart } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { getTranslations, type Language } from "@/lib/i18n";
 import type { WeddingData } from "@/lib/weddingStore";
@@ -88,6 +87,13 @@ export const HeaderNav = ({ weddingData, language }: HeaderNavProps) => {
     language === "km" && weddingData.groomNameKh ? weddingData.groomNameKh : weddingData.groomName;
   const bride =
     language === "km" && weddingData.brideNameKh ? weddingData.brideNameKh : weddingData.brideName;
+  // Nicknames set in Admin (e.g. "HAI" / "CHHAY", "ហៃ" / "ឆាយ"); otherwise the
+  // first word of each name.
+  const nb = weddingData.navBrand ?? {};
+  const brandGroom =
+    (language === "km" ? nb.groomKh : nb.groom)?.trim() || firstWord(groom);
+  const brandBride =
+    (language === "km" ? nb.brideKh : nb.bride)?.trim() || firstWord(bride);
   const links = [{ id: "top", label: t.navHome }].concat(
     ITEMS.filter((i) => present.includes(i.id)).map((i) => ({
       id: i.id,
@@ -98,9 +104,8 @@ export const HeaderNav = ({ weddingData, language }: HeaderNavProps) => {
   return (
     <header className="header-nav" role="navigation" aria-label="Invitation sections">
       <button type="button" className="header-nav-brand" onClick={() => go("top")}>
-        <Heart className="w-4 h-4 text-primary" fill="currentColor" />
         <span>
-          {firstWord(groom)} &amp; {firstWord(bride)}
+          {brandGroom} <span aria-hidden="true">💙</span> {brandBride}
         </span>
       </button>
       <div ref={listRef} className="header-nav-links">

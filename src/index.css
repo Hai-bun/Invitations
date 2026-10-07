@@ -2788,7 +2788,7 @@
 .mo-badge-ring text { font-size: 9px; letter-spacing: 0; }
 @media (max-width: 640px) {
   /* Keep the hero text clear of the badge in the top-left corner. */
-  .mo-hero { padding-top: 9rem; }
+  .mo-hero { padding-top: 6rem; }
 }
 
 /* One line per name: never wrap, JS scales --fit so the widest name fits. */

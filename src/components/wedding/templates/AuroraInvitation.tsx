@@ -1,5 +1,5 @@
 import { useEffect, useRef, type CSSProperties } from "react";
-import { Calendar, ChevronDown, Heart } from "lucide-react";
+import { Calendar, ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { Guest, WeddingData } from "@/lib/weddingStore";
 import { getTranslations, type Language } from "@/lib/i18n";
@@ -52,26 +52,6 @@ const SplitName = ({ text, start, on }: { text: string; start: number; on: boole
   );
 };
 
-// Circular rotating badge — text runs around a circle and slowly spins.
-const SpinBadge = ({ text, image }: { text: string; image?: string }) => (
-  <div className="mo-badge" aria-hidden="true">
-    <svg viewBox="0 0 120 120" className="mo-badge-ring">
-      <defs>
-        <path id="mo-circle" d="M60,60 m-46,0 a46,46 0 1,1 92,0 a46,46 0 1,1 -92,0" />
-      </defs>
-      <text>
-        <textPath href="#mo-circle" textLength="283" lengthAdjust="spacing">
-          {text}
-        </textPath>
-      </text>
-    </svg>
-    {image ? (
-      <img className="mo-badge-photo" src={image} alt="" draggable={false} />
-    ) : (
-      <Heart className="mo-badge-heart w-5 h-5" fill="currentColor" />
-    )}
-  </div>
-);
 
 // Fixed positions (not random) so server/client renders match and the field is stable.
 const SPARKLES: Array<{ x: string; y: string; s: number; d: string }> = [
@@ -111,10 +91,9 @@ export const AuroraInvitation = ({ weddingData, guest, language }: TemplateProps
   const heroIsVideo = /\.(mp4|webm|ogg)(\?|$)/i.test(heroImg);
   const dateText = formatWeddingDate(weddingData.weddingDate, language);
   // Polaroid photo: prefer one that is not already the hero image.
-  const badgeImg = picked(picks.badge) || weddingData.monogramImage || photos[1] || photos[0] || "";
   const saveImg =
     picked(picks.polaroid) ||
-    photos.find((p) => p !== heroImg && p !== badgeImg) ||
+    photos.find((p) => p !== heroImg) ||
     photos.find((p) => p !== heroImg) ||
     photos[0] ||
     "";
@@ -269,10 +248,6 @@ export const AuroraInvitation = ({ weddingData, guest, language }: TemplateProps
           </h1>
         </div>
 
-        <SpinBadge
-          text={`${dateText} • `}
-          image={badgeImg}
-        />
         <ChevronDown className="mo-scroll-cue w-6 h-6" aria-hidden="true" />
       </section>
 
