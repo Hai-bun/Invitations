@@ -1,3 +1,4 @@
+import { FitText } from "@/components/ui/FitText";
 import { OrnamentDivider } from "@/components/ui/OrnamentDivider";
 import { Heart } from "lucide-react";
 import { getTranslations, Language, getStoredLanguage } from "@/lib/i18n";
@@ -56,9 +57,9 @@ export const CoupleSection = ({
 
         <div className="couple-grid grid md:grid-cols-2 gap-8 md:gap-12 items-center">
           {/* Groom */}
-          <div className="couple-person couple-groom animate-fade-in-up delay-200">
+          <div className="couple-person couple-groom min-w-0 animate-fade-in-up delay-200">
             <h3 className="couple-name font-script text-4xl sm:text-5xl text-foreground mb-3">
-              {displayGroomName}
+              <FitText>{displayGroomName}</FitText>
             </h3>
             <p className="couple-role text-sm text-muted-foreground tracking-wide">
               {t.sonOf}
@@ -77,9 +78,9 @@ export const CoupleSection = ({
           </div>
 
           {/* Bride */}
-          <div className="couple-person couple-bride animate-fade-in-up delay-300">
+          <div className="couple-person couple-bride min-w-0 animate-fade-in-up delay-300">
             <h3 className="couple-name font-script text-4xl sm:text-5xl text-foreground mb-3">
-              {displayBrideName}
+              <FitText>{displayBrideName}</FitText>
             </h3>
             <p className="couple-role text-sm text-muted-foreground tracking-wide">
               {t.daughterOf}
