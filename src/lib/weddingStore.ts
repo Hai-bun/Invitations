@@ -1,4 +1,5 @@
 import { supabase } from "@/integrations/supabase/client";
+import { sendTelegramMessage, telegramEscape } from "@/lib/telegram";
 import type { Database } from "@/integrations/supabase/types";
 
 export type TemplateType =
@@ -850,28 +851,22 @@ export const sendRSVPToTelegram = async (
   }
 
   const text =
-    `🎊 *New RSVP Response*\n\n` +
-    `👤 *Guest:* ${guestName}\n` +
-    `✅ *Status:* ${attending ? "Attending" : "Not Attending"}\n` +
-    `💌 *Message:* ${message || "No message"}\n` +
-    `📅 *Date:* ${new Date().toLocaleString()}`;
+    `🎊 <b>New RSVP Response</b>
 
-  try {
-    const response = await fetch(
-      `https://api.telegram.org/bot${telegramConfig.botToken}/sendMessage`,
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          chat_id: telegramConfig.chatId,
-          text,
-          parse_mode: "Markdown",
-        }),
-      },
-    );
-    return response.ok;
-  } catch (error) {
-    console.error("Failed to send Telegram message:", error);
-    return false;
-  }
+` +
+    `👤 <b>Guest:</b> ${telegramEscape(guestName)}
+` +
+    `✅ <b>Status:</b> ${attending ? "Attending" : "Not Attending"}
+` +
+    `💌 <b>Message:</b> ${telegramEscape(message || "No message")}
+` +
+    `📅 <b>Date:</b> ${new Date().toLocaleString()}`;
+
+  const result = await sendTelegramMessage(
+    telegramConfig.botToken,
+    telegramConfig.chatId,
+    text,
+  );
+  if (!result.ok) console.error("Telegram notification failed:", result.error);
+  return result.ok;
 };

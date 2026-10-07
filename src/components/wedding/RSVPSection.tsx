@@ -5,6 +5,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { Heart, Send, Check } from "lucide-react";
 import { addRSVPResponse, sendRSVPToTelegram } from "@/lib/weddingStore";
+import { GuestWishes } from "./GuestWishes";
 import { toast } from "sonner";
 import { getTranslations, Language, getStoredLanguage } from "@/lib/i18n";
 
@@ -51,7 +52,7 @@ export const RSVPSection = ({
   if (submitted) {
     return (
       <section id="rsvp" className="scroll-reveal py-16 px-4 bg-card">
-        <div className="max-w-md mx-auto text-center">
+        <div className="max-w-lg mx-auto text-center">
           <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6">
             <Check className="w-8 h-8 text-primary" />
           </div>
@@ -59,6 +60,7 @@ export const RSVPSection = ({
             {t.rsvpSuccess}
           </h2>
           <p className="text-muted-foreground">{t.rsvpSuccessMessage}</p>
+          <GuestWishes language={lang} />
         </div>
       </section>
     );

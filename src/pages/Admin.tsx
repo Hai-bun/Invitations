@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { sendTelegramMessage } from "@/lib/telegram";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Card,
@@ -407,29 +408,15 @@ const Admin = () => {
       return;
     }
 
-    try {
-      const response = await fetch(
-        `https://api.telegram.org/bot${data.telegramConfig.botToken}/sendMessage`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            chat_id: data.telegramConfig.chatId,
-            text: "🎉 *Test Message*\n\nYour Telegram bot is configured correctly! RSVP responses will be sent here.",
-            parse_mode: "Markdown",
-          }),
-        },
-      );
-
-      if (response.ok) {
-        toast.success("Test message sent! Check your Telegram.");
-      } else {
-        toast.error(
-          "Failed to send test message. Check your token and chat ID.",
-        );
-      }
-    } catch {
-      toast.error("Failed to connect to Telegram API");
+    const result = await sendTelegramMessage(
+      data.telegramConfig.botToken,
+      data.telegramConfig.chatId,
+      "🎉 <b>Test Message</b>\n\nYour Telegram bot is configured correctly! RSVP responses will be sent here.",
+    );
+    if (result.ok) {
+      toast.success("Test message sent! Check your Telegram.");
+    } else {
+      toast.error(`Telegram: ${result.error}`);
     }
   };
 

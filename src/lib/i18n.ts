@@ -50,6 +50,9 @@ export interface Translations {
   submitRsvp: string;
   rsvpSuccess: string;
   rsvpSuccessMessage: string;
+  wishesTitle: string;
+  wishesAttending: string;
+  wishesNotAttending: string;
   
   // Gift Section
   weddingGift: string;
@@ -136,6 +139,9 @@ const translations: Record<Language, Translations> = {
     submitRsvp: 'Submit RSVP',
     rsvpSuccess: 'Thank You!',
     rsvpSuccessMessage: 'Your response has been recorded. We look forward to celebrating with you!',
+    wishesTitle: 'Wishes from our guests',
+    wishesAttending: 'Attending',
+    wishesNotAttending: 'Cannot attend',
     
     // Gift Section
     weddingGift: 'Wedding Gift',
@@ -220,6 +226,9 @@ const translations: Record<Language, Translations> = {
     submitRsvp: 'ផ្ញើការឆ្លើយតប',
     rsvpSuccess: 'អរគុណ!',
     rsvpSuccessMessage: 'ការឆ្លើយតបរបស់អ្នកត្រូវបានកត់ត្រា។ យើងទន្ទឹងរង់ចាំអបអរសាទរជាមួយអ្នក!',
+    wishesTitle: 'ពាក្យជូនពរពីភ្ញៀវ',
+    wishesAttending: 'ចូលរួម',
+    wishesNotAttending: 'មិនអាចចូលរួម',
     
     // Gift Section
     weddingGift: 'អំណោយអាពាហ៍ពិពាហ៍',
