@@ -37,6 +37,8 @@ interface TemplateSectionsProps {
   guest: Guest | null;
   language: Language;
   order?: SectionKey[];
+  /** Set false to skip the monogram (e.g. when rendering the stack in two parts). */
+  showMonogram?: boolean;
 }
 
 /**
@@ -50,6 +52,7 @@ export const TemplateSections = ({
   guest,
   language,
   order = DEFAULT_ORDER,
+  showMonogram = true,
 }: TemplateSectionsProps) => {
   const nodes: Record<SectionKey, ReactNode> = {
     couple: (
@@ -106,7 +109,7 @@ export const TemplateSections = ({
 
   return (
     <>
-      <MonogramSection image={weddingData.monogramImage} language={language} />
+      {showMonogram && <MonogramSection image={weddingData.monogramImage} language={language} />}
       {order.map((key) => (
         <Fragment key={key}>{nodes[key]}</Fragment>
       ))}

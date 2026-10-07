@@ -228,22 +228,28 @@ const templatePreviews: Record<TemplateType, React.ReactNode> = {
     </div>
   ),
   aurora: (
-    <div className="h-full flex flex-col items-center justify-center p-2 relative overflow-hidden bg-[#0b0b1a]">
-      <div className="absolute -top-3 -left-3 w-14 h-14 rounded-full bg-[#7c5cff]/60 blur-xl animate-pulse" />
-      <div className="absolute -bottom-4 -right-2 w-16 h-16 rounded-full bg-[#22d3ee]/50 blur-xl animate-pulse" />
-      <div className="absolute top-3 right-4 w-8 h-8 rounded-full bg-[#ff6ad5]/40 blur-lg" />
-      <div className="relative text-[5px] uppercase tracking-[0.3em] text-white/60">
+    <div className="h-full flex flex-col items-center justify-center p-2 relative overflow-hidden bg-gradient-to-br from-[#ff6b4a] via-[#c2185b] to-[#2a0f22]">
+      <div className="absolute inset-x-0 bottom-0 flex gap-0.5 p-0.5 opacity-80">
+        {[0, 1, 2, 3, 4].map((i) => (
+          <div key={i} className="flex-1 h-4 rounded-sm bg-white/30" />
+        ))}
+      </div>
+      <div className="absolute top-1 right-1 w-5 h-5 rounded-full border border-dashed border-white/70 animate-spin" style={{ animationDuration: "6s" }} />
+      <div className="relative text-[5px] uppercase tracking-[0.3em] text-white/80">
         Invited
       </div>
-      <div className="relative text-[12px] font-semibold tracking-wide bg-gradient-to-r from-[#a78bfa] via-[#67e8f9] to-[#f9a8d4] bg-clip-text text-transparent">
-        Anna &amp; Ben
+      <div className="relative text-[13px] font-bold text-white leading-none mt-0.5">
+        Anna
       </div>
-      <div className="relative mt-1 w-8 h-px bg-white/40" />
+      <div className="relative text-[7px] italic text-[#ffb347] leading-none">&amp;</div>
+      <div className="relative text-[13px] font-bold text-white leading-none">
+        Ben
+      </div>
     </div>
   ),
 };
 
-export const TemplateSelector= ({
+export const TemplateSelector = ({
   selectedTemplate,
   onTemplateChange,
 }: TemplateSelectorProps) => {

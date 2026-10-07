@@ -405,9 +405,9 @@ export const TEMPLATES: Record<TemplateType, TemplateConfig> = {
   },
   aurora: {
     id: "aurora",
-    name: "Aurora Motion",
+    name: "Motion Showcase",
     description:
-      "Modern web-style invitation with a drifting aurora glow, cursor spotlight, letter-by-letter name reveal, scroll progress and a live marquee",
+      "Photo-first web-style invitation: full-screen Ken Burns hero with curtain reveal, drifting photo ribbons and a scroll-pinned parallax gallery",
     preview: "🌌",
     heroLayout: "centered",
     sectionOrder: [
