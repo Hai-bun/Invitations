@@ -172,7 +172,6 @@ const Index = () => {
           className="w-6 h-6 text-primary mx-auto mb-2"
           fill="currentColor"
         />
-        <p className="text-sm text-muted-foreground">{t("madeWithLove")}</p>
       </footer>
     </div>
   );

@@ -102,9 +102,6 @@ export const Footer = ({ groomName, brideName, groomNameKh, brideNameKh, socialL
         </div>
       )}
 
-      <p className="text-xs text-muted-foreground/60">
-        {t.madeWithLove} ❤️
-      </p>
     </footer>
   );
 };

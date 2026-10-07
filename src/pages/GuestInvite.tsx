@@ -170,9 +170,6 @@ const GuestInvite = () => {
           </div>
         </div>
 
-        <p className="text-center text-xs tracking-[0.2em] uppercase text-white/70 mt-6">
-          {t.madeWithLove}
-        </p>
       </div>
     </div>
   );
