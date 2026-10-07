@@ -29,7 +29,7 @@ export const FadeInImage = ({
         onLoad?.(e);
       }}
       className={cn(
-        "transition-all duration-700 ease-out",
+        "transition-opacity duration-500 ease-out",
         loaded ? "opacity-100" : "opacity-0",
         className,
       )}

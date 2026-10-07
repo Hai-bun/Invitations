@@ -1,4 +1,5 @@
 import { supabase } from "@/integrations/supabase/client";
+import { optimizeImage } from "@/lib/imageOptimize";
 
 const BUCKET_NAME =
   import.meta.env.VITE_SUPABASE_STORAGE_BUCKET ??
@@ -17,12 +18,17 @@ export async function uploadWeddingImage(
   file: File,
   folder: "photos" | "khqr" | "background" | "monogram" | "fonts",
 ): Promise<string | null> {
+  // Downscale photos (not the KHQR, which must stay pixel-exact, nor fonts).
+  if (folder === "photos" || folder === "background" || folder === "monogram") {
+    file = await optimizeImage(file);
+  }
   const path = generateUniquePath(folder, file);
 
   const { error } = await supabase.storage
     .from(BUCKET_NAME)
     .upload(path, file, {
-      cacheControl: "3600",
+      // Filenames are unique, so browsers/CDN may cache them for a year.
+      cacheControl: "31536000",
       upsert: false,
     });
 

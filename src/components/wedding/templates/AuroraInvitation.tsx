@@ -146,39 +146,76 @@ export const AuroraInvitation = ({ weddingData, guest, language }: TemplateProps
     const gallery = galleryRef.current;
     const track = trackRef.current;
     const cards = track ? Array.from(track.querySelectorAll<HTMLElement>(".mo-card")) : [];
+    const progress = shell.querySelector<HTMLElement>(".mo-progress");
+    const heroInner = shell.querySelector<HTMLElement>(".mo-hero-inner");
+    const bar = shell.querySelector<HTMLElement>(".mo-gallery-bar span");
+    const imgs = cards.map((c) => c.querySelector<HTMLElement>(".mo-card-frame img"));
     let shift = 0;
     let raf = 0;
+    // Geometry is measured once (not every frame) so scrolling never forces
+    // layout. Everything below writes transforms straight to the elements:
+    // custom properties set on the shell would restyle the whole page per frame.
+    let docMax = 0;
+    let galleryTop = 0;
+    let vw = window.innerWidth;
+    let vh = window.innerHeight;
+    let cardX: number[] = []; // each card's centre in track space
+    let tx = 0;
 
     const measure = () => {
-      if (!gallery || !track) return;
-      shift = Math.max(0, track.scrollWidth - window.innerWidth);
-      gallery.style.height = `${shift + window.innerHeight}px`;
+      vw = window.innerWidth;
+      vh = window.innerHeight;
+      if (gallery && track) {
+        shift = Math.max(0, track.scrollWidth - vw);
+        gallery.style.height = `${shift + vh}px`;
+        galleryTop = gallery.getBoundingClientRect().top + window.scrollY;
+        const base = track.getBoundingClientRect().left + tx;
+        cardX = cards.map((c) => {
+          const r = c.getBoundingClientRect();
+          return r.left + r.width / 2 - base;
+        });
+      }
+      docMax = document.documentElement.scrollHeight - vh;
     };
 
     const update = () => {
       raf = 0;
       const y = window.scrollY;
-      const max = document.documentElement.scrollHeight - window.innerHeight;
-      shell.style.setProperty("--scroll", String(max > 0 ? y / max : 0));
-      shell.style.setProperty("--scroll-y", `${y}px`);
+      if (progress) progress.style.transform = `scaleX(${docMax > 0 ? clamp01(y / docMax) : 0})`;
+
+      // Hero text drifts up and fades only while the hero is on screen.
+      if (heroInner && y < vh * 1.1) {
+        heroInner.style.transform = `translate3d(0,${y * 0.3}px,0)`;
+        heroInner.style.opacity = String(Math.max(0, 1 - y / 650));
+      }
 
       if (gallery && track) {
-        const top = gallery.getBoundingClientRect().top + y;
-        const p = shift > 0 ? clamp01((y - top) / shift) : 0;
-        track.style.transform = `translate3d(${-p * shift}px,0,0)`;
-        shell.style.setProperty("--gp", String(p));
-        const vw = window.innerWidth;
-        for (const c of cards) {
-          const r = c.getBoundingClientRect();
-          const off = (r.left + r.width / 2 - vw / 2) / vw; // -1..1 around centre
-          c.style.setProperty("--off", off.toFixed(3));
+        const p = shift > 0 ? clamp01((y - galleryTop) / shift) : 0;
+        tx = -p * shift;
+        track.style.transform = `translate3d(${tx}px,0,0)`;
+        if (bar) bar.style.transform = `scaleX(${p})`;
+        for (let i = 0; i < cards.length; i++) {
+          const off = (cardX[i] + tx - vw / 2) / vw; // -1..1 around centre
+          const img = imgs[i];
+          if (img && off > -1.3 && off < 1.3) {
+            img.style.transform = `translate3d(${(off * -60).toFixed(1)}px,0,0) scale(1.3)`;
+          }
         }
       }
     };
     const onScroll = () => {
       if (!raf) raf = requestAnimationFrame(update);
     };
+    // Ignore the mobile URL-bar show/hide (height-only resize) so the pinned
+    // gallery doesn't jump while scrolling.
+    let lastW = window.innerWidth;
     const onResize = () => {
+      if (window.innerWidth === lastW && "ontouchstart" in window) return;
+      lastW = window.innerWidth;
+      measure();
+      onScroll();
+    };
+    const onImgLoad = () => {
       measure();
       onScroll();
     };
@@ -188,7 +225,10 @@ export const AuroraInvitation = ({ weddingData, guest, language }: TemplateProps
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", onResize);
     // Images change the track width as they load.
-    track?.querySelectorAll("img").forEach((img) => img.addEventListener("load", onResize));
+    track?.querySelectorAll("img").forEach((img) => img.addEventListener("load", onImgLoad));
+    // Fonts / late content shift the page; re-measure once everything settled.
+    window.addEventListener("load", onImgLoad);
+    document.fonts?.ready.then(onImgLoad);
 
     const io = new IntersectionObserver(
       (entries) =>
@@ -205,6 +245,8 @@ export const AuroraInvitation = ({ weddingData, guest, language }: TemplateProps
     return () => {
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onResize);
+      window.removeEventListener("load", onImgLoad);
+      track?.querySelectorAll("img").forEach((img) => img.removeEventListener("load", onImgLoad));
       io.disconnect();
       if (raf) cancelAnimationFrame(raf);
       if (gallery) gallery.style.height = "";
@@ -340,7 +382,7 @@ export const AuroraInvitation = ({ weddingData, guest, language }: TemplateProps
                   key={i}
                   className={cn("mo-card mo-reveal", i % 2 ? "mo-card-b" : "mo-card-a")}>
                   <div className="mo-card-frame">
-                    <img src={src} alt="" loading="lazy" draggable={false} />
+                    <img src={src} alt="" decoding="async" loading="eager" draggable={false} />
                   </div>
                   <figcaption>{String(i + 1).padStart(2, "0")}</figcaption>
                 </figure>

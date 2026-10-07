@@ -2493,7 +2493,7 @@
 .mo-progress {
   position: fixed; top: 0; left: 0; right: 0; height: 4px; z-index: 60;
   transform-origin: 0 50%;
-  transform: scaleX(var(--scroll, 0));
+  transform: scaleX(0); will-change: transform;
   background: linear-gradient(90deg, #ff6b4a, #ffb347, #c2185b);
 }
 
@@ -2511,15 +2511,15 @@
 .mo-hero-media { position: absolute; inset: 0; z-index: -1; overflow: hidden; background: #2a0f22; }
 .mo-hero-img {
   width: 100%; height: 100%; object-fit: cover; display: block;
-  transform: translateY(calc(var(--scroll-y, 0px) * 0.18)) scale(1.12);
+  transform: scale(1.12);
   animation: mo-kenburns 24s ease-in-out infinite alternate;
   will-change: transform;
 }
 .mo-hero-fallback { position: absolute; inset: 0; background: radial-gradient(circle at 30% 20%, #ff6b4a, transparent 55%), radial-gradient(circle at 80% 80%, #c2185b, transparent 55%), #2a0f22; }
 .mo-hero-shade { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(42, 15, 34, 0.55), rgba(42, 15, 34, 0.35) 40%, rgba(42, 15, 34, 0.8)); }
 @keyframes mo-kenburns {
-  from { transform: translateY(calc(var(--scroll-y, 0px) * 0.18)) scale(1.12) translateX(-1.5%); }
-  to { transform: translateY(calc(var(--scroll-y, 0px) * 0.18)) scale(1.28) translateX(1.5%); }
+  from { transform: scale(1.12) translateX(-1.5%); }
+  to { transform: scale(1.28) translateX(1.5%); }
 }
 .mo-curtain { position: absolute; top: 0; bottom: 0; width: 50.5%; background: hsl(30 60% 97%); z-index: 2; }
 .mo-curtain-l { left: 0; transform-origin: left; }
@@ -2530,8 +2530,6 @@
 
 .mo-hero-inner {
   max-width: 44rem; width: 100%;
-  transform: translateY(calc(var(--scroll-y, 0px) * 0.3));
-  opacity: calc(1 - var(--scroll-y, 0px) / 650);
   will-change: transform, opacity;
 }
 .mo-pill {
@@ -2612,13 +2610,13 @@
 .mo-card.is-in .mo-card-frame { clip-path: inset(0 0 0 0 round 28px); }
 .mo-card-frame img {
   width: 100%; height: 100%; object-fit: cover; display: block;
-  transform: translateX(calc(var(--off, 0) * -60px)) scale(1.3);
+  transform: scale(1.3); will-change: transform;
   transition: filter 0.4s ease;
 }
 .mo-card:hover .mo-card-frame img { filter: saturate(1.15) brightness(1.05); }
 .mo-card figcaption { margin-top: 0.6rem; font-size: 0.8rem; letter-spacing: 0.3em; color: hsl(8 60% 45%); font-weight: 600; }
 .mo-gallery-bar { position: absolute; left: 1.5rem; right: 1.5rem; bottom: 1.5rem; height: 3px; border-radius: 3px; background: rgba(120, 40, 60, 0.15); }
-.mo-gallery-bar span { display: block; height: 100%; border-radius: 3px; background: #ff6b4a; transform-origin: 0 50%; transform: scaleX(var(--gp, 0)); }
+.mo-gallery-bar span { display: block; height: 100%; border-radius: 3px; background: #ff6b4a; transform-origin: 0 50%; transform: scaleX(0); will-change: transform; }
 
 /* ---- Static fallback (animations off / reduced motion) ---- */
 .mo-static .mo-gallery-pin { position: static; height: auto; padding: 3rem 0; }
@@ -3029,3 +3027,29 @@ html[data-names-color] .wedding-root :is(.font-script, .couple-name, .mo-name, .
   color: var(--user-names) !important;
   -webkit-text-fill-color: var(--user-names) !important;
 }
+
+/* ==============================================================
+   Mobile smoothness: phones composite fewer effects per frame.
+   Blur filters, backdrop blur and non-compositor animations (the
+   spinning gradient border) are what make scrolling stutter there.
+   ============================================================== */
+@media (max-width: 768px), (hover: none) {
+  .mo-char-in { animation-name: mo-char-lite; }
+  .mo-pill, .mo-badge, .header-nav { -webkit-backdrop-filter: none; backdrop-filter: none; }
+  .header-nav { background: hsl(var(--background) / 0.96); }
+  .gift-card { animation: none; }
+  .gift-scan { animation-duration: 4s; }
+  .mo-hero-img { animation-duration: 40s; }
+  .mo-ribbon img { transition: none; filter: none; }
+  .mo-card-frame { box-shadow: 0 14px 28px -18px rgba(120, 40, 60, 0.45); }
+  .gl-wrap .gl-item { box-shadow: 0 6px 14px -10px rgba(0, 0, 0, 0.35); }
+}
+@keyframes mo-char-lite {
+  from { opacity: 0; transform: translateY(0.5em); }
+  to { opacity: 1; transform: none; }
+}
+/* Keep scroll-driven layers on their own GPU layer; paint images lazily. */
+.mo-ribbon-track, .mo-hero-inner { will-change: transform; }
+.mo-reveal { will-change: opacity, transform; }
+.mo-reveal.is-in { will-change: auto; }
+img { image-rendering: auto; }
