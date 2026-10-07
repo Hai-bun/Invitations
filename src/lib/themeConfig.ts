@@ -157,12 +157,33 @@ const SYSTEM_FONT_SUBSTITUTES: Record<string, string> = {
   cambria: "Caladea",
 };
 
+// Fonts the admin uploaded (e.g. a Khmer font that only exists on their PC)
+// are registered with @font-face so every guest's device can load them.
+const registeredFaces = new Map<string, string>();
+
+const registerCustomFonts = (fonts: Array<{ family: string; url: string }> = []) => {
+  for (const { family, url } of fonts) {
+    if (!family || !url || registeredFaces.get(family.toLowerCase()) === url) continue;
+    registeredFaces.set(family.toLowerCase(), url);
+    const id = `custom-font-${family.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`;
+    document.getElementById(id)?.remove();
+    const ext = url.split("?")[0].split(".").pop()?.toLowerCase();
+    const format =
+      ext === "woff2" ? "woff2" : ext === "woff" ? "woff" : ext === "otf" ? "opentype" : "truetype";
+    const style = document.createElement("style");
+    style.id = id;
+    style.textContent = `@font-face{font-family:"${family.replace(/"/g, "")}";src:url("${url}") format("${format}");font-display:swap;}`;
+    document.head.appendChild(style);
+  }
+};
+
 const loadedFonts = new Set<string>();
 
 // Fonts the admin types in are only installed on the admin's own computer, so
 // request them from Google Fonts. Unknown names 400 harmlessly and fall back.
 const ensureFontLoaded = (name: string | undefined): string | undefined => {
   const raw = name?.trim();
+  if (raw && registeredFaces.has(raw.toLowerCase())) return raw; // uploaded font, not on Google
   if (!raw) return undefined;
   const family = SYSTEM_FONT_SUBSTITUTES[raw.toLowerCase()] ?? raw;
   if (!loadedFonts.has(family)) {
@@ -177,9 +198,15 @@ const ensureFontLoaded = (name: string | undefined): string | undefined => {
 
 export const applyTheme = (
   themeId: ThemeType,
-  customFonts?: { headingFont?: string; bodyFont?: string; nameFont?: string },
+  customFonts?: {
+    headingFont?: string;
+    bodyFont?: string;
+    nameFont?: string;
+    fontFiles?: Array<{ family: string; url: string }>;
+  },
 ): void => {
   const theme = getTheme(themeId);
+  registerCustomFonts(customFonts?.fontFiles);
   const root = document.documentElement;
 
   // Apply colors

@@ -20,6 +20,11 @@ export type TemplateType =
   | "cute"
   | "aurora";
 
+export interface CustomFont {
+  family: string;
+  url: string;
+}
+
 export interface SocialLinks {
   telegram: string;
   facebook: string;
@@ -66,6 +71,8 @@ export interface WeddingData {
   headingFont: string;
   bodyFont: string;
   nameFont: string;
+  /** Uploaded font files (admin PC fonts aren't available on guests' phones). */
+  customFonts: CustomFont[];
 
   // Photo Gallery
   photos: string[];
@@ -178,6 +185,7 @@ const DEFAULT_WEDDING_DATA: WeddingData = {
   headingFont: "Cormorant Garamond",
   bodyFont: "Lato",
   nameFont: "",
+  customFonts: [],
   photos: [],
   monogramImage: "",
   khqrImage: "",
@@ -341,6 +349,7 @@ const buildWeddingProfileRow = (
     story: weddingData.story,
     schedule: weddingData.schedule,
     nameFont: weddingData.nameFont,
+    customFonts: weddingData.customFonts,
     monogramImage: weddingData.monogramImage,
     eventTitleKh: weddingData.eventTitleKh,
     eventAddressKh: weddingData.eventAddressKh,
@@ -414,6 +423,9 @@ const mapProfileToWeddingData = (
     nameFont:
       (profile.welcome_popup as { nameFont?: string })?.nameFont ??
       DEFAULT_WEDDING_DATA.nameFont,
+    customFonts:
+      (profile.welcome_popup as { customFonts?: CustomFont[] })?.customFonts ??
+      DEFAULT_WEDDING_DATA.customFonts,
     monogramImage:
       (profile.welcome_popup as { monogramImage?: string })?.monogramImage ??
       DEFAULT_WEDDING_DATA.monogramImage,

@@ -68,6 +68,7 @@ const WeddingDetail = () => {
       headingFont: weddingData.headingFont,
       bodyFont: weddingData.bodyFont,
       nameFont: weddingData.nameFont,
+      fontFiles: weddingData.customFonts,
     });
   }, [weddingData, activeThemeId]);
 

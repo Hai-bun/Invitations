@@ -67,6 +67,7 @@ const Admin = () => {
         headingFont: weddingData.headingFont,
         bodyFont: weddingData.bodyFont,
         nameFont: weddingData.nameFont,
+        fontFiles: weddingData.customFonts,
       });
     };
 
@@ -79,8 +80,9 @@ const Admin = () => {
       headingFont: data.headingFont,
       bodyFont: data.bodyFont,
       nameFont: data.nameFont,
+      fontFiles: data.customFonts,
     });
-  }, [data?.theme, data?.headingFont, data?.bodyFont, data?.nameFont]);
+  }, [data?.theme, data?.headingFont, data?.bodyFont, data?.nameFont, data?.customFonts]);
 
   const handleSave = async () => {
     if (!data) return;
@@ -228,6 +230,39 @@ const Admin = () => {
       setData((prev) => ({ ...prev, photos: [...prev.photos, publicUrl] }));
     }
     e.target.value = "";
+  };
+
+  // Fonts installed only on the admin's PC (e.g. a Khmer display font) can't
+  // load on guests' phones, so the font file itself is uploaded and served.
+  const handleFontUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    e.target.value = "";
+    if (!file) return;
+    if (!/\.(ttf|otf|woff2?)$/i.test(file.name)) {
+      toast.error("Choose a .ttf, .otf, .woff or .woff2 font file");
+      return;
+    }
+    if (file.size > 5 * 1024 * 1024) {
+      toast.error("Font file is too large (max 5 MB)");
+      return;
+    }
+    const family = file.name
+      .replace(/\.[^.]+$/, "")
+      .replace(/[_]+/g, " ")
+      .trim();
+    const url = await uploadWeddingImage(file, "fonts");
+    if (!url) {
+      toast.error(`${file.name}: upload failed`);
+      return;
+    }
+    setData((prev) => ({
+      ...prev,
+      customFonts: [
+        ...(prev.customFonts ?? []).filter((f) => f.family !== family),
+        { family, url },
+      ],
+    }));
+    toast.success(`Font "${family}" uploaded. Type this exact name in a font field.`);
   };
 
   // KHQR: the picked file goes through a crop dialog first so extra margins
@@ -803,6 +838,50 @@ const Admin = () => {
                         section.
                       </p>
                     </div>
+                  </div>
+                  <div className="space-y-3 rounded-lg border border-dashed border-border p-4">
+                    <div>
+                      <Label>Upload your own font</Label>
+                      <p className="text-xs text-muted-foreground mt-1">
+                        Fonts installed only on your computer (for example
+                        “AKbalthom Kbach Regular”) will not show on guests'
+                        phones. Upload the font file here, then type its exact
+                        name in a font field above.
+                      </p>
+                    </div>
+                    <Input
+                      type="file"
+                      accept=".ttf,.otf,.woff,.woff2"
+                      onChange={handleFontUpload}
+                      className="max-w-xs"
+                    />
+                    {(data.customFonts ?? []).length > 0 && (
+                      <ul className="space-y-2">
+                        {data.customFonts.map((f) => (
+                          <li
+                            key={f.family}
+                            className="flex items-center justify-between gap-3 rounded-md bg-muted/50 px-3 py-2 text-sm">
+                            <span className="truncate">
+                              <strong>{f.family}</strong>
+                            </span>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={async () => {
+                                await deleteWeddingImage(f.url);
+                                setData((prev) => ({
+                                  ...prev,
+                                  customFonts: prev.customFonts.filter(
+                                    (x) => x.family !== f.family,
+                                  ),
+                                }));
+                              }}>
+                              <Trash2 className="w-4 h-4" />
+                            </Button>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
                   </div>
                 </div>
 
