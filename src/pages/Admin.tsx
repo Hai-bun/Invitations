@@ -69,6 +69,7 @@ const Admin = () => {
         bodyFont: weddingData.bodyFont,
         nameFont: weddingData.nameFont,
         fontFiles: weddingData.customFonts,
+        colors: weddingData.textColors,
       });
     };
 
@@ -82,8 +83,9 @@ const Admin = () => {
       bodyFont: data.bodyFont,
       nameFont: data.nameFont,
       fontFiles: data.customFonts,
+      colors: data.textColors,
     });
-  }, [data?.theme, data?.headingFont, data?.bodyFont, data?.nameFont, data?.customFonts]);
+  }, [data?.theme, data?.headingFont, data?.bodyFont, data?.nameFont, data?.customFonts, data?.textColors]);
 
   const handleSave = async () => {
     if (!data) return;
@@ -860,6 +862,69 @@ const Admin = () => {
                       </p>
                     </div>
                   </div>
+                  <div className="space-y-3">
+                    <div>
+                      <Label>Text colors</Label>
+                      <p className="text-xs text-muted-foreground mt-1">
+                        Pick colors for the text on your invitation. Leave a
+                        color on “Theme default” to keep the template's own.
+                      </p>
+                    </div>
+                    <div className="grid gap-4 sm:grid-cols-3">
+                      {(
+                        [
+                          ["body", "Body text"],
+                          ["heading", "Headings"],
+                          ["names", "Couple names"],
+                        ] as const
+                      ).map(([key, label]) => {
+                        const value = data.textColors?.[key] ?? "";
+                        return (
+                          <div key={key} className="space-y-2">
+                            <Label htmlFor={`color-${key}`}>{label}</Label>
+                            <div className="flex items-center gap-2">
+                              <input
+                                id={`color-${key}`}
+                                type="color"
+                                value={value || "#3a2a33"}
+                                onChange={(e) =>
+                                  setData({
+                                    ...data,
+                                    textColors: {
+                                      ...data.textColors,
+                                      [key]: e.target.value,
+                                    },
+                                  })
+                                }
+                                className="h-10 w-12 cursor-pointer rounded border border-border bg-transparent p-1"
+                              />
+                              <span className="text-sm text-muted-foreground flex-1">
+                                {value ? value.toUpperCase() : "Theme default"}
+                              </span>
+                              {value && (
+                                <Button
+                                  type="button"
+                                  variant="ghost"
+                                  size="sm"
+                                  onClick={() =>
+                                    setData({
+                                      ...data,
+                                      textColors: {
+                                        ...data.textColors,
+                                        [key]: "",
+                                      },
+                                    })
+                                  }>
+                                  Reset
+                                </Button>
+                              )}
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+
                   <div className="space-y-3 rounded-lg border border-dashed border-border p-4">
                     <div>
                       <Label>Upload your own font</Label>

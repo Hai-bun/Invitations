@@ -30,6 +30,15 @@ export type GalleryLayout =
   | "mosaic"
   | "band";
 
+export interface TextColors {
+  /** Body text (hex like #3a2a33); empty = theme default. */
+  body?: string;
+  /** Section headings (h2/h3). */
+  heading?: string;
+  /** Couple names. */
+  names?: string;
+}
+
 export interface CustomFont {
   family: string;
   url: string;
@@ -87,6 +96,8 @@ export interface WeddingData {
   galleryLayout: GalleryLayout;
   /** Sticky header navigation on the invitation (can be turned off in Admin). */
   showHeaderNav: boolean;
+  /** Custom text colors chosen in Admin. */
+  textColors: TextColors;
 
   // Photo Gallery
   photos: string[];
@@ -202,6 +213,7 @@ const DEFAULT_WEDDING_DATA: WeddingData = {
   customFonts: [],
   galleryLayout: "default",
   showHeaderNav: true,
+  textColors: {},
   photos: [],
   monogramImage: "",
   khqrImage: "",
@@ -368,6 +380,7 @@ const buildWeddingProfileRow = (
     customFonts: weddingData.customFonts,
     galleryLayout: weddingData.galleryLayout,
     showHeaderNav: weddingData.showHeaderNav,
+    textColors: weddingData.textColors,
     monogramImage: weddingData.monogramImage,
     eventTitleKh: weddingData.eventTitleKh,
     eventAddressKh: weddingData.eventAddressKh,
@@ -450,6 +463,9 @@ const mapProfileToWeddingData = (
     showHeaderNav:
       (profile.welcome_popup as { showHeaderNav?: boolean })?.showHeaderNav ??
       DEFAULT_WEDDING_DATA.showHeaderNav,
+    textColors:
+      (profile.welcome_popup as { textColors?: TextColors })?.textColors ??
+      DEFAULT_WEDDING_DATA.textColors,
     monogramImage:
       (profile.welcome_popup as { monogramImage?: string })?.monogramImage ??
       DEFAULT_WEDDING_DATA.monogramImage,

@@ -37,6 +37,7 @@ const GuestInvite = () => {
       bodyFont: weddingData.bodyFont,
       nameFont: weddingData.nameFont,
       fontFiles: weddingData.customFonts,
+      colors: weddingData.textColors,
     });
   }, [weddingData]);
 

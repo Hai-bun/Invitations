@@ -196,6 +196,61 @@ const ensureFontLoaded = (name: string | undefined): string | undefined => {
   return family;
 };
 
+const HEX = /^#[0-9a-f]{6}$/i;
+
+// "#rrggbb" -> [h, s%, l%] so it can feed the app's `hsl(var(--token))` colors.
+const hexToHsl = (hex: string): [number, number, number] => {
+  const r = parseInt(hex.slice(1, 3), 16) / 255;
+  const g = parseInt(hex.slice(3, 5), 16) / 255;
+  const b = parseInt(hex.slice(5, 7), 16) / 255;
+  const max = Math.max(r, g, b);
+  const min = Math.min(r, g, b);
+  const l = (max + min) / 2;
+  const d = max - min;
+  let h = 0;
+  let s = 0;
+  if (d !== 0) {
+    s = d / (1 - Math.abs(2 * l - 1));
+    if (max === r) h = ((g - b) / d) % 6;
+    else if (max === g) h = (b - r) / d + 2;
+    else h = (r - g) / d + 4;
+    h *= 60;
+    if (h < 0) h += 360;
+  }
+  return [Math.round(h), Math.round(s * 100), Math.round(l * 100)];
+};
+
+// Custom text colors are set on <html> and picked up by `html[data-*-color]`
+// rules in index.css, which use !important so they beat each template's own
+// colors. Empty/invalid values fall back to the theme.
+const applyTextColors = (colors?: { body?: string; heading?: string; names?: string }) => {
+  const root = document.documentElement;
+  const set = (key: "body" | "heading" | "names", vars: Record<string, string>) => {
+    const value = colors?.[key]?.trim();
+    const attr = `data-${key}-color`;
+    if (value && HEX.test(value)) {
+      root.setAttribute(attr, "1");
+      Object.entries(vars).forEach(([k, v]) => root.style.setProperty(k, v));
+      return value;
+    }
+    root.removeAttribute(attr);
+    Object.keys(vars).forEach((k) => root.style.removeProperty(k));
+    return "";
+  };
+
+  const body = colors?.body?.trim();
+  if (body && HEX.test(body)) {
+    const [h, s, l] = hexToHsl(body);
+    // Secondary text is the same hue, pushed toward the middle for contrast.
+    const muted = `${h} ${Math.max(s - 15, 0)}% ${l < 50 ? Math.min(l + 22, 70) : Math.max(l - 22, 35)}%`;
+    set("body", { "--user-foreground": `${h} ${s}% ${l}%`, "--user-muted": muted });
+  } else {
+    set("body", { "--user-foreground": "", "--user-muted": "" });
+  }
+  set("heading", { "--user-heading": colors?.heading?.trim() ?? "" });
+  set("names", { "--user-names": colors?.names?.trim() ?? "" });
+};
+
 export const applyTheme = (
   themeId: ThemeType,
   customFonts?: {
@@ -203,10 +258,12 @@ export const applyTheme = (
     bodyFont?: string;
     nameFont?: string;
     fontFiles?: Array<{ family: string; url: string }>;
+    colors?: { body?: string; heading?: string; names?: string };
   },
 ): void => {
   const theme = getTheme(themeId);
   registerCustomFonts(customFonts?.fontFiles);
+  applyTextColors(customFonts?.colors);
   const root = document.documentElement;
 
   // Apply colors

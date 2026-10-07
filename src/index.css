@@ -3015,3 +3015,17 @@ html:lang(km) .wedding-root .font-script { word-spacing: 0.1em; }
 .wedding-root section[id] { scroll-margin-top: 3.75rem; }
 .animations-off .header-nav { animation: none; }
 @media (prefers-reduced-motion: reduce) { .header-nav { animation: none; } }
+
+/* Custom text colors from Admin. !important so they beat template colors. */
+html[data-body-color] .wedding-root {
+  --foreground: var(--user-foreground) !important;
+  --card-foreground: var(--user-foreground) !important;
+  --muted-foreground: var(--user-muted) !important;
+}
+html[data-heading-color] .wedding-root :is(h2, h3, h4, .mo-save-title, .mo-gallery-title) {
+  color: var(--user-heading) !important;
+}
+html[data-names-color] .wedding-root :is(.font-script, .couple-name, .mo-name, .glass-name, .cute-name, .artdeco-name) {
+  color: var(--user-names) !important;
+  -webkit-text-fill-color: var(--user-names) !important;
+}
