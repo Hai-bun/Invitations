@@ -102,11 +102,22 @@ export const AuroraInvitation = ({ weddingData, guest, language }: TemplateProps
   const photos = weddingData.photos ?? [];
   // An admin-chosen gallery layout replaces the signature pinned gallery.
   const customLayout = !!weddingData.galleryLayout && weddingData.galleryLayout !== "default";
-  const heroImg = weddingData.backgroundImage || photos[0] || "";
+  // Photos picked in Admin win; a pick is ignored if that image has since been
+  // removed from the gallery / settings, so a deleted photo never shows broken.
+  const picks = weddingData.sectionImages ?? {};
+  const known = new Set([...photos, weddingData.backgroundImage, weddingData.monogramImage]);
+  const picked = (url?: string) => (url && known.has(url) ? url : "");
+  const heroImg = picked(picks.hero) || weddingData.backgroundImage || photos[0] || "";
   const heroIsVideo = /\.(mp4|webm|ogg)(\?|$)/i.test(heroImg);
   const dateText = formatWeddingDate(weddingData.weddingDate, language);
   // Polaroid photo: prefer one that is not already the hero image.
-  const saveImg = photos.find((p) => p !== heroImg) || photos[0] || "";
+  const badgeImg = picked(picks.badge) || weddingData.monogramImage || photos[1] || photos[0] || "";
+  const saveImg =
+    picked(picks.polaroid) ||
+    photos.find((p) => p !== heroImg && p !== badgeImg) ||
+    photos.find((p) => p !== heroImg) ||
+    photos[0] ||
+    "";
 
   const shellRef = useRef<HTMLDivElement>(null);
   const galleryRef = useRef<HTMLElement>(null);
@@ -260,7 +271,7 @@ export const AuroraInvitation = ({ weddingData, guest, language }: TemplateProps
 
         <SpinBadge
           text={`${dateText} • `}
-          image={weddingData.monogramImage || photos[1] || photos[0]}
+          image={badgeImg}
         />
         <ChevronDown className="mo-scroll-cue w-6 h-6" aria-hidden="true" />
       </section>

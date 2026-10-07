@@ -39,6 +39,15 @@ export interface TextColors {
   names?: string;
 }
 
+export interface SectionImages {
+  /** Motion Showcase hero photo (default: the Background image). */
+  hero?: string;
+  /** Photo inside the spinning date badge. */
+  badge?: string;
+  /** Polaroid photo in the Save the Date section. */
+  polaroid?: string;
+}
+
 export interface CustomFont {
   family: string;
   url: string;
@@ -98,6 +107,8 @@ export interface WeddingData {
   showHeaderNav: boolean;
   /** Custom text colors chosen in Admin. */
   textColors: TextColors;
+  /** Photos chosen in Admin for specific spots in the Motion Showcase template. */
+  sectionImages: SectionImages;
 
   // Photo Gallery
   photos: string[];
@@ -214,6 +225,7 @@ const DEFAULT_WEDDING_DATA: WeddingData = {
   galleryLayout: "default",
   showHeaderNav: true,
   textColors: {},
+  sectionImages: {},
   photos: [],
   monogramImage: "",
   khqrImage: "",
@@ -381,6 +393,7 @@ const buildWeddingProfileRow = (
     galleryLayout: weddingData.galleryLayout,
     showHeaderNav: weddingData.showHeaderNav,
     textColors: weddingData.textColors,
+    sectionImages: weddingData.sectionImages,
     monogramImage: weddingData.monogramImage,
     eventTitleKh: weddingData.eventTitleKh,
     eventAddressKh: weddingData.eventAddressKh,
@@ -466,6 +479,9 @@ const mapProfileToWeddingData = (
     textColors:
       (profile.welcome_popup as { textColors?: TextColors })?.textColors ??
       DEFAULT_WEDDING_DATA.textColors,
+    sectionImages:
+      (profile.welcome_popup as { sectionImages?: SectionImages })
+        ?.sectionImages ?? DEFAULT_WEDDING_DATA.sectionImages,
     monogramImage:
       (profile.welcome_popup as { monogramImage?: string })?.monogramImage ??
       DEFAULT_WEDDING_DATA.monogramImage,

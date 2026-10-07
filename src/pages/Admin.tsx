@@ -52,6 +52,7 @@ import { uploadWeddingImage, deleteWeddingImage } from "@/lib/storage";
 import { ThemeSelector } from "@/components/admin/ThemeSelector";
 import { ImageCropDialog } from "@/components/admin/ImageCropDialog";
 import { GalleryLayoutSelector } from "@/components/admin/GalleryLayoutSelector";
+import { ImageSlotPicker } from "@/components/admin/ImageSlotPicker";
 import { TemplateSelector } from "@/components/admin/TemplateSelector";
 import { ThemeType, applyTheme } from "@/lib/themeConfig";
 
@@ -679,6 +680,57 @@ const Admin = () => {
                     }
                   />
                 </div>
+                {data.template === "aurora" && (
+                  <div className="space-y-5 rounded-lg border border-border p-4">
+                    <div>
+                      <Label className="text-base">Template images</Label>
+                      <p className="text-sm text-muted-foreground mt-1">
+                        Choose which of your photos goes in each spot of the
+                        Motion Showcase template. “Auto” lets the template pick.
+                      </p>
+                    </div>
+                    {(
+                      [
+                        [
+                          "hero",
+                          "Hero photo",
+                          "The full-screen photo behind the couple's names.",
+                          [data.backgroundImage, ...data.photos],
+                        ],
+                        [
+                          "badge",
+                          "Round badge photo",
+                          "The small photo inside the spinning date badge.",
+                          [data.monogramImage, ...data.photos],
+                        ],
+                        [
+                          "polaroid",
+                          "Save the Date photo",
+                          "The tilted polaroid next to the date and countdown.",
+                          data.photos,
+                        ],
+                      ] as const
+                    ).map(([key, label, description, options]) => (
+                      <ImageSlotPicker
+                        key={key}
+                        label={label}
+                        description={description}
+                        value={data.sectionImages?.[key] ?? ""}
+                        options={[...options]}
+                        onChange={(url) =>
+                          setData({
+                            ...data,
+                            sectionImages: {
+                              ...data.sectionImages,
+                              [key]: url,
+                            },
+                          })
+                        }
+                      />
+                    ))}
+                  </div>
+                )}
+
 
                 <TemplateSelector
                   selectedTemplate={data.template}
