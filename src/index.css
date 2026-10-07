@@ -2783,3 +2783,11 @@
   position: relative; width: 56%; height: 56%; border-radius: 9999px; object-fit: cover;
   border: 2px solid #fff; box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
 }
+
+/* Lining figures: Cormorant's old-style numerals make "51" read like "5I". */
+.wedding-root { font-variant-numeric: lining-nums; font-feature-settings: "lnum" 1; }
+.mo-badge-ring text { font-size: 9px; letter-spacing: 0; }
+@media (max-width: 640px) {
+  /* Keep the hero text clear of the badge in the top-left corner. */
+  .mo-hero { padding-top: 9rem; }
+}

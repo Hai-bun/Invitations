@@ -32,10 +32,18 @@ export const CoupleSection = ({
     lang === "km" && groomNameKh ? groomNameKh : groomName;
   const displayBrideName =
     lang === "km" && brideNameKh ? brideNameKh : brideName;
-  const displayGroomParents =
-    lang === "km" && groomParentsKh ? groomParentsKh : groomParents;
-  const displayBrideParents =
-    lang === "km" && brideParentsKh ? brideParentsKh : brideParents;
+  // Tidy hand-typed Latin names: "Mr.HEANG VANNA& Mrs." -> "Mr. HEANG VANNA & Mrs."
+  const tidy = (s: string) =>
+    s
+      .replace(/\s*&\s*/g, " & ")
+      .replace(/\b(Mr|Mrs|Ms|Dr)\.(?=\S)/g, "$1. ")
+      .trim();
+  const displayGroomParents = tidy(
+    lang === "km" && groomParentsKh ? groomParentsKh : groomParents,
+  );
+  const displayBrideParents = tidy(
+    lang === "km" && brideParentsKh ? brideParentsKh : brideParents,
+  );
 
   return (
     <section className="couple-section scroll-reveal py-16 px-4 text-center bg-romantic-gradient">

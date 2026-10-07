@@ -59,7 +59,7 @@ const SpinBadge = ({ text, image }: { text: string; image?: string }) => (
         <path id="mo-circle" d="M60,60 m-46,0 a46,46 0 1,1 92,0 a46,46 0 1,1 -92,0" />
       </defs>
       <text>
-        <textPath href="#mo-circle" textLength="285">
+        <textPath href="#mo-circle" textLength="283" lengthAdjust="spacing">
           {text}
         </textPath>
       </text>
@@ -230,7 +230,7 @@ export const AuroraInvitation = ({ weddingData, guest, language }: TemplateProps
         </div>
 
         <SpinBadge
-          text={`${dateText} • ${dateText} • `}
+          text={`${dateText} • `}
           image={weddingData.monogramImage || photos[1] || photos[0]}
         />
         <ChevronDown className="mo-scroll-cue w-6 h-6" aria-hidden="true" />
