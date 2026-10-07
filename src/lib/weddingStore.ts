@@ -85,6 +85,8 @@ export interface WeddingData {
   customFonts: CustomFont[];
   /** How the photo gallery is laid out ("default" = the template's own gallery). */
   galleryLayout: GalleryLayout;
+  /** Sticky header navigation on the invitation (can be turned off in Admin). */
+  showHeaderNav: boolean;
 
   // Photo Gallery
   photos: string[];
@@ -199,6 +201,7 @@ const DEFAULT_WEDDING_DATA: WeddingData = {
   nameFont: "",
   customFonts: [],
   galleryLayout: "default",
+  showHeaderNav: true,
   photos: [],
   monogramImage: "",
   khqrImage: "",
@@ -364,6 +367,7 @@ const buildWeddingProfileRow = (
     nameFont: weddingData.nameFont,
     customFonts: weddingData.customFonts,
     galleryLayout: weddingData.galleryLayout,
+    showHeaderNav: weddingData.showHeaderNav,
     monogramImage: weddingData.monogramImage,
     eventTitleKh: weddingData.eventTitleKh,
     eventAddressKh: weddingData.eventAddressKh,
@@ -443,6 +447,9 @@ const mapProfileToWeddingData = (
     galleryLayout:
       (profile.welcome_popup as { galleryLayout?: GalleryLayout })
         ?.galleryLayout ?? DEFAULT_WEDDING_DATA.galleryLayout,
+    showHeaderNav:
+      (profile.welcome_popup as { showHeaderNav?: boolean })?.showHeaderNav ??
+      DEFAULT_WEDDING_DATA.showHeaderNav,
     monogramImage:
       (profile.welcome_popup as { monogramImage?: string })?.monogramImage ??
       DEFAULT_WEDDING_DATA.monogramImage,

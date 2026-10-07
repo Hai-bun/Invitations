@@ -1,0 +1,120 @@
+import { useEffect, useRef, useState } from "react";
+import { Heart } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { getTranslations, type Language } from "@/lib/i18n";
+import type { WeddingData } from "@/lib/weddingStore";
+
+interface HeaderNavProps {
+  weddingData: WeddingData;
+  language: Language;
+}
+
+// Sections that can appear in the bar, in page order. Only the ones actually
+// rendered on the page (matched by id) get a link.
+const ITEMS = [
+  { id: "couple", key: "navCouple" },
+  { id: "story", key: "navStory" },
+  { id: "location", key: "navLocation" },
+  { id: "schedule", key: "navSchedule" },
+  { id: "gallery", key: "navGallery" },
+  { id: "gift", key: "navGift" },
+  { id: "rsvp", key: "navRsvp" },
+] as const;
+
+const firstWord = (s: string) => s.trim().split(/\s+/)[0] ?? "";
+
+/**
+ * Sticky top bar with smooth-scroll links to each section and a scroll-spy
+ * highlight. Shown only when `showHeaderNav` is on in Admin.
+ */
+export const HeaderNav = ({ weddingData, language }: HeaderNavProps) => {
+  const t = getTranslations(language);
+  const [present, setPresent] = useState<string[]>([]);
+  const [active, setActive] = useState("top");
+  const listRef = useRef<HTMLDivElement>(null);
+
+  // Find which sections exist on this page (depends on template + settings).
+  useEffect(() => {
+    const id = window.setTimeout(() => {
+      setPresent(
+        ITEMS.filter((i) => document.getElementById(i.id)).map((i) => i.id),
+      );
+    }, 50);
+    return () => window.clearTimeout(id);
+  }, [weddingData, language]);
+
+  // Scroll-spy: highlight the section nearest the middle of the screen.
+  useEffect(() => {
+    if (present.length === 0) return;
+    const els = present
+      .map((id) => document.getElementById(id))
+      .filter((e): e is HTMLElement => !!e);
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) setActive(e.target.id);
+        });
+      },
+      { rootMargin: "-40% 0px -55% 0px" },
+    );
+    els.forEach((e) => io.observe(e));
+    const onScroll = () => {
+      if (window.scrollY < 120) setActive("top");
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      io.disconnect();
+      window.removeEventListener("scroll", onScroll);
+    };
+  }, [present]);
+
+  // Keep the active link visible in the horizontally scrolling mobile bar.
+  useEffect(() => {
+    const btn = listRef.current?.querySelector<HTMLElement>("[data-active='true']");
+    btn?.scrollIntoView({ inline: "center", block: "nearest", behavior: "smooth" });
+  }, [active]);
+
+  if (!weddingData.showHeaderNav || present.length === 0) return null;
+
+  const go = (id: string) => {
+    if (id === "top") {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      return;
+    }
+    document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+
+  const groom =
+    language === "km" && weddingData.groomNameKh ? weddingData.groomNameKh : weddingData.groomName;
+  const bride =
+    language === "km" && weddingData.brideNameKh ? weddingData.brideNameKh : weddingData.brideName;
+  const links = [{ id: "top", label: t.navHome }].concat(
+    ITEMS.filter((i) => present.includes(i.id)).map((i) => ({
+      id: i.id,
+      label: t[i.key],
+    })),
+  );
+
+  return (
+    <header className="header-nav" role="navigation" aria-label="Invitation sections">
+      <button type="button" className="header-nav-brand" onClick={() => go("top")}>
+        <Heart className="w-4 h-4 text-primary" fill="currentColor" />
+        <span>
+          {firstWord(groom)} &amp; {firstWord(bride)}
+        </span>
+      </button>
+      <div ref={listRef} className="header-nav-links">
+        {links.map((l) => (
+          <button
+            key={l.id}
+            type="button"
+            data-active={active === l.id}
+            className={cn("header-nav-link", active === l.id && "is-active")}
+            onClick={() => go(l.id)}>
+            {l.label}
+          </button>
+        ))}
+      </div>
+    </header>
+  );
+};

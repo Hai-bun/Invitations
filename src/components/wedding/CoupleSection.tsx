@@ -47,7 +47,7 @@ export const CoupleSection = ({
   );
 
   return (
-    <section className="couple-section scroll-reveal py-16 px-4 text-center bg-romantic-gradient">
+    <section id="couple" className="couple-section scroll-reveal py-16 px-4 text-center bg-romantic-gradient">
       <div className="max-w-4xl mx-auto">
         <p className="couple-eyebrow text-sm uppercase tracking-[0.3em] text-muted-foreground mb-4 animate-fade-in-up">
           {t.theCouple}

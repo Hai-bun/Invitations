@@ -345,7 +345,7 @@ export const AuroraInvitation = ({ weddingData, guest, language }: TemplateProps
       )}
       {/* ---------- Pinned horizontal gallery with per-photo parallax ---------- */}
       {photos.length > 0 && !customLayout && (
-        <section ref={galleryRef} className="mo-gallery" aria-label={t.photoGallery}>
+        <section id="gallery" ref={galleryRef} className="mo-gallery" aria-label={t.photoGallery}>
           <div className="mo-gallery-pin">
             <h2 className="mo-gallery-title">{t.photoGallery}</h2>
             <div ref={trackRef} className="mo-track">

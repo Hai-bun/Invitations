@@ -29,6 +29,7 @@ import { AuroraInvitation } from "@/components/wedding/templates/AuroraInvitatio
 import { CuteStickers } from "@/components/ui/CuteStickers";
 
 import { LanguageSwitcher } from "@/components/ui/LanguageSwitcher";
+import { HeaderNav } from "@/components/wedding/HeaderNav";
 import { Heart, Calendar } from "lucide-react";
 import { applyTheme, getTheme, ThemeType, THEMES } from "@/lib/themeConfig";
 import { getTemplate, TEMPLATES } from "@/lib/templateConfig";
@@ -208,6 +209,7 @@ const WeddingDetail = () => {
           onLanguageChange={handleLanguageChange}
           currentLanguage={language}
         />
+        <HeaderNav weddingData={weddingData} language={language} />
         {showSparkles && <SparkleField />}
         {showCuteStickers && <CuteStickers />}
         <SelfContainedTemplate
@@ -226,6 +228,7 @@ const WeddingDetail = () => {
         onLanguageChange={handleLanguageChange}
         currentLanguage={language}
       />
+      <HeaderNav weddingData={weddingData} language={language} />
 
       {showPetals && <FloatingPetals />}
       {showSparkles && <SparkleField />}

@@ -28,7 +28,7 @@ export const ScheduleSection = ({ schedule, language }: ScheduleSectionProps) =>
     : schedule.title?.trim() || t.weddingSchedule;
 
   return (
-    <section className="scroll-reveal py-16 px-4 bg-romantic-gradient">
+    <section id="schedule" className="scroll-reveal py-16 px-4 bg-romantic-gradient">
       <div className="max-w-md mx-auto">
         <div className="text-center mb-10">
           <Clock className="w-10 h-10 text-primary mx-auto mb-4" />

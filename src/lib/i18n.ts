@@ -64,6 +64,16 @@ export interface Translations {
   markYourCalendar: string;
   saveTheDate: string;
   saveTheDateText: string;
+
+  // Header navigation
+  navHome: string;
+  navCouple: string;
+  navStory: string;
+  navLocation: string;
+  navSchedule: string;
+  navGallery: string;
+  navGift: string;
+  navRsvp: string;
   
   // Welcome Popup
   welcomeTitle: string;
@@ -140,6 +150,16 @@ const translations: Record<Language, Translations> = {
     markYourCalendar: 'Mark your calendar',
     saveTheDate: 'Save the Date',
     saveTheDateText: "We can't wait to celebrate with you.",
+
+    // Header navigation
+    navHome: 'Home',
+    navCouple: 'Couple',
+    navStory: 'Story',
+    navLocation: 'Location',
+    navSchedule: 'Schedule',
+    navGallery: 'Gallery',
+    navGift: 'Gift',
+    navRsvp: 'RSVP',
     
     // Welcome Popup
     welcomeTitle: 'You are Invited',
@@ -214,6 +234,16 @@ const translations: Record<Language, Translations> = {
     markYourCalendar: 'សូមកត់ត្រាទុកថ្ងៃ',
     saveTheDate: 'កក់ទុកថ្ងៃពិសេស',
     saveTheDateText: 'យើងរង់ចាំអបអរសាទរជាមួយលោកអ្នក។',
+
+    // Header navigation
+    navHome: 'ទំព័រដើម',
+    navCouple: 'គូស្រករ',
+    navStory: 'រឿងរបស់យើង',
+    navLocation: 'ទីតាំង',
+    navSchedule: 'កាលវិភាគ',
+    navGallery: 'វិចិត្រសាល',
+    navGift: 'អំណោយ',
+    navRsvp: 'ចូលរួម',
     
     // Welcome Popup
     welcomeTitle: 'អ្នកត្រូវបានអញ្ជើញ',

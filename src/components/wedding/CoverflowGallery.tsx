@@ -77,7 +77,7 @@ export const CoverflowGallery = ({ photos, language }: CoverflowGalleryProps) =>
   if (!photos.length) return null;
 
   return (
-    <section className="coverflow-section scroll-reveal py-16 px-2 bg-romantic-gradient">
+    <section id="gallery" className="coverflow-section scroll-reveal py-16 px-2 bg-romantic-gradient">
       <div className="max-w-3xl mx-auto">
         <div className="text-center mb-10 px-4">
           <Camera className="w-10 h-10 text-primary mx-auto mb-4" />

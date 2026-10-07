@@ -33,7 +33,7 @@ export const PhotoGallery = ({ photos, language, layout = "default" }: PhotoGall
 
   if (photos.length === 0) {
     return (
-      <section className="scroll-reveal py-16 px-4 bg-romantic-gradient">
+      <section id="gallery" className="scroll-reveal py-16 px-4 bg-romantic-gradient">
         <div className="max-w-4xl mx-auto text-center">
           <Camera className="w-10 h-10 text-primary mx-auto mb-4" />
           <h2 className="font-serif text-3xl sm:text-4xl font-semibold text-foreground mb-4">
@@ -48,7 +48,7 @@ export const PhotoGallery = ({ photos, language, layout = "default" }: PhotoGall
   }
 
   return (
-    <section className={cn("gallery-section scroll-reveal py-16 px-4 bg-romantic-gradient", custom && "gl-wrap")}>
+    <section id="gallery" className={cn("gallery-section scroll-reveal py-16 px-4 bg-romantic-gradient", custom && "gl-wrap")}>
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-10">
           <Camera className="w-10 h-10 text-primary mx-auto mb-4" />

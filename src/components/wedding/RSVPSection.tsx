@@ -50,7 +50,7 @@ export const RSVPSection = ({
 
   if (submitted) {
     return (
-      <section className="scroll-reveal py-16 px-4 bg-card">
+      <section id="rsvp" className="scroll-reveal py-16 px-4 bg-card">
         <div className="max-w-md mx-auto text-center">
           <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6">
             <Check className="w-8 h-8 text-primary" />
@@ -65,7 +65,7 @@ export const RSVPSection = ({
   }
 
   return (
-    <section className="scroll-reveal py-16 px-4 bg-card">
+    <section id="rsvp" className="scroll-reveal py-16 px-4 bg-card">
       <div className="max-w-md mx-auto">
         <div className="text-center mb-8">
           <Heart className="w-10 h-10 text-primary mx-auto mb-4" />

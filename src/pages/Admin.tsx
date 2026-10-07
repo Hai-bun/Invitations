@@ -658,6 +658,26 @@ const Admin = () => {
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-6">
+                <div className="flex items-start justify-between gap-4 rounded-lg border border-border p-4">
+                  <div>
+                    <Label htmlFor="showHeaderNav" className="text-base">
+                      Header navigation
+                    </Label>
+                    <p className="text-sm text-muted-foreground mt-1">
+                      A sticky top bar with links to Couple, Story, Location,
+                      Schedule, Gallery, Gift and RSVP. Turn off for a clean
+                      page without a menu.
+                    </p>
+                  </div>
+                  <Switch
+                    id="showHeaderNav"
+                    checked={data.showHeaderNav ?? true}
+                    onCheckedChange={(checked) =>
+                      setData({ ...data, showHeaderNav: checked })
+                    }
+                  />
+                </div>
+
                 <TemplateSelector
                   selectedTemplate={data.template}
                   onTemplateChange={(template) => {

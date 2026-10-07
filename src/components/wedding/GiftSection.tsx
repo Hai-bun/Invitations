@@ -89,7 +89,7 @@ export const GiftSection = ({
   };
 
   return (
-    <section className="gift-section scroll-reveal py-16 px-4">
+    <section id="gift" className="gift-section scroll-reveal py-16 px-4">
       <div className="gift-card max-w-sm mx-auto text-center">
         <div className="gift-card-inner">
           <div className="gift-icon" aria-hidden="true">
